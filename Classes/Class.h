@@ -14,12 +14,12 @@ class Class{
         Schedule schedule;
         set<Student> students;
     public:
-        Class(string id, Schedule schedule);
+        Class(string id, Schedule schedule, set<Student> students);
         string getId() const;
         void setId(string id);
         Schedule getSchedule() const;
         void setSchedule(Schedule schedule);
-        Student getStudents() const;
+        set<Student> getStudents() const;
         void addStudent(Student student);
 };
 

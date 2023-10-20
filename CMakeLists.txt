@@ -23,4 +23,12 @@ endif(DOXYGEN_FOUND)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(AED2324_PRJ1_G22 main.cpp)
+add_executable(AED2324_PRJ1_G22 main.cpp
+        Classes/Class.h
+        Classes/Lesson.h
+        Classes/Schedule.h
+        Classes/Student.h
+        Classes/Student.cpp
+        Classes/Schedule.cpp
+        Classes/Lesson.cpp
+        Classes/Class.cpp)

@@ -10,8 +10,10 @@ class Schedule{
     private:
         set<Lesson> lessons;
     public:
+        Schedule(set<Lesson> lessons);
         Schedule();
-        set<Lesson> getLessons() const;
+
+    set<Lesson> getLessons() const;
         void addLesson(Lesson lesson);
 };
 

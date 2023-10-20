@@ -19,6 +19,8 @@ class Student{
         void setName(string name);
         Schedule getSchedule() const;
         void setSchedule(Schedule schedule);
+        bool operator<(const Student& other) const;
+        bool operator==(const Student& other) const;
 };
 
 #endif //AED2324_PRJ1_G22_STUDENT_H
