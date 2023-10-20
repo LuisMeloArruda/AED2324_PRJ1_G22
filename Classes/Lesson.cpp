@@ -8,6 +8,8 @@ Lesson::Lesson(string ucCode, string weekDay, float start, float duration, strin
     this->type = type;
 }
 
+//A função addLesson do Schedule.h pedia dois operador para o método .insert(), porém como eu
+//não sei a ordem ideal para o set retorno false
 bool Lesson::operator<(const Lesson& second) const {
     return false;
 }
