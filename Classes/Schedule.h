@@ -12,9 +12,11 @@ class Schedule{
     public:
         Schedule(set<Lesson> lessons);
         Schedule();
-
-    set<Lesson> getLessons() const;
+        set<Lesson> getLessons() const;
+        void setLessons(set<Lesson> lessons) const;
         void addLesson(Lesson lesson);
+
+    void setLessons(set<Lesson> lessons);
 };
 
 #endif //AED2324_PRJ1_G22_SCHEDULE_H

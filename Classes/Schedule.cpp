@@ -1,9 +1,14 @@
 #include "Schedule.h"
 
-
 Schedule::Schedule(set<Lesson> lessons) {
     this->lessons = lessons;
 }
+
+
+void Schedule::setLessons(set<Lesson> lessons) {
+    this->lessons = lessons;
+}
+
 
 set<Lesson> Schedule::getLessons() const {
     return lessons;
