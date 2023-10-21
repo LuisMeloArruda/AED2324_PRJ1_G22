@@ -14,7 +14,7 @@ class Lesson{
         string type;
     public:
         Lesson(string ucCode, string weekDay, float start, float duration, string type);
-        string getucCode() const;
+        string getUcCode() const;
         void setUcCode(string ucCode);
         string getWeekDay() const;
         void setWeekDay(string weekDay);
