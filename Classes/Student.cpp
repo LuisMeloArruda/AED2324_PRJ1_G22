@@ -32,12 +32,12 @@ void Student::setSchedule(Schedule schedule) {
 
 //A função addStudent do Class.h pedia dois operador para o método .insert(), porém como
 //não sei a ordem ideal para o set retorno false. O name é uma boa maneira de ordernar alfabeticamente
-bool Student::operator<(const Student &other) const {
-    return false;
+bool Student::operator<(const Student& second) const {
+    return name < second.name;
 }
 
-bool Student::operator==(const Student &other) const {
-    return false;
+bool Student::operator==(const Student& second) const {
+    return name == second.name;
 }
 
 
