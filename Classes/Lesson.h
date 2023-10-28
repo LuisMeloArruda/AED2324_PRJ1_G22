@@ -7,13 +7,16 @@ using namespace std;
 
 class Lesson{
     private:
+        string classCode;
         string ucCode;
         string weekDay;
         float start;
         float duration;
         string type;
     public:
-        Lesson(string ucCode, string weekDay, float start, float duration, string type);
+        Lesson(string classCode, string ucCode, string weekDay, float start, float duration, string type);
+        string getClassCode() const;
+        void setClassCode(string ucCode);
         string getUcCode() const;
         void setUcCode(string ucCode);
         string getWeekDay() const;

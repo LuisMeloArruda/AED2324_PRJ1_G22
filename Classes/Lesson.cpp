@@ -1,6 +1,7 @@
 #include "Lesson.h"
 
-Lesson::Lesson(string ucCode, string weekDay, float start, float duration, string type) {
+Lesson::Lesson(string classCode, string ucCode, string weekDay, float start, float duration, string type) {
+    this->classCode = classCode;
     this->ucCode = ucCode;
     this->weekDay = weekDay;
     this->start = start;
@@ -16,6 +17,14 @@ bool Lesson::operator<(const Lesson& second) const {
 
 bool Lesson::operator==(const Lesson& second) const {
     return second.start == this->start && second.duration == this->duration && second.ucCode == this->ucCode;
+}
+
+string Lesson::getClassCode() const {
+    return classCode;
+}
+
+void Lesson::setClassCode(string classCode) {
+    this->classCode = classCode;
 }
 
 string Lesson::getUcCode() const {
