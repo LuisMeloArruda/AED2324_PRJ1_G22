@@ -1,16 +1,16 @@
 #include "Student.h"
 
-Student::Student(unsigned int id, string name, Schedule schedule) {
+Student::Student(string id, string name, Schedule schedule) {
     this->id = id;
     this->name = name;
     this->schedule = schedule;
 }
 
-unsigned int Student::getId() const {
+string Student::getId() const {
     return id;
 }
 
-void Student::setId(unsigned  int id) {
+void Student::setId(string id) {
     this->id = id;
 }
 

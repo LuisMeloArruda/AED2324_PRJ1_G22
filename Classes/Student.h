@@ -9,12 +9,12 @@ using namespace std;
 class Student{
     private:
         string name;
-        unsigned int id;
+        string id;
         Schedule schedule;
     public:
-        Student(unsigned int id, string name, Schedule schedule);
-        unsigned int getId() const;
-        void setId(unsigned  int id);
+        Student(string id, string name, Schedule schedule);
+        string getId() const;
+        void setId(string id);
         string getName() const;
         void setName(string name);
         Schedule getSchedule() const;
