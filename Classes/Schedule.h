@@ -15,7 +15,7 @@ class Schedule{
         vector<Lesson> lessons;
         set<Student> students;
     public:
-        Schedule(Class classInfo, vector<Lesson> lessons, set<Student> students);
+        Schedule(Class classInfo);
         Class getClassInfo() const;
         void setClassInfo(Class classInfo);
         vector<Lesson> getLessons() const;
@@ -23,6 +23,7 @@ class Schedule{
         void addLesson(Lesson lesson);
         set<Student> getStudents() const;
         void setStudents(set<Student> students);
+        void addStudent(Student student);
 };
 
 #endif //AED2324_PRJ1_G22_SCHEDULE_H

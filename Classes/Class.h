@@ -16,6 +16,8 @@ class Class{
         void setUcCode(string ucCode);
         string getClassCode() const;
         void setClassCode(string classCode);
+        bool operator==(const Class& b);
+        bool operator<(const Class& b);
 };
 
 #endif //AED2324_PRJ1_G22_CLASS_H

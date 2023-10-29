@@ -8,11 +8,16 @@
 class Extractor {
     private:
         set<Student> students;
-        vector<Class> classes;
+        vector<Schedule> schedules;
     public:
         Extractor();
         void readFiles();
+
+        //Auxiliary Functions
         void readClassesPerUc();
+        void readStudentsClasses();
+        unsigned searchSchedules(Class classInfo);
+        void testReadStudentClasses();
 };
 
 #endif //AED2324_PRJ1_G22_EXTRACTOR_H

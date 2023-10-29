@@ -1,9 +1,7 @@
 #include "Schedule.h"
 
-Schedule::Schedule(Class classInfo, vector<Lesson> lessons, set<Student> students) {
+Schedule::Schedule(Class classInfo) {
     this->classInfo = classInfo;
-    this->lessons = lessons;
-    this->students = students;
 }
 
 Class Schedule::getClassInfo() const {
@@ -32,4 +30,8 @@ set<Student> Schedule::getStudents() const {
 
 void Schedule::setStudents(set<Student> students) {
     this->students = students;
+}
+
+void Schedule::addStudent(Student student) {
+    students.insert(student);
 }

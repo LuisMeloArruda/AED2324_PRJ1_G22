@@ -13,13 +13,14 @@ class Student{
         string id;
         vector<Class> classes;
     public:
-        Student(string id, string name, vector<Class>& classes);
+        Student(string id, string name);
         string getId() const;
         void setId(string id);
         string getName() const;
         void setName(string name);
         vector<Class> getClasses() const;
         void setClasses(vector<Class> classes);
+        void addClass(Class classInfo);
         bool operator<(const Student& other) const;
 };
 

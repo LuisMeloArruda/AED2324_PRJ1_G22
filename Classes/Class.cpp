@@ -25,3 +25,10 @@ string Class::getUcCode() const {
 void Class::setUcCode(string ucCode) {
     this->ucCode = ucCode;
 }
+
+bool Class::operator==(const Class& b) {
+    return (ucCode==b.ucCode and classCode==b.classCode);
+}
+bool Class::operator<(const Class& b) {
+    return ucCode < b.ucCode || (!(b.ucCode < ucCode) && classCode < b.classCode);
+}
