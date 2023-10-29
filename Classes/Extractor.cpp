@@ -79,16 +79,3 @@ unsigned Extractor::searchSchedules(Class classInfo) {
         middle = (low + high)/2;
     }
 }
-
-void Extractor::testReadStudentClasses(){
-    int count = 0;
-    for (Student e: students){
-        cout << "Número mecanográfico: " << e.getId() << "  Nome: " << e.getName() << endl;
-        cout << "Pertence às seguintes turmas: " << endl;
-        for (Class x: e.getClasses()){
-            count++;
-            cout << "UC: " << x.getUcCode() << "  ClassCode: " << x.getClassCode() << endl;
-        }
-    }
-    cout << "Lines processes: " << count << " out of 3340" << endl;
-}
