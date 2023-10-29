@@ -1,9 +1,9 @@
 #include "Student.h"
 
-Student::Student(string id, string name, Schedule schedule) {
+Student::Student(string id, string name, vector<Class>& classes) {
     this->id = id;
     this->name = name;
-    this->schedule = schedule;
+    this->classes = vector<Class>(classes);
 }
 
 string Student::getId() const {
@@ -22,22 +22,15 @@ void Student::setName(string name) {
     this->name = name;
 }
 
-Schedule Student::getSchedule() const {
-    return schedule;
+vector<Class> Student::getClasses() const{
+    return classes;
 }
 
-void Student::setSchedule(Schedule schedule) {
-    this->schedule = schedule;
+void Student::setClasses(vector<Class> classes) {
+    this->classes = vector<Class>(classes);
 }
 
-//A função addStudent do Class.h pedia dois operador para o método .insert(), porém como
-//não sei a ordem ideal para o set retorno false. O name é uma boa maneira de ordernar alfabeticamente
+
 bool Student::operator<(const Student& second) const {
-    return name < second.name;
+    return id < second.id;
 }
-
-bool Student::operator==(const Student& second) const {
-    return name == second.name;
-}
-
-

@@ -2,25 +2,20 @@
 #define AED2324_PRJ1_G22_CLASS_H
 
 #include <string>
-#include <set>
-#include "Schedule.h"
-#include "Student.h"
 
 using namespace std;
 
 class Class{
     private:
-        string id;
-        Schedule schedule;
-        set<Student> students;
+        string ucCode;
+        string classCode;
     public:
-        Class(string id, Schedule schedule, set<Student> students);
-        string getId() const;
-        void setId(string id);
-        Schedule getSchedule() const;
-        void setSchedule(Schedule schedule);
-        set<Student> getStudents() const;
-        void addStudent(Student student);
+        Class(string ucCode, string classCode);
+        Class();
+        string getUcCode() const;
+        void setUcCode(string ucCode);
+        string getClassCode() const;
+        void setClassCode(string classCode);
 };
 
 #endif //AED2324_PRJ1_G22_CLASS_H

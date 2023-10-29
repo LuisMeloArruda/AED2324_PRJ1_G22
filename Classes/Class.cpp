@@ -1,32 +1,27 @@
 #include "Class.h"
 
-Class::Class(string id, Schedule schedule, set<Student> students) {
-    this->id = id;
-    this->schedule = schedule;
-    this->students = students;
+Class::Class(){
+    this->ucCode = "Not Initialized";
+    this->classCode = "Not Initialized";
 }
 
-string Class::getId() const {
-    return id;
+Class::Class(string ucCode, string classCode) {
+    this->ucCode = ucCode;
+    this->classCode = classCode;
 }
 
-void Class::setId(string id) {
-    this->id = id;
+string Class::getClassCode() const {
+    return classCode;
 }
 
-Schedule Class::getSchedule() const {
-    return schedule;
+void Class::setClassCode(string classCode) {
+    this->classCode = classCode;
 }
 
-void Class::setSchedule(Schedule schedule) {
-    this->schedule = schedule;
+string Class::getUcCode() const {
+    return ucCode;
 }
 
-set<Student> Class::getStudents() const {
-    return students;
+void Class::setUcCode(string ucCode) {
+    this->ucCode = ucCode;
 }
-
-void Class::addStudent(Student student) {
-    this->students.insert(student);
-}
-

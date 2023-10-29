@@ -7,18 +7,12 @@ using namespace std;
 
 class Lesson{
     private:
-        string classCode;
-        string ucCode;
         string weekDay;
         float start;
         float duration;
         string type;
     public:
-        Lesson(string classCode, string ucCode, string weekDay, float start, float duration, string type);
-        string getClassCode() const;
-        void setClassCode(string ucCode);
-        string getUcCode() const;
-        void setUcCode(string ucCode);
+        Lesson(string weekDay, float start, float duration, string type);
         string getWeekDay() const;
         void setWeekDay(string weekDay);
         float getStart() const;
@@ -27,8 +21,6 @@ class Lesson{
         void setDuration(float duration);
         string getType() const;
         void setType(string type);
-        bool operator<(const Lesson& other) const;
-        bool operator==(const Lesson& other) const;
 };
 
 #endif //AED2324_PRJ1_G22_LESSON_H
