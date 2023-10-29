@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.26)
+cmake_minimum_required(VERSION 3.24)
 project(AED2324_PRJ1_G22)
 
 # Doxygen Build
