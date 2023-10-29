@@ -15,7 +15,6 @@ int main() {
     if (choice == 1) {
         //displayClassSchedule(classSchedule);
     } else if (choice == 2) {
-        information.testReadStudentClasses();
        //displayStudentSchedule(classStudents, classSchedule);
     } else {
         cout << "Opcao invalida." << endl;

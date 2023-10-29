@@ -16,6 +16,7 @@ class Extractor {
         //Auxiliary Functions
         void readClassesPerUc();
         void readStudentsClasses();
+        void readClasses();
         unsigned searchSchedules(Class classInfo);
 };
 

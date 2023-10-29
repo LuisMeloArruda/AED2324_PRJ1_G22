@@ -11,6 +11,7 @@ Extractor::Extractor() {
 void Extractor::readFiles() {
     readClassesPerUc();
     readStudentsClasses();
+    readClasses();
 }
 
 void Extractor::readClassesPerUc() {
@@ -24,6 +25,7 @@ void Extractor::readClassesPerUc() {
     getline(file, line); // Ignorar o cabeçalho
 
     while (getline(file, line)) {
+        // Extracting Info
         istringstream ss(line);
         string ucCode, classCode;
         getline(ss, ucCode, ',');
@@ -44,7 +46,7 @@ void Extractor::readStudentsClasses() {
     getline(file, line); // Ignorar o cabeçalho
 
     while (getline(file, line)) {
-        // Extracting info
+        // Extracting Info
         istringstream ss(line);
         string id, name, ucCode, classCode;
         getline(ss, id, ',');
@@ -70,12 +72,44 @@ void Extractor::readStudentsClasses() {
     }
 }
 
+void Extractor::readClasses() {
+    fstream file("../data/classes.csv");
+
+    if (!file.is_open()) {
+        cerr << "Erro ao abrir o arquivo!" << endl;
+    }
+
+    string line;
+    getline(file, line); // Ignorar o cabeçalho
+
+    while(getline(file, line)) {
+        istringstream ss(line);
+        string ucCode, classCode, weekDay, type;
+        float startHour, duration;
+
+        getline(ss, classCode, ',');
+        getline(ss, ucCode, ',');
+        getline(ss, weekDay, ',');
+        ss >> startHour;
+        ss.ignore(1); // Ignorar a vírgula
+        ss >> duration;
+        ss.ignore(1); // Ignorar a vírgula
+        getline(ss, type);
+
+        Class classInfo(ucCode, classCode);
+        Lesson lesson(weekDay, startHour, duration, type);
+        unsigned index;
+        index = searchSchedules(classInfo);
+        schedules[index].addLesson(lesson);
+    }
+}
+
 unsigned Extractor::searchSchedules(Class classInfo) {
     unsigned low = 0, high = schedules.size()-1, middle = high/2;
-    while (low >= high) {
+    while (low <= high) {
         if (schedules[middle].getClassInfo() == classInfo) return middle;
         if (schedules[middle].getClassInfo() < classInfo) low = middle + 1;
-        else middle = high - 1;
+        else high = middle - 1;
         middle = (low + high)/2;
     }
 }
