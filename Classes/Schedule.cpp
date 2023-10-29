@@ -1,21 +1,21 @@
 #include "Schedule.h"
 
-Schedule::Schedule(set<Lesson> lessons) {
+Schedule::Schedule(vector<Lesson> lessons) {
     this->lessons = lessons;
 }
 
 
-void Schedule::setLessons(set<Lesson> lessons) {
+void Schedule::setLessons(vector<Lesson> lessons) {
     this->lessons = lessons;
 }
 
 
-set<Lesson> Schedule::getLessons() const {
+vector<Lesson> Schedule::getLessons() const {
     return lessons;
 }
 
 void Schedule::addLesson(Lesson lesson) {
-    lessons.insert(lesson);
+    lessons.push_back(lesson);
 }
 
 //A class.cpp pedia um schedule sem argumentos como default então dei alt+enter e apareceu isto

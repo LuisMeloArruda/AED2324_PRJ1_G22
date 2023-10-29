@@ -2,21 +2,21 @@
 #define AED2324_PRJ1_G22_SCHEDULE_H
 
 #include "Lesson.h"
-#include <set>
+#include <vector>
 
 using namespace std;
 
 class Schedule{
     private:
-        set<Lesson> lessons;
+        vector<Lesson> lessons;
     public:
-        Schedule(set<Lesson> lessons);
+        Schedule(vector<Lesson> lessons);
         Schedule();
-        set<Lesson> getLessons() const;
-        void setLessons(set<Lesson> lessons) const;
+        vector<Lesson> getLessons() const;
+        void setLessons(vector<Lesson> lessons) const;
         void addLesson(Lesson lesson);
 
-    void setLessons(set<Lesson> lessons);
+    void setLessons(vector<Lesson> lessons);
 };
 
 #endif //AED2324_PRJ1_G22_SCHEDULE_H
