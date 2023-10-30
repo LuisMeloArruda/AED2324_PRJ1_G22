@@ -30,7 +30,7 @@ class Extractor {
         static bool studentAlphabetical(Student a, Student b);
         static bool studentNumerical(Student a, Student b);
         void sortAndPrintStudents(vector<Student>& classStudents, int mode);
-        string FormatedHours(float oldhour);
+        string formatedHours(float oldhour);
 };
 
 #endif //AED2324_PRJ1_G22_EXTRACTOR_H

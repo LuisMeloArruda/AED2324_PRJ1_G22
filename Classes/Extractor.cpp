@@ -118,17 +118,22 @@ void Extractor::getClassSchedule(string classCode) {
         }
     }
 
+    if (orderedSchedule.empty()) {
+        cout << "Invalid UcCode" << endl;
+        return;
+    }
+
     cout << "---SCHEDULE---" << endl;
     string currentDay = "";
     for (pair<Lesson, vector<Class>> lesson : orderedSchedule) {
         if (lesson.first.getWeekDay() != currentDay){
-            cout << lesson.first.getWeekDay() << ": " << endl;
+            cout << "-> " << lesson.first.getWeekDay() << ": " << endl;
             currentDay = lesson.first.getWeekDay();
         }
         for (Class classInfo: lesson.second) {
-            cout << "START_TIME: " << setw(5) << lesson.first.getStart() << " END_TIME: "
-                 << setw(5) << lesson.first.getStart() + lesson.first.getDuration() << " TYPE: "
-                 << setw(5) << lesson.first.getType() << " UC_CODE: "
+            cout << "START_TIME: " << setw(5) << formatedHours(lesson.first.getStart()) << " END_TIME: "
+                 << setw(5) << formatedHours(lesson.first.getStart() + lesson.first.getDuration())
+                 << " TYPE: " << setw(5) << lesson.first.getType() << " UC_CODE: "
                  << setw(5) << classInfo.getUcCode() << endl;
         }
     }
@@ -150,18 +155,23 @@ void Extractor::getStudentSchedule(std::string id) {
         }
     }
 
+    if (orderedSchedule.empty()) {
+        cout << "Invalid UcCode" << endl;
+        return;
+    }
+
     cout << "STUDENT_NAME: " << studentIt->getName() << endl;
     cout << "---SCHEDULE---" << endl;
     string currentDay = "";
     for (pair<Lesson, vector<Class>> lesson : orderedSchedule) {
         if (lesson.first.getWeekDay() != currentDay){
-            cout << lesson.first.getWeekDay() << ": " << endl;
+            cout << "-> " << lesson.first.getWeekDay() << ": " << endl;
             currentDay = lesson.first.getWeekDay();
         }
         for (Class classInfo: lesson.second) {
-            cout << "START_TIME: " << setw(5) << lesson.first.getStart() << " END_TIME: "
-            << setw(5) << lesson.first.getStart() + lesson.first.getDuration() << " TYPE: "
-            << setw(5) << lesson.first.getType() << " \tUC_CODE: " << setw(5) << classInfo.getUcCode()
+            cout << "START_TIME: " << setw(5) << formatedHours(lesson.first.getStart()) << " END_TIME: "
+            << setw(5) << formatedHours(lesson.first.getStart() + lesson.first.getDuration()) << " TYPE: "
+            << setw(5) << lesson.first.getType() << " UC_CODE: " << setw(5) << classInfo.getUcCode()
             << " CLASS_CODE: " << setw(5) << classInfo.getClassCode() << endl;
         }
     }
@@ -177,24 +187,21 @@ void Extractor::getUcCodeSchedule(string UcCode) {
             }
         }
     }
+
     if (orderedSchedule.empty()) {
         cout << "Invalid UcCode" << endl;
         return;
     }
-    cout << "for UcCode: " << UcCode << endl;
+
     cout << "---SCHEDULE---" << endl;
     string currentDay = "";
-    string hourStart = "";
-    string hourEnd = "";
     for (pair<Lesson, vector<Class>> lesson : orderedSchedule) {
         if (lesson.first.getWeekDay() != currentDay){
             cout << "-> " << lesson.first.getWeekDay() << ": " << endl;
             currentDay = lesson.first.getWeekDay();
         }
-        hourStart = FormatedHours(lesson.first.getStart());
-        hourEnd = FormatedHours(lesson.first.getStart() + lesson.first.getDuration());
-        cout << "START_TIME: " << setw(5) << hourStart << " END_TIME: "
-             << setw(5) << hourEnd << " TYPE: "
+        cout << "START_TIME: " << setw(5) << formatedHours(lesson.first.getStart()) << " END_TIME: "
+             << setw(5) << formatedHours(lesson.first.getStart() + lesson.first.getDuration()) << " TYPE: "
              << setw(5) << lesson.first.getType() << " ClassCode: ";
         for (Class classInfo: lesson.second) {
             cout << classInfo.getClassCode() << " ";
@@ -292,7 +299,7 @@ void Extractor::sortAndPrintStudents(vector<Student>& students, int mode) {
     }
 }
 
-string Extractor::FormatedHours(float oldhour) {
+string Extractor::formatedHours(float oldhour) {
     int hour = oldhour;
     int minutes = (oldhour - hour) * 60;
 
@@ -303,6 +310,6 @@ string Extractor::FormatedHours(float oldhour) {
         hour = hour - 12;
         Pm_Am = "PM";
     }
-    oss << hour << ":" << setw(2) << setfill('0') << minutes << " " << Pm_Am;
+    oss << setw(2) << setfill('0') << hour << ":" << setw(2) << setfill('0') << minutes << " " << Pm_Am;
     return oss.str();
 }
