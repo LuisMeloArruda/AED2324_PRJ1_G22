@@ -224,7 +224,7 @@ string Extractor::FormatedHours(float oldhour) {
         hour = hour - 12;
         Pm_Am = "PM";
     }
-    oss << hour << ":" << setw(2) << setfill('0') << minutes;
+    oss << hour << ":" << setw(2) << setfill('0') << minutes << " " << Pm_Am;
     return oss.str();
 }
 
