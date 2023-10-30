@@ -10,7 +10,7 @@ int main() {
 
     int choice;
     cout << "Escolha uma opcao:\n1. Schedule da Classe\n2. Schedule do Estudante\n3. Schedule da Unidade Curricular\n";
-    cout << "4. Estudantes da Classe\n5. Estudantes da UC\n6. Estudantes do Ano\n7. Quantidade de Estudantes com pelo menos N Unidades Curriculares\n";
+    cout << "4. Estudantes da Classe\n5. Estudantes da UC\n6. Estudantes do Ano\n7. Quantidade de Estudantes com pelo menos N Unidades Curriculares\n8. Verificar UC's com o maior numero de estudantes\n";
     cin >> choice;
 
     if (choice == 1) {
@@ -57,6 +57,17 @@ int main() {
         cout << "Quantas unidades curriculares o estudante deve ter? ";
         cin >> N;
         information.StudentsWithNUc(N);
+    } else if (choice == 8) {
+        int N;
+        cout << "Quantas unidades curriculares deseja buscar? \n";
+        cin >> N;
+        while (N <= 0) {
+            cout << "O numero deve ser maior que zero. Digite outra vez: \n";
+            cin >> N;
+        }
+        if (N > 0) {
+            information.TopNStudentsPerUC(N);
+        }
     } else {
         cout << "Opcao invalida." << endl;
     }

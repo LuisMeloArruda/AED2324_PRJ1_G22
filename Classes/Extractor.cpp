@@ -321,3 +321,27 @@ void Extractor::StudentsWithNUc(int N) {
     }
     cout << count << endl;
 }
+
+void Extractor::TopNStudentsPerUC(int N) {
+    map<string, int> ucStudentCount;
+
+    for (const Student& student : students) {
+        for (const Class& classInfo : student.getClasses()) {
+            string ucCode = classInfo.getUcCode();
+            ucStudentCount[ucCode]++;
+        }
+    }
+
+    vector<pair<string, int>> sortedUcs(ucStudentCount.begin(), ucStudentCount.end());
+
+    auto compareUcs = [](const pair<string, int>& a, const pair<string, int>& b) {
+        return a.second > b.second;
+    };
+
+    sort(sortedUcs.begin(), sortedUcs.end(), compareUcs);
+
+    cout << "A(s) " << N << " UC(s) com o maior numero de estudantes e(sao):" << endl;
+    for (int i = 0; i < min(N, static_cast<int>(sortedUcs.size())); i++) {
+        cout << i + 1 << ". " << sortedUcs[i].first << " (" << sortedUcs[i].second << " estudantes)" << endl;
+    }
+}
