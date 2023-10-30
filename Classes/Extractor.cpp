@@ -178,30 +178,23 @@ void Extractor::getClassStudents(string classCode, int mode) {
             }
         }
     }
-
     cout << "CLASS_CODE: " << classCode << endl;
-    switch (mode) {
-        case 1:
-            sort(classStudents.begin(), classStudents.end(), studentAlphabetical);
-            cout << "SORTED ALPHABETICALLY FROM FIRST TO LAST" << endl;
-            break;
-        case 2:
-            sort(classStudents.rbegin(), classStudents.rend(), studentAlphabetical);
-            cout << "SORTED ALPHABETICALLY FROM LAST TO FIRST" << endl;
-            break;
-        case 3:
-            sort(classStudents.begin(), classStudents.end(), studentNumerical);
-            cout << "SORTED NUMERICALLY FROM FIRST TO LAST" << endl;
-            break;
-        case 4:
-            sort(classStudents.rbegin(), classStudents.rend(), studentNumerical);
-            cout << "SORTED NUMERICALLY FROM LAST TO FIRST" << endl;
-            break;
+    sortAndPrintStudents(classStudents, mode);
+}
+
+void Extractor::getUCStudents(string ucCode, int mode) {
+    vector<Student> ucStudents;
+
+    for (Schedule schedule: schedules) {
+        if (schedule.getClassInfo().getUcCode() == ucCode) {
+            for (Student student: schedule.getStudents()) {
+                ucStudents.push_back(student);
+            }
+        }
     }
 
-    for (Student student: classStudents) {
-        cout << "ID: " << setw(5) << student.getId() << " NAME: " << setw(5) << student.getName() << endl;
-    }
+    cout << "UC_CODE: " << ucCode << endl;
+    sortAndPrintStudents(ucStudents, mode);
 }
 
 unsigned Extractor::searchSchedules(Class classInfo) {
@@ -221,4 +214,29 @@ bool Extractor::studentAlphabetical(Student a, Student b) {
 
 bool Extractor::studentNumerical(Student a, Student b) {
     return a.getId() < b.getId();
+}
+
+void Extractor::sortAndPrintStudents(vector<Student>& students, int mode) {
+    switch (mode) {
+        case 1:
+            sort(students.begin(), students.end(), studentAlphabetical);
+            cout << "SORTED ALPHABETICALLY FROM FIRST TO LAST" << endl;
+            break;
+        case 2:
+            sort(students.rbegin(), students.rend(), studentAlphabetical);
+            cout << "SORTED ALPHABETICALLY FROM LAST TO FIRST" << endl;
+            break;
+        case 3:
+            sort(students.begin(), students.end(), studentNumerical);
+            cout << "SORTED NUMERICALLY FROM FIRST TO LAST" << endl;
+            break;
+        case 4:
+            sort(students.rbegin(), students.rend(), studentNumerical);
+            cout << "SORTED NUMERICALLY FROM LAST TO FIRST" << endl;
+            break;
+    }
+
+    for (Student student: students) {
+        cout << "ID: " << student.getId() << " NAME: " << student.getName() << endl;
+    }
 }

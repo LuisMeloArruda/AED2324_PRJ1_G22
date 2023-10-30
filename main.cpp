@@ -24,13 +24,13 @@ int main() {
         cin >> id;
         information.getStudentSchedule(id);
     } else if (choice == 3){
-        string classCode;
+        string ucCode;
         int mode;
-        cout << "Class Code: ";
-        cin >> classCode;
+        cout << "UC Code: ";
+        cin >> ucCode;
         cout << "Sorting Mode: ";
         cin >> mode;
-        information.getClassStudents(classCode, mode);
+        information.getUCStudents(ucCode, mode);
     }else cout << "Opcao invalida." << endl;
 
     return 0;
