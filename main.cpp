@@ -11,6 +11,7 @@ int main() {
     int choice;
     cout << "Escolha uma opcao:\n1. Schedule da Classe\n2. Schedule do Estudante\n3. Schedule da Unidade Curricular\n";
     cout << "4. Estudantes da Classe\n5. Estudantes da UC\n6. Estudantes do Ano\n";
+    cout << "A sua opção: ";
     cin >> choice;
 
     if (choice == 1) {

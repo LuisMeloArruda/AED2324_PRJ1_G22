@@ -1,8 +1,3 @@
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include <map>
-#include <iomanip>
 #include "Extractor.h"
 
 Extractor::Extractor() {

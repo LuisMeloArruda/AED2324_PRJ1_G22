@@ -5,6 +5,12 @@
 #include "Class.h"
 #include "Schedule.h"
 #include <algorithm>
+#include <queue>
+#include <fstream>
+#include <sstream>
+#include <iostream>
+#include <map>
+#include <iomanip>
 
 class Extractor {
     private:
