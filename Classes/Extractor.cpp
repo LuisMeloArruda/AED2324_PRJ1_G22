@@ -106,6 +106,33 @@ void Extractor::readClasses() {
     }
 }
 
+void Extractor::getClassSchedule(string classCode) {
+    map<Lesson, vector<Class>> orderedSchedule;
+
+    for (Schedule schedule: schedules) {
+        if (schedule.getClassInfo().getClassCode() == classCode) {
+            for (Lesson lesson: schedule.getLessons()) {
+                orderedSchedule[lesson].push_back(schedule.getClassInfo());
+            }
+        }
+    }
+
+    cout << "---SCHEDULE---" << endl;
+    string currentDay = "";
+    for (pair<Lesson, vector<Class>> lesson : orderedSchedule) {
+        if (lesson.first.getWeekDay() != currentDay){
+            cout << lesson.first.getWeekDay() << ": " << endl;
+            currentDay = lesson.first.getWeekDay();
+        }
+        for (Class classInfo: lesson.second) {
+            cout << "START_TIME: " << setw(5) << lesson.first.getStart() << " END_TIME: "
+                 << setw(5) << lesson.first.getStart() + lesson.first.getDuration() << " TYPE: "
+                 << setw(5) << lesson.first.getType() << " UC_CODE: "
+                 << setw(5) << classInfo.getUcCode() << endl;
+        }
+    }
+}
+
 void Extractor::getStudentSchedule(std::string id) {
     auto studentIt = students.find(Student(id, "PlaceHolder"));
     if (studentIt == students.end()) {
@@ -131,9 +158,9 @@ void Extractor::getStudentSchedule(std::string id) {
             currentDay = lesson.first.getWeekDay();
         }
         for (Class classInfo: lesson.second) {
-            cout << "START_TIME: " << setw(3) << lesson.first.getStart() << " END_TIME: "
+            cout << "START_TIME: " << setw(5) << lesson.first.getStart() << " END_TIME: "
             << setw(5) << lesson.first.getStart() + lesson.first.getDuration() << " TYPE: "
-            << setw(3) << lesson.first.getType() << " UC_CODE: " << setw(5) << classInfo.getUcCode()
+            << setw(5) << lesson.first.getType() << " UC_CODE: " << setw(5) << classInfo.getUcCode()
             << " CLASS_CODE: " << setw(5) << classInfo.getClassCode() << endl;
         }
     }

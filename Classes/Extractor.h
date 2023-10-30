@@ -14,6 +14,7 @@ class Extractor {
         void readFiles();
 
         // Lookup functions
+        void getClassSchedule(string classCode);
         void getStudentSchedule(string id);
 
         // Auxiliary Functions

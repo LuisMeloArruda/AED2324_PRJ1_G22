@@ -13,6 +13,10 @@ int main() {
     cin >> choice;
 
     if (choice == 1) {
+        string classCode;
+        cout << "Class Code: ";
+        cin >> classCode;
+        information.getClassSchedule(classCode);
     } else if (choice == 2) {
         string id;
         cout << "Student ID: ";
