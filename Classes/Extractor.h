@@ -19,6 +19,7 @@ class Extractor {
         void getStudentSchedule(string id);
         void getClassStudents(string classCode, int mode);
         void getUCStudents(string ucCode, int mode);
+        void getYearStudents(string year, int mode);
 
         // Auxiliary Functions
         void readClassesPerUc();

@@ -197,6 +197,21 @@ void Extractor::getUCStudents(string ucCode, int mode) {
     sortAndPrintStudents(ucStudents, mode);
 }
 
+void Extractor::getYearStudents(std::string year, int mode) {
+    vector<Student> yearStudents;
+
+    for (Student student: students) {
+        for (Class classInfo: student.getClasses()) {
+            if (classInfo.getClassCode()[0] == year[0]) {
+                yearStudents.push_back(student);
+                break;
+            }
+        }
+    }
+    cout << "YEAR: " << year << endl;
+    sortAndPrintStudents(yearStudents, mode);
+}
+
 unsigned Extractor::searchSchedules(Class classInfo) {
     unsigned low = 0, high = schedules.size()-1, middle = high/2;
     while (low <= high) {
