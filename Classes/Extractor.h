@@ -16,12 +16,14 @@ class Extractor {
         // Lookup functions
         void getClassSchedule(string classCode);
         void getStudentSchedule(string id);
+        void getUcCodeSchedule(string UcCode);
 
         // Auxiliary Functions
         void readClassesPerUc();
         void readStudentsClasses();
         void readClasses();
         unsigned searchSchedules(Class classInfo);
+        string FormatedHours(float oldhour);
 };
 
 #endif //AED2324_PRJ1_G22_EXTRACTOR_H
