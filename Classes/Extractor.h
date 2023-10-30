@@ -32,6 +32,7 @@ class Extractor {
 
         // Request Processing Functions
         void newRequest(string studentId, string ucCode, string classCode, string type);
+        void newRequest(string studentId, string oldUcCode, string oldClassCode, string ucCode, string classCode);
 
         // Auxiliary Functions
         void readClassesPerUc();

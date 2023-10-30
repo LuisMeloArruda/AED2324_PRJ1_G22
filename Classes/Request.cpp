@@ -6,6 +6,13 @@ Request::Request(Student student, Class targetClass, string type) {
     this->type = type;
 }
 
+Request::Request(Student student, Class oldClass, Class targetClass) {
+    this->student = student;
+    this->targetClass = targetClass;
+    this->auxClass = oldClass;
+    this->type = "S";
+}
+
 Student Request::getStudent() const {
     return student;
 }
@@ -20,6 +27,14 @@ Class Request::getTargetClass() const {
 
 void Request::setTargetClass(Class targetClass) {
     this->targetClass = targetClass;
+}
+
+Class Request::getAuxClass() const {
+    return auxClass;
+}
+
+void Request::setAuxClass(Class auxClass) {
+    this->auxClass = auxClass;
 }
 
 string Request::getType() const {

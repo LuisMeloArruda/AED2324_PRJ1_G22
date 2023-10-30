@@ -54,16 +54,24 @@ int main() {
         cin >> mode;
         information.getYearStudents(year, mode);
     } else if (choice == 7) {
-        string studentId, ucCode, classCode, type;
+        string studentId, ucCode, classCode, type, oldUcCode, oldClassCode;
+        cout << "Action to be taken (A/R/S): ";
+        cin >> type;
         cout << "Student ID: ";
         cin >> studentId;
         cout << "UC Code: ";
         cin >> ucCode;
         cout << "Class Code: ";
         cin >> classCode;
-        cout << "Action to be taken (A/R/S): ";
-        cin >> type;
-        information.newRequest(studentId, ucCode, classCode, type);
+        if (type == "S") {
+            cout << "UC Code to change: ";
+            cin >> oldUcCode;
+            cout << "Class Code to change: ";
+            cin >> oldClassCode;
+            information.newRequest(studentId, oldUcCode, oldClassCode, ucCode, classCode);
+        }else information.newRequest(studentId, ucCode, classCode, type);
+    } else if (choice == 8) {
+
     } else {
         cout << "Opcao invalida." << endl;
     }

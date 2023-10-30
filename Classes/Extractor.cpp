@@ -263,6 +263,18 @@ void Extractor::newRequest(string studentId, string ucCode, string classCode, st
     cout << "Pedido Guardado" << endl;
 }
 
+void Extractor::newRequest(string studentId, string oldUcCode, string oldClassCode, string ucCode, string classCode) {
+    auto studentIt = students.find(Student(studentId, ""));
+
+    if (studentIt == students.end()) {
+        cout << "Student not Found!" << endl;
+        return;
+    }
+
+    requests.push(Request(*studentIt, Class(oldUcCode, oldClassCode), Class(ucCode, classCode)));
+    cout << "Pedido Guardado" << endl;
+}
+
 unsigned Extractor::searchSchedules(Class classInfo) {
     unsigned low = 0, high = schedules.size()-1, middle = high/2;
     while (low <= high) {
