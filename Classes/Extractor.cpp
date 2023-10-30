@@ -308,3 +308,11 @@ string Extractor::formatedHours(float oldhour) {
     oss << setw(2) << setfill('0') << hour << ":" << setw(2) << setfill('0') << minutes << " " << Pm_Am;
     return oss.str();
 }
+
+void Extractor::StudentsWithNUc(int N) {
+    int count = 0;
+    for (Student student: students) {
+        if (student.getClasses().size() >= N) count++;
+    }
+    cout << count << endl;
+}
