@@ -33,6 +33,7 @@ void Extractor::readClassesPerUc() {
         getline(ss, ucCode, ',');
         getline(ss, classCode);
 
+        // classes_per_uc is ordered therefore schedules will be ordered by Class
         schedules.push_back(Schedule(Class(ucCode, classCode)));
     }
 }
@@ -160,9 +161,46 @@ void Extractor::getStudentSchedule(std::string id) {
         for (Class classInfo: lesson.second) {
             cout << "START_TIME: " << setw(5) << lesson.first.getStart() << " END_TIME: "
             << setw(5) << lesson.first.getStart() + lesson.first.getDuration() << " TYPE: "
-            << setw(5) << lesson.first.getType() << " UC_CODE: " << setw(5) << classInfo.getUcCode()
+            << setw(5) << lesson.first.getType() << " \tUC_CODE: " << setw(5) << classInfo.getUcCode()
             << " CLASS_CODE: " << setw(5) << classInfo.getClassCode() << endl;
         }
+    }
+}
+
+void Extractor::getClassStudents(string classCode, int mode) {
+    vector<Student> classStudents;
+
+    for (Student student: students) {
+        for (Class classInfo: student.getClasses()) {
+            if (classInfo.getClassCode() == classCode) {
+                classStudents.push_back(student);
+                break;
+            }
+        }
+    }
+
+    cout << "CLASS_CODE: " << classCode << endl;
+    switch (mode) {
+        case 1:
+            sort(classStudents.begin(), classStudents.end(), studentAlphabetical);
+            cout << "SORTED ALPHABETICALLY FROM FIRST TO LAST" << endl;
+            break;
+        case 2:
+            sort(classStudents.rbegin(), classStudents.rend(), studentAlphabetical);
+            cout << "SORTED ALPHABETICALLY FROM LAST TO FIRST" << endl;
+            break;
+        case 3:
+            sort(classStudents.begin(), classStudents.end(), studentNumerical);
+            cout << "SORTED NUMERICALLY FROM FIRST TO LAST" << endl;
+            break;
+        case 4:
+            sort(classStudents.rbegin(), classStudents.rend(), studentNumerical);
+            cout << "SORTED NUMERICALLY FROM LAST TO FIRST" << endl;
+            break;
+    }
+
+    for (Student student: classStudents) {
+        cout << "ID: " << setw(5) << student.getId() << " NAME: " << setw(5) << student.getName() << endl;
     }
 }
 
@@ -174,4 +212,13 @@ unsigned Extractor::searchSchedules(Class classInfo) {
         else high = middle - 1;
         middle = (low + high)/2;
     }
+    return -1;
+}
+
+bool Extractor::studentAlphabetical(Student a, Student b) {
+    return a.getName() < b.getName();
+}
+
+bool Extractor::studentNumerical(Student a, Student b) {
+    return a.getId() < b.getId();
 }
