@@ -10,8 +10,9 @@ int main() {
 
     int choice;
     cout << "Escolha uma opcao:\n1. Schedule da Classe\n2. Schedule do Estudante\n3. Schedule da Unidade Curricular\n";
-    cout << "4. Estudantes da Classe\n5. Estudantes da UC\n6. Estudantes do Ano\n7. Novo Pedido\n";
+    cout << "4. Estudantes da Classe\n5. Estudantes da UC\n6. Estudantes do Ano\n7. Quantidade de Estudantes com pelo menos N Unidades Curriculares\n8. Novo Pedido\n";
     cout << "A sua opção: ";
+
     cin >> choice;
 
     if (choice == 1) {
@@ -54,6 +55,11 @@ int main() {
         cin >> mode;
         information.getYearStudents(year, mode);
     } else if (choice == 7) {
+        int N;
+        cout << "Quantas unidades curriculares o estudante deve ter? ";
+        cin >> N;
+        information.StudentsWithNUc(N);
+    } else if (choice == 8) {
         string studentId, ucCode, classCode, type, oldUcCode, oldClassCode;
         cout << "Action to be taken (A/R/S): ";
         cin >> type;
@@ -70,8 +76,6 @@ int main() {
             cin >> oldClassCode;
             information.newRequest(studentId, oldUcCode, oldClassCode, ucCode, classCode);
         }else information.newRequest(studentId, ucCode, classCode, type);
-    } else if (choice == 8) {
-
     } else {
         cout << "Opcao invalida." << endl;
     }
