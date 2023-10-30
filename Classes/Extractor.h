@@ -13,7 +13,10 @@ class Extractor {
         Extractor();
         void readFiles();
 
-        //Auxiliary Functions
+        // Lookup functions
+        void getStudentSchedule(string id);
+
+        // Auxiliary Functions
         void readClassesPerUc();
         void readStudentsClasses();
         void readClasses();

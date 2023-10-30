@@ -13,9 +13,11 @@ int main() {
     cin >> choice;
 
     if (choice == 1) {
-        //displayClassSchedule(classSchedule);
     } else if (choice == 2) {
-       //displayStudentSchedule(classStudents, classSchedule);
+        string id;
+        cout << "Student ID: ";
+        cin >> id;
+        information.getStudentSchedule(id);
     } else {
         cout << "Opcao invalida." << endl;
     }

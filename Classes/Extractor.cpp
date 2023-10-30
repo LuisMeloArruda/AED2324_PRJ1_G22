@@ -1,6 +1,8 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <map>
+#include <iomanip>
 #include "Extractor.h"
 
 Extractor::Extractor() {
@@ -101,6 +103,39 @@ void Extractor::readClasses() {
         unsigned index;
         index = searchSchedules(classInfo);
         schedules[index].addLesson(lesson);
+    }
+}
+
+void Extractor::getStudentSchedule(std::string id) {
+    auto studentIt = students.find(Student(id, "PlaceHolder"));
+    if (studentIt == students.end()) {
+        cout << "Student not found!" << endl;
+        return;
+    }
+
+    map<Lesson, vector<Class>> orderedSchedule;
+
+    for (Class classInfo: studentIt->getClasses()) {
+        Schedule schedule = schedules[searchSchedules(classInfo)];
+        for (Lesson lesson: schedule.getLessons()) {
+            orderedSchedule[lesson].push_back(classInfo);
+        }
+    }
+
+    cout << "STUDENT_NAME: " << studentIt->getName() << endl;
+    cout << "---SCHEDULE---" << endl;
+    string currentDay = "";
+    for (pair<Lesson, vector<Class>> lesson : orderedSchedule) {
+        if (lesson.first.getWeekDay() != currentDay){
+            cout << lesson.first.getWeekDay() << ": " << endl;
+            currentDay = lesson.first.getWeekDay();
+        }
+        for (Class classInfo: lesson.second) {
+            cout << "START_TIME: " << setw(3) << lesson.first.getStart() << " END_TIME: "
+            << setw(5) << lesson.first.getStart() + lesson.first.getDuration() << " TYPE: "
+            << setw(3) << lesson.first.getType() << " UC_CODE: " << setw(5) << classInfo.getUcCode()
+            << " CLASS_CODE: " << setw(5) << classInfo.getClassCode() << endl;
+        }
     }
 }
 

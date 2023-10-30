@@ -38,3 +38,14 @@ string Lesson::getType() const {
 void Lesson::setType(string type) {
     this->type = type;
 }
+
+bool Lesson::operator<(Lesson b) const {
+    if (weekDay != b.weekDay) {
+        map <string, int> daysValue = {{"Monday", 1}, {"Tuesday", 2}, {"Wednesday", 3}, {"Thursday", 4}, {"Friday", 5}, {"Saturday", 6}, {"Sunday", 7}};
+        return daysValue[weekDay] < daysValue[b.weekDay];
+    }
+    if (start != b.start) return start < b.start;
+    if (duration != b.duration) return duration < b.duration;
+    if (type != b.type) return type < b.type;
+    return false;
+}

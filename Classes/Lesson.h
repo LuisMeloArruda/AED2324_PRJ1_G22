@@ -2,6 +2,7 @@
 #define AED2324_PRJ1_G22_LESSON_H
 
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ class Lesson{
         void setDuration(float duration);
         string getType() const;
         void setType(string type);
+        bool operator<(Lesson b) const;
 };
 
 #endif //AED2324_PRJ1_G22_LESSON_H
