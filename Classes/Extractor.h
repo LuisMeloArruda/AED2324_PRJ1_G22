@@ -17,6 +17,7 @@ class Extractor {
         // Lookup functions
         void getClassSchedule(string classCode);
         void getStudentSchedule(string id);
+        void getUcCodeSchedule(string UcCode);
         void getClassStudents(string classCode, int mode);
         void getUCStudents(string ucCode, int mode);
         void getYearStudents(string year, int mode);
@@ -29,6 +30,7 @@ class Extractor {
         static bool studentAlphabetical(Student a, Student b);
         static bool studentNumerical(Student a, Student b);
         void sortAndPrintStudents(vector<Student>& classStudents, int mode);
+        string FormatedHours(float oldhour);
 };
 
 #endif //AED2324_PRJ1_G22_EXTRACTOR_H

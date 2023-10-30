@@ -9,7 +9,7 @@ int main() {
     information.readFiles();
 
     int choice;
-    cout << "Escolha uma opcao:\n1. Schedule da Classe\n2. Schedule do Estudante\n";
+    cout << "Escolha uma opcao:\n1. Schedule da Classe\n2. Schedule do Estudante\n3. Schedule da Unidade Curricular\n";
     cin >> choice;
 
     if (choice == 1) {
@@ -22,7 +22,14 @@ int main() {
         cout << "Student ID: ";
         cin >> id;
         information.getStudentSchedule(id);
-    }else cout << "Opcao invalida." << endl;
+    } else if (choice == 3) {
+        string UcCode;
+        cout << "Insert UcCode: ";
+        cin >> UcCode;
+        information.getUcCodeSchedule(UcCode);
+    } else {
+        cout << "Opcao invalida." << endl;
+    }
 
     return 0;
 }

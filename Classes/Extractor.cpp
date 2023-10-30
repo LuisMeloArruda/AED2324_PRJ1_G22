@@ -167,6 +167,42 @@ void Extractor::getStudentSchedule(std::string id) {
     }
 }
 
+void Extractor::getUcCodeSchedule(string UcCode) {
+    map<Lesson, vector<Class>> orderedSchedule;
+
+    for (const Schedule schedule : schedules) {
+        if (schedule.getClassInfo().getUcCode() == UcCode) {
+            for (const Lesson lesson : schedule.getLessons()) {
+                orderedSchedule[lesson].push_back(schedule.getClassInfo());
+            }
+        }
+    }
+    if (orderedSchedule.empty()) {
+        cout << "Invalid UcCode" << endl;
+        return;
+    }
+    cout << "for UcCode: " << UcCode << endl;
+    cout << "---SCHEDULE---" << endl;
+    string currentDay = "";
+    string hourStart = "";
+    string hourEnd = "";
+    for (pair<Lesson, vector<Class>> lesson : orderedSchedule) {
+        if (lesson.first.getWeekDay() != currentDay){
+            cout << "-> " << lesson.first.getWeekDay() << ": " << endl;
+            currentDay = lesson.first.getWeekDay();
+        }
+        hourStart = FormatedHours(lesson.first.getStart());
+        hourEnd = FormatedHours(lesson.first.getStart() + lesson.first.getDuration());
+        cout << "START_TIME: " << setw(5) << hourStart << " END_TIME: "
+             << setw(5) << hourEnd << " TYPE: "
+             << setw(5) << lesson.first.getType() << " ClassCode: ";
+        for (Class classInfo: lesson.second) {
+            cout << classInfo.getClassCode() << " ";
+        }
+        cout << endl;
+    }
+}
+
 void Extractor::getClassStudents(string classCode, int mode) {
     vector<Student> classStudents;
 
@@ -254,4 +290,19 @@ void Extractor::sortAndPrintStudents(vector<Student>& students, int mode) {
     for (Student student: students) {
         cout << "ID: " << student.getId() << " NAME: " << student.getName() << endl;
     }
+}
+
+string Extractor::FormatedHours(float oldhour) {
+    int hour = oldhour;
+    int minutes = (oldhour - hour) * 60;
+
+    string Pm_Am = "AM";
+
+    ostringstream oss;
+    if (hour > 12) {
+        hour = hour - 12;
+        Pm_Am = "PM";
+    }
+    oss << hour << ":" << setw(2) << setfill('0') << minutes << " " << Pm_Am;
+    return oss.str();
 }
