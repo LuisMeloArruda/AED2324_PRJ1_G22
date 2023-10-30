@@ -33,4 +33,6 @@ add_executable(AED2324_PRJ1_G22 main.cpp
         Classes/Lesson.cpp
         Classes/Class.cpp
         Classes/Extractor.cpp
-        Classes/Extractor.h)
+        Classes/Extractor.h
+        Classes/Request.h
+        Classes/Request.cpp)

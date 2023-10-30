@@ -3,6 +3,7 @@
 Extractor::Extractor() {
     this->students = set<Student>();
     this->schedules = vector<Schedule>();
+    this->requests = queue<Request>();
 }
 
 void Extractor::readFiles() {
@@ -248,6 +249,18 @@ void Extractor::getYearStudents(std::string year, int mode) {
     }
     cout << "YEAR: " << year << endl;
     sortAndPrintStudents(yearStudents, mode);
+}
+
+void Extractor::newRequest(string studentId, string ucCode, string classCode, string type) {
+    auto studentIt = students.find(Student(studentId, ""));
+
+    if (studentIt == students.end()) {
+        cout << "Student not Found!" << endl;
+        return;
+    }
+
+    requests.push(Request(*studentIt, Class(ucCode, classCode), type));
+    cout << "Pedido Guardado" << endl;
 }
 
 unsigned Extractor::searchSchedules(Class classInfo) {

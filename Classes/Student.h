@@ -14,6 +14,7 @@ class Student{
         vector<Class> classes;
     public:
         Student(string id, string name);
+        Student();
         string getId() const;
         void setId(string id);
         string getName() const;

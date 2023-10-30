@@ -5,6 +5,11 @@ Student::Student(string id, string name) {
     this->name = name;
 }
 
+Student::Student(){
+    this->id = "Not Initialized";
+    this->name = "Not Initialized";
+}
+
 string Student::getId() const {
     return id;
 }

@@ -4,6 +4,7 @@
 #include "Student.h"
 #include "Class.h"
 #include "Schedule.h"
+#include "Request.h"
 #include <algorithm>
 #include <queue>
 #include <fstream>
@@ -16,17 +17,21 @@ class Extractor {
     private:
         set<Student> students;
         vector<Schedule> schedules;
+        queue<Request> requests;
     public:
         Extractor();
         void readFiles();
 
-        // Lookup functions
+        // Lookup Functions
         void getClassSchedule(string classCode);
         void getStudentSchedule(string id);
         void getUcCodeSchedule(string UcCode);
         void getClassStudents(string classCode, int mode);
         void getUCStudents(string ucCode, int mode);
         void getYearStudents(string year, int mode);
+
+        // Request Processing Functions
+        void newRequest(string studentId, string ucCode, string classCode, string type);
 
         // Auxiliary Functions
         void readClassesPerUc();
