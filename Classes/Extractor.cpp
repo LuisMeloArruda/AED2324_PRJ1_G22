@@ -208,7 +208,6 @@ void Extractor::getUcCodeSchedule(string UcCode) {
 
 void Extractor::getClassStudents(string classCode, int mode) {
     vector<Student> classStudents;
-
     for (Student student: students) {
         for (Class classInfo: student.getClasses()) {
             if (classInfo.getClassCode() == classCode) {
@@ -219,6 +218,9 @@ void Extractor::getClassStudents(string classCode, int mode) {
     }
     cout << "CLASS_CODE: " << classCode << endl;
     sortAndPrintStudents(classStudents, mode);
+
+    // DEBUGGING
+    cout << "TOTAL NUMBER OF STUDENTS: " << classStudents.size() << endl;
 }
 
 void Extractor::getUCStudents(string ucCode, int mode) {
@@ -273,6 +275,48 @@ void Extractor::newRequest(string studentId, string oldUcCode, string oldClassCo
 
     requests.push(Request(*studentIt, Class(oldUcCode, oldClassCode), Class(ucCode, classCode)));
     cout << "Pedido Guardado" << endl;
+}
+
+void Extractor::processRequest() {
+    Request request = requests.front();
+    requests.pop();
+
+    switch (request.getType()[0]) {
+        case 'A':
+            cout << "Processing Add Request from student " << request.getStudent().getName() << endl;
+            processAdd(request);
+            break;
+        case 'R':
+            cout << "Processing Remove Request from student " << request.getStudent().getName() << endl;
+            break;
+        case 'S':
+            cout << "Processing Switch Request from student " << request.getStudent().getName() << endl;
+            break;
+    }
+}
+
+void Extractor::processAdd(Request request) {
+    // Checking if Student is enrolled in 7 UC
+    if (request.getStudent().getClasses().size() >= 7) {
+        cout << "Request Denied" << endl;
+        cout << "Reason: Student is already enrolled in 7 UC" << endl;
+    }
+
+    // Checking if Student is already enrolled in target UC
+    for (Class classInfo: request.getStudent().getClasses()) {
+        if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
+            cout << "Request Denied" << endl;
+            cout << "Reason: Student is already enrolled in 7 UC" << endl;
+        }
+    }
+
+    // Checking if target class as available space
+    unsigned index = searchSchedules(request.getTargetClass());
+    if (schedules[index].getStudents().size() > 40) {
+        cout << "Request Denied" << endl;
+        cout << "Reason: Class is at capacity" << endl;
+    }
+
 }
 
 unsigned Extractor::searchSchedules(Class classInfo) {
