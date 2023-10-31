@@ -250,6 +250,38 @@ void Extractor::getYearStudents(std::string year, int mode) {
     sortAndPrintStudents(yearStudents, mode);
 }
 
+void Extractor::StudentsWithNUc(int N) {
+    int count = 0;
+    for (Student student: students) {
+        if (student.getClasses().size() >= N) count++;
+    }
+    cout << count << endl;
+}
+
+void Extractor::TopNStudentsPerUC(int N) {
+    map<string, int> ucStudentCount;
+
+    for (const Student& student : students) {
+        for (const Class& classInfo : student.getClasses()) {
+            string ucCode = classInfo.getUcCode();
+            ucStudentCount[ucCode]++;
+        }
+    }
+
+    vector<pair<string, int>> sortedUcs(ucStudentCount.begin(), ucStudentCount.end());
+
+    auto compareUcs = [](const pair<string, int>& a, const pair<string, int>& b) {
+        return a.second > b.second;
+    };
+
+    sort(sortedUcs.begin(), sortedUcs.end(), compareUcs);
+
+    cout << "A(s) " << N << " UC(s) com o maior numero de estudantes e(sao):" << endl;
+    for (int i = 0; i < min(N, static_cast<int>(sortedUcs.size())); i++) {
+        cout << i + 1 << ". " << sortedUcs[i].first << " (" << sortedUcs[i].second << " estudantes)" << endl;
+    }
+}
+
 unsigned Extractor::searchSchedules(Class classInfo) {
     unsigned low = 0, high = schedules.size()-1, middle = high/2;
     while (low <= high) {
@@ -307,12 +339,4 @@ string Extractor::formatedHours(float oldhour) {
     }
     oss << setw(2) << setfill('0') << hour << ":" << setw(2) << setfill('0') << minutes << " " << Pm_Am;
     return oss.str();
-}
-
-void Extractor::StudentsWithNUc(int N) {
-    int count = 0;
-    for (Student student: students) {
-        if (student.getClasses().size() >= N) count++;
-    }
-    cout << count << endl;
 }

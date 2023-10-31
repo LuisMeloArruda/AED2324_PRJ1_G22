@@ -28,6 +28,7 @@ class Extractor {
         void getUCStudents(string ucCode, int mode);
         void getYearStudents(string year, int mode);
         void StudentsWithNUc(int N);
+        void TopNStudentsPerUC(int N);
 
         // Auxiliary Functions
         void readClassesPerUc();
