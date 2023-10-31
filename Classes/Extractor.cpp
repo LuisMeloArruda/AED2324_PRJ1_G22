@@ -218,9 +218,6 @@ void Extractor::getClassStudents(string classCode, int mode) {
     }
     cout << "CLASS_CODE: " << classCode << endl;
     sortAndPrintStudents(classStudents, mode);
-
-    // DEBUGGING
-    cout << "TOTAL NUMBER OF STUDENTS: " << classStudents.size() << endl;
 }
 
 void Extractor::getUCStudents(string ucCode, int mode) {
@@ -251,6 +248,38 @@ void Extractor::getYearStudents(std::string year, int mode) {
     }
     cout << "YEAR: " << year << endl;
     sortAndPrintStudents(yearStudents, mode);
+}
+
+void Extractor::StudentsWithNUc(int N) {
+    int count = 0;
+    for (Student student: students) {
+        if (student.getClasses().size() >= N) count++;
+    }
+    cout << count << endl;
+}
+
+void Extractor::TopNStudentsPerUC(int N) {
+    map<string, int> ucStudentCount;
+
+    for (const Student& student : students) {
+        for (const Class& classInfo : student.getClasses()) {
+            string ucCode = classInfo.getUcCode();
+            ucStudentCount[ucCode]++;
+        }
+    }
+
+    vector<pair<string, int>> sortedUcs(ucStudentCount.begin(), ucStudentCount.end());
+
+    auto compareUcs = [](const pair<string, int>& a, const pair<string, int>& b) {
+        return a.second > b.second;
+    };
+
+    sort(sortedUcs.begin(), sortedUcs.end(), compareUcs);
+
+    cout << "A(s) " << N << " UC(s) com o maior numero de estudantes e(sao):" << endl;
+    for (int i = 0; i < min(N, static_cast<int>(sortedUcs.size())); i++) {
+        cout << i + 1 << ". " << sortedUcs[i].first << " (" << sortedUcs[i].second << " estudantes)" << endl;
+    }
 }
 
 void Extractor::newRequest(string studentId, string ucCode, string classCode, string type) {
@@ -316,7 +345,6 @@ void Extractor::processAdd(Request request) {
         cout << "Request Denied" << endl;
         cout << "Reason: Class is at capacity" << endl;
     }
-
 }
 
 unsigned Extractor::searchSchedules(Class classInfo) {
@@ -376,12 +404,4 @@ string Extractor::formatedHours(float oldhour) {
     }
     oss << setw(2) << setfill('0') << hour << ":" << setw(2) << setfill('0') << minutes << " " << Pm_Am;
     return oss.str();
-}
-
-void Extractor::StudentsWithNUc(int N) {
-    int count = 0;
-    for (Student student: students) {
-        if (student.getClasses().size() >= N) count++;
-    }
-    cout << count << endl;
 }
