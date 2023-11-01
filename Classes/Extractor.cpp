@@ -103,7 +103,7 @@ void Extractor::readClasses() {
     }
 }
 
-void Extractor::getClassSchedule(string classCode) {
+void Extractor::getClassSchedule(const string &classCode) const {
     map<Lesson, vector<Class>> orderedSchedule;
 
     for (Schedule schedule: schedules) {
@@ -135,7 +135,7 @@ void Extractor::getClassSchedule(string classCode) {
     }
 }
 
-void Extractor::getStudentSchedule(std::string id) {
+void Extractor::getStudentSchedule(std::string id) const {
     auto studentIt = students.find(Student(id, "PlaceHolder"));
     if (studentIt == students.end()) {
         cout << "Student not found!" << endl;
@@ -173,7 +173,7 @@ void Extractor::getStudentSchedule(std::string id) {
     }
 }
 
-void Extractor::getUcCodeSchedule(string UcCode) {
+void Extractor::getUcCodeSchedule(string UcCode) const {
     map<Lesson, vector<Class>> orderedSchedule;
 
     for (const Schedule schedule : schedules) {
@@ -206,7 +206,7 @@ void Extractor::getUcCodeSchedule(string UcCode) {
     }
 }
 
-void Extractor::getClassStudents(string classCode, int mode) {
+void Extractor::getClassStudents(string classCode, int mode) const {
     vector<Student> classStudents;
     for (Student student: students) {
         for (Class classInfo: student.getClasses()) {
@@ -220,7 +220,7 @@ void Extractor::getClassStudents(string classCode, int mode) {
     sortAndPrintStudents(classStudents, mode);
 }
 
-void Extractor::getUCStudents(string ucCode, int mode) {
+void Extractor::getUCStudents(string ucCode, int mode) const {
     vector<Student> ucStudents;
 
     for (Schedule schedule: schedules) {
@@ -235,7 +235,7 @@ void Extractor::getUCStudents(string ucCode, int mode) {
     sortAndPrintStudents(ucStudents, mode);
 }
 
-void Extractor::getYearStudents(std::string year, int mode) {
+void Extractor::getYearStudents(std::string year, int mode) const {
     vector<Student> yearStudents;
 
     for (Student student: students) {
@@ -250,7 +250,7 @@ void Extractor::getYearStudents(std::string year, int mode) {
     sortAndPrintStudents(yearStudents, mode);
 }
 
-void Extractor::StudentsWithNUc(int N) {
+void Extractor::StudentsWithNUc(int N) const {
     int count = 0;
     for (Student student: students) {
         if (student.getClasses().size() >= N) count++;
@@ -258,7 +258,7 @@ void Extractor::StudentsWithNUc(int N) {
     cout << count << endl;
 }
 
-void Extractor::TopNStudentsPerUC(int N) {
+void Extractor::TopNStudentsPerUC(int N) const {
     map<string, int> ucStudentCount;
 
     for (const Student& student : students) {
@@ -347,7 +347,7 @@ void Extractor::processAdd(Request request) {
     }
 }
 
-unsigned Extractor::searchSchedules(Class classInfo) {
+unsigned Extractor::searchSchedules(Class classInfo) const {
     unsigned low = 0, high = schedules.size()-1, middle = high/2;
     while (low <= high) {
         if (schedules[middle].getClassInfo() == classInfo) return middle;
@@ -366,7 +366,7 @@ bool Extractor::studentNumerical(Student a, Student b) {
     return a.getId() < b.getId();
 }
 
-void Extractor::sortAndPrintStudents(vector<Student>& students, int mode) {
+void Extractor::sortAndPrintStudents(vector<Student>& students, int mode) const {
     switch (mode) {
         case 1:
             sort(students.begin(), students.end(), studentAlphabetical);
@@ -391,7 +391,7 @@ void Extractor::sortAndPrintStudents(vector<Student>& students, int mode) {
     }
 }
 
-string Extractor::formatedHours(float oldhour) {
+string Extractor::formatedHours(float oldhour) const {
     int hour = oldhour;
     int minutes = (oldhour - hour) * 60;
 

@@ -23,14 +23,14 @@ class Extractor {
         void readFiles();
 
         // Lookup Functions
-        void getClassSchedule(string classCode);
-        void getStudentSchedule(string id);
-        void getUcCodeSchedule(string UcCode);
-        void getClassStudents(string classCode, int mode);
-        void getUCStudents(string ucCode, int mode);
-        void getYearStudents(string year, int mode);
-        void StudentsWithNUc(int N);
-        void TopNStudentsPerUC(int N);
+        void getClassSchedule(const string &classCode) const;
+        void getStudentSchedule(string id) const;
+        void getUcCodeSchedule(string UcCode) const;
+        void getClassStudents(string classCode, int mode) const;
+        void getUCStudents(string ucCode, int mode) const;
+        void getYearStudents(string year, int mode) const;
+        void StudentsWithNUc(int N) const;
+        void TopNStudentsPerUC(int N) const;
 
         // Request Processing Functions
         void newRequest(string studentId, string ucCode, string classCode, string type);
@@ -42,11 +42,11 @@ class Extractor {
         void readClassesPerUc();
         void readStudentsClasses();
         void readClasses();
-        unsigned searchSchedules(Class classInfo);
+        unsigned searchSchedules(Class classInfo) const;
         static bool studentAlphabetical(Student a, Student b);
         static bool studentNumerical(Student a, Student b);
-        void sortAndPrintStudents(vector<Student>& classStudents, int mode);
-        string formatedHours(float oldhour);
+        void sortAndPrintStudents(vector<Student>& classStudents, int mode) const;
+        string formatedHours(float oldhour) const;
 };
 
 #endif //AED2324_PRJ1_G22_EXTRACTOR_H
