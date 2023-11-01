@@ -7,6 +7,13 @@ Lesson::Lesson(string weekDay, float start, float duration, string type) {
     this->type = type;
 }
 
+Lesson::Lesson(Lesson baseLesson, float start, string type) {
+    this->weekDay = baseLesson.getWeekDay();
+    this->start = start;
+    this->duration = baseLesson.getDuration();
+    this->type = type;
+}
+
 string Lesson::getWeekDay() const {
     return weekDay;
 }

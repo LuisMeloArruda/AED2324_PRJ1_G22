@@ -332,6 +332,12 @@ void Extractor::processAdd(Request request) {
         cout << "Reason: Student is already enrolled in 7 UC" << endl;
     }
 
+    // Checking if resulting schedule is possible
+    if (!isSchedulePossible(request.getStudent(), request.getTargetClass())) {
+        cout << "Request Denied" << endl;
+        cout << "Reason: Schedule is not compatible" << endl;
+    }
+
     // Checking if Student is already enrolled in target UC
     for (Class classInfo: request.getStudent().getClasses()) {
         if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
@@ -431,4 +437,26 @@ string Extractor::formatedHours(float oldhour) const {
     oss << setw(2) << setfill('0') << hour << ":" << setw(2)
     << setfill('0') << minutes << " " << Pm_Am;
     return oss.str();
+}
+
+bool Extractor::isSchedulePossible(Student student, Class newClass) {
+    map<Lesson, vector<Class>> orderedSchedule;
+
+    for (Class classInfo: student.getClasses()) {
+        Schedule schedule = schedules[searchSchedules(classInfo)];
+        for (Lesson lesson: schedule.getLessons()) {
+            orderedSchedule[lesson].push_back(classInfo);
+        }
+    }
+
+    Schedule newSchedule = schedules[searchSchedules(newClass)];
+    for (Lesson lesson: newSchedule.getLessons()) {
+        if (lesson.getType() == "T") continue;
+        for (int i = 0; i < lesson.getDuration()/0.5; i++) {
+            if (orderedSchedule.find(Lesson(lesson, lesson.getStart()+(i*0.5), "PL")) != orderedSchedule.end()) return false;
+            if (orderedSchedule.find(Lesson(lesson, lesson.getStart()+(i*0.5), "TP")) != orderedSchedule.end()) return false;
+        }
+    }
+
+    return true;
 }

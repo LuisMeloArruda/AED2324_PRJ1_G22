@@ -14,6 +14,7 @@ class Lesson{
         string type;
     public:
         Lesson(string weekDay, float start, float duration, string type);
+        Lesson(Lesson baseLesson, float start, string type);
         string getWeekDay() const;
         void setWeekDay(string weekDay);
         float getStart() const;
