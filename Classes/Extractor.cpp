@@ -335,7 +335,7 @@ void Extractor::processAdd(Request request) {
     for (Class classInfo: request.getStudent().getClasses()) {
         if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
             cout << "Request Denied" << endl;
-            cout << "Reason: Student is already enrolled in 7 UC" << endl;
+            cout << "Reason: Student is already enrolled in the UC" << endl;
         }
     }
 
