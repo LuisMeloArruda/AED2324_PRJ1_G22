@@ -95,6 +95,10 @@ int App::run() {
                 if (answer == "N" || answer == "n") return 0;
                 break;
             }
+            case 6: {
+                information.processRequest();
+                break;
+            }
         }
     }
 }
@@ -108,13 +112,14 @@ int App::menu() {
             "\n2. Students"
             "\n3. Quantidade de Estudantes com pelo menos N Unidades Curriculares"
             "\n4. Verificar UC's com o maior numero de estudantes"
-            "\n5. Novo Pedido\n"
-    << "A sua opcao: ";
+            "\n5. Novo Pedido"
+            "\n6. Analisar Pedido"
+    << "\nA sua opcao: ";
     cin >> choice;
     if (cin.fail()) {
         throw invalid_argument("Numero invalido");
     }
-    while (choice < 0 || choice > 5) {
+    while (choice < 0 || choice > 6) {
         system("clear");
         cout << "Opcao invalida. Insira novamente" << endl;
         cin >> choice;
@@ -141,7 +146,6 @@ int App::menuSchedules() {
     }
     return choice;
 }
-
 
 int App::menuStudents() {
     system("clear");

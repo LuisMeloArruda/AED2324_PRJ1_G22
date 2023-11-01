@@ -358,12 +358,17 @@ void Extractor::processRemove(Request request) {
     students.insert(student);
 
     // Remover o aluno do horário
-    auto index = searchSchedules(request.getTargetClass());
+    unsigned index = searchSchedules(request.getTargetClass());
     if (index < schedules.size()) {
-        auto& scheduleStudents = schedules[index].getStudents();
+        set<Student>& scheduleStudents = schedules[index].getStudents();
         auto scheduleItr = scheduleStudents.find(request.getStudent());
         if (scheduleItr != scheduleStudents.end()) {
             scheduleStudents.erase(scheduleItr);
+            cout << "Request Approved" << endl;
+        } else {
+            cout << "Request Denied" << endl;
+            cout << "Reason: Student is not enrolled in class: " <<  endl;
+            cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
         }
     }
 }

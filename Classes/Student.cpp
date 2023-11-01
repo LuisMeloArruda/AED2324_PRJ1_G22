@@ -40,8 +40,8 @@ void Student::addClass(Class classInfo) {
 }
 
 void Student::removeClass(Class classInfo) {
-    auto newEnd = remove_if(classes.begin(), classes.end(), [&classInfo](const Class& cls)
-    {return (cls.getUcCode() == classInfo.getUcCode()) && (cls.getClassCode() == classInfo.getClassCode());});
+    auto newEnd = remove_if(classes.begin(), classes.end(), [&classInfo](Class& cls)
+    {return classInfo == cls;});
 
     classes.erase(newEnd, classes.end());
 }
