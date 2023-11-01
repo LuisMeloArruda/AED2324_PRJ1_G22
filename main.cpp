@@ -1,4 +1,3 @@
-#include <iostream>
 #include "Classes/Extractor.h"
 #include "Classes/App.h"
 

@@ -81,7 +81,6 @@ int App::menu() {
     return choice;
 }
 
-
 void App::checkClassSchedule() const {
     string classCode;
     cout << "Class Code: ";
