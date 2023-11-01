@@ -330,12 +330,15 @@ void Extractor::processAdd(Request request) {
     if (request.getStudent().getClasses().size() >= 7) {
         cout << "Request Denied" << endl;
         cout << "Reason: Student is already enrolled in 7 UC" << endl;
+        return;
     }
 
-    // Checking if resulting schedule is possible
-    if (!isSchedulePossible(request.getStudent(), request.getTargetClass())) {
+    // Checking if class exists
+    if (searchSchedules(request.getTargetClass()) == -1) {
         cout << "Request Denied" << endl;
-        cout << "Reason: Schedule is not compatible" << endl;
+        cout << "Reason: The following class does not exist" << endl;
+        cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
+        return;
     }
 
     // Checking if Student is already enrolled in target UC
@@ -343,44 +346,71 @@ void Extractor::processAdd(Request request) {
         if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
             cout << "Request Denied" << endl;
             cout << "Reason: Student is already enrolled in target UC" << endl;
+            return;
         }
     }
 
-    // Checking if target class as available space
+    // Checking if resulting schedule is possible
+    if (!isSchedulePossible(request.getStudent(), request.getTargetClass())) {
+        cout << "Request Denied" << endl;
+        cout << "Reason: Schedule is not compatible" << endl;
+        return;
+    }
+
+    // Checking if target class has available space
     unsigned index = searchSchedules(request.getTargetClass());
     if (schedules[index].getStudents().size() > 40) {
         cout << "Request Denied" << endl;
         cout << "Reason: Class is at capacity" << endl;
+        return;
     }
 
     // Checking if class balance is maintained
     if (!isBalanceMaintained(request.getTargetClass())) {
         cout << "Request Denied" << endl;
         cout << "Reason: Class balance is not maintained" << endl;
+        return;
     }
+
+    // Adicionar a classe do aluno
+    auto itr = students.find(request.getStudent());
+    Student student = *itr;
+    students.erase(request.getStudent());
+    student.addClass(request.getTargetClass());
+    students.insert(student);
+
+    // Adicionar o aluno ao horário
+    index = searchSchedules(request.getTargetClass());
+    schedules[index].getStudents().insert(request.getStudent());
+    cout << "Request Approved" << endl;
 }
 
 void Extractor::processRemove(Request request) {
     // Remover a classe do aluno
     auto itr = students.find(request.getStudent());
     Student student = *itr;
-    student.removeClass(request.getTargetClass());
     students.erase(request.getStudent());
+    student.removeClass(request.getTargetClass());
     students.insert(student);
 
     // Remover o aluno do horário
     unsigned index = searchSchedules(request.getTargetClass());
-    if (index < schedules.size()) {
-        set<Student>& scheduleStudents = schedules[index].getStudents();
-        auto scheduleItr = scheduleStudents.find(request.getStudent());
-        if (scheduleItr != scheduleStudents.end()) {
-            scheduleStudents.erase(scheduleItr);
-            cout << "Request Approved" << endl;
-        } else {
-            cout << "Request Denied" << endl;
-            cout << "Reason: Student is not enrolled in class: " <<  endl;
-            cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
-        }
+
+    if (index == -1) {
+        cout << "Request Denied" << endl;
+        cout << "Reason: The following class does not exist" <<  endl;
+        cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
+    }
+
+    set<Student>& scheduleStudents = schedules[index].getStudents();
+    auto scheduleItr = scheduleStudents.find(request.getStudent());
+    if (scheduleItr != scheduleStudents.end()) {
+        scheduleStudents.erase(scheduleItr);
+        cout << "Request Approved" << endl;
+    } else {
+        cout << "Request Denied" << endl;
+        cout << "Reason: Student is not enrolled in the following class" <<  endl;
+        cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
     }
 }
 
