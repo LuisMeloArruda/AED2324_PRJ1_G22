@@ -30,7 +30,11 @@ vector<Class> Student::getClasses() const{
     return classes;
 }
 
-void Student::setClasses(vector<Class> classes) {
+vector<Class>& Student::getClasses() {
+    return classes;
+}
+
+void Student::setClasses(vector<Class> classes){
     this->classes = vector<Class>(classes);
 }
 

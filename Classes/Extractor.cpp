@@ -250,7 +250,7 @@ void Extractor::getYearStudents(std::string year, int mode) {
     sortAndPrintStudents(yearStudents, mode);
 }
 
-void Extractor::StudentsWithNUc(int N) {
+void Extractor::studentsWithNUc(int N) {
     int count = 0;
     for (Student student: students) {
         if (student.getClasses().size() >= N) count++;
@@ -258,7 +258,7 @@ void Extractor::StudentsWithNUc(int N) {
     cout << count << endl;
 }
 
-void Extractor::TopNStudentsPerUC(int N) {
+void Extractor::topNStudentsPerUC(int N) {
     map<string, int> ucStudentCount;
 
     for (const Student& student : students) {
@@ -317,6 +317,7 @@ void Extractor::processRequest() {
             break;
         case 'R':
             cout << "Processing Remove Request from student " << request.getStudent().getName() << endl;
+            processRemove(request);
             break;
         case 'S':
             cout << "Processing Switch Request from student " << request.getStudent().getName() << endl;
@@ -335,7 +336,7 @@ void Extractor::processAdd(Request request) {
     for (Class classInfo: request.getStudent().getClasses()) {
         if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
             cout << "Request Denied" << endl;
-            cout << "Reason: Student is already enrolled in 7 UC" << endl;
+            cout << "Reason: Student is already enrolled in target UC" << endl;
         }
     }
 
@@ -345,7 +346,46 @@ void Extractor::processAdd(Request request) {
         cout << "Request Denied" << endl;
         cout << "Reason: Class is at capacity" << endl;
     }
+
 }
+void Extractor::processRemove(Request request) {
+    // Remover a classe do aluno
+    auto itr = students.find(request.getStudent());
+    auto itr2 = std::find(itr->getClasses().begin(), itr->getClasses().end(), request.getTargetClass());
+    if (itr2 != itr->getClasses().end()) {
+        itr->getClasses().erase(itr2);
+    }
+
+    // Remover o aluno do horário
+    auto index = searchSchedules(request.getTargetClass());
+    if (index < schedules.size()) {
+        auto& scheduleStudents = schedules[index].getStudents();
+        auto scheduleItr = scheduleStudents.find(request.getStudent());
+        if (scheduleItr != scheduleStudents.end()) {
+            scheduleStudents.erase(scheduleItr);
+        }
+    }
+}
+/*
+void Extractor::processRemove(Request request) {
+    auto studentItr = students.find(Student(request.getStudent()));
+    if (studentItr != students.end()) {
+        auto studentClasses = studentItr->getClasses();
+        auto studentItr2 = std::find(studentClasses.begin(), studentClasses.end(), request.getTargetClass());
+        if (studentItr2 != studentClasses.end()) {
+            studentClasses.erase(studentItr2);
+        }
+    }
+
+    auto index = searchSchedules(request.getTargetClass());
+    if (index < schedules.size()) {
+        auto scheduleItr = schedules[index].getStudents().find(request.getStudent());
+        if (scheduleItr != schedules[index].getStudents().end()) {
+            schedules[index].getStudents().erase(scheduleItr);
+        }
+    }
+}
+*/
 
 unsigned Extractor::searchSchedules(Class classInfo) {
     unsigned low = 0, high = schedules.size()-1, middle = high/2;
@@ -402,6 +442,7 @@ string Extractor::formatedHours(float oldhour) {
         hour = hour - 12;
         Pm_Am = "PM";
     }
-    oss << setw(2) << setfill('0') << hour << ":" << setw(2) << setfill('0') << minutes << " " << Pm_Am;
+    oss << setw(2) << setfill('0') << hour << ":" << setw(2)
+    << setfill('0') << minutes << " " << Pm_Am;
     return oss.str();
 }

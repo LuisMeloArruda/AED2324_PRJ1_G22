@@ -22,8 +22,10 @@ class Schedule{
         void setLessons(vector<Lesson> lessons);
         void addLesson(Lesson lesson);
         set<Student> getStudents() const;
+        set<Student>& getStudents();
         void setStudents(set<Student> students);
         void addStudent(Student student);
+
 };
 
 #endif //AED2324_PRJ1_G22_SCHEDULE_H

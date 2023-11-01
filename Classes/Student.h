@@ -20,6 +20,7 @@ class Student{
         string getName() const;
         void setName(string name);
         vector<Class> getClasses() const;
+        vector<Class>& getClasses();
         void setClasses(vector<Class> classes);
         void addClass(Class classInfo);
         bool operator<(const Student& other) const;

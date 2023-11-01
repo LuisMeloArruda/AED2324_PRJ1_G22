@@ -29,14 +29,15 @@ class Extractor {
         void getClassStudents(string classCode, int mode);
         void getUCStudents(string ucCode, int mode);
         void getYearStudents(string year, int mode);
-        void StudentsWithNUc(int N);
-        void TopNStudentsPerUC(int N);
+        void studentsWithNUc(int N);
+        void topNStudentsPerUC(int N);
 
         // Request Processing Functions
         void newRequest(string studentId, string ucCode, string classCode, string type);
         void newRequest(string studentId, string oldUcCode, string oldClassCode, string ucCode, string classCode);
         void processRequest();
         void processAdd(Request request);
+        void processRemove(Request request);
 
         // Auxiliary Functions
         void readClassesPerUc();
