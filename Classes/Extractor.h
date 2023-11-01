@@ -23,6 +23,7 @@ class Extractor {
         void readFiles();
 
         // Lookup Functions
+
         void getClassSchedule(const string &classCode) const;
         void getStudentSchedule(string id) const;
         void getUcCodeSchedule(string UcCode) const;
@@ -32,11 +33,13 @@ class Extractor {
         void StudentsWithNUc(int N) const;
         void TopNStudentsPerUC(int N) const;
 
+
         // Request Processing Functions
         void newRequest(string studentId, string ucCode, string classCode, string type);
         void newRequest(string studentId, string oldUcCode, string oldClassCode, string ucCode, string classCode);
         void processRequest();
         void processAdd(Request request);
+        void processRemove(Request request);
 
         // Auxiliary Functions
         void readClassesPerUc();

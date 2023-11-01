@@ -22,6 +22,7 @@ class Student{
         vector<Class> getClasses() const;
         void setClasses(vector<Class> classes);
         void addClass(Class classInfo);
+        void removeClass(Class classinfo);
         bool operator<(const Student& other) const;
 };
 

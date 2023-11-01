@@ -317,6 +317,7 @@ void Extractor::processRequest() {
             break;
         case 'R':
             cout << "Processing Remove Request from student " << request.getStudent().getName() << endl;
+            processRemove(request);
             break;
         case 'S':
             cout << "Processing Switch Request from student " << request.getStudent().getName() << endl;
@@ -335,7 +336,7 @@ void Extractor::processAdd(Request request) {
     for (Class classInfo: request.getStudent().getClasses()) {
         if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
             cout << "Request Denied" << endl;
-            cout << "Reason: Student is already enrolled in 7 UC" << endl;
+            cout << "Reason: Student is already enrolled in target UC" << endl;
         }
     }
 
@@ -344,6 +345,26 @@ void Extractor::processAdd(Request request) {
     if (schedules[index].getStudents().size() > 40) {
         cout << "Request Denied" << endl;
         cout << "Reason: Class is at capacity" << endl;
+    }
+
+}
+
+void Extractor::processRemove(Request request) {
+    // Remover a classe do aluno
+    auto itr = students.find(request.getStudent());
+    Student student = *itr;
+    student.removeClass(request.getTargetClass());
+    students.erase(request.getStudent());
+    students.insert(student);
+
+    // Remover o aluno do horário
+    auto index = searchSchedules(request.getTargetClass());
+    if (index < schedules.size()) {
+        auto& scheduleStudents = schedules[index].getStudents();
+        auto scheduleItr = scheduleStudents.find(request.getStudent());
+        if (scheduleItr != scheduleStudents.end()) {
+            scheduleStudents.erase(scheduleItr);
+        }
     }
 }
 
@@ -402,6 +423,7 @@ string Extractor::formatedHours(float oldhour) const {
         hour = hour - 12;
         Pm_Am = "PM";
     }
-    oss << setw(2) << setfill('0') << hour << ":" << setw(2) << setfill('0') << minutes << " " << Pm_Am;
+    oss << setw(2) << setfill('0') << hour << ":" << setw(2)
+    << setfill('0') << minutes << " " << Pm_Am;
     return oss.str();
 }
