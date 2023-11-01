@@ -28,6 +28,10 @@ set<Student> Schedule::getStudents() const {
     return students;
 }
 
+set<Student>& Schedule::getStudents() {
+    return students;
+}
+
 void Schedule::setStudents(set<Student> students) {
     this->students = students;
 }

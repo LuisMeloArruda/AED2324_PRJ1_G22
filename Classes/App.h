@@ -9,6 +9,8 @@ public:
 
     int run();
     int menu();
+    int menuSchedules();
+    int menuStudents();
 
 
     void checkClassSchedule() const;

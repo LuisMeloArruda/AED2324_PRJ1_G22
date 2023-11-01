@@ -1,4 +1,5 @@
 #include "Student.h"
+#include <algorithm>
 
 Student::Student(string id, string name) {
     this->id = id;
@@ -30,12 +31,19 @@ vector<Class> Student::getClasses() const{
     return classes;
 }
 
-void Student::setClasses(vector<Class> classes) {
+void Student::setClasses(vector<Class> classes){
     this->classes = vector<Class>(classes);
 }
 
 void Student::addClass(Class classInfo) {
     classes.push_back(classInfo);
+}
+
+void Student::removeClass(Class classInfo) {
+    auto newEnd = remove_if(classes.begin(), classes.end(), [&classInfo](const Class& cls)
+    {return (cls.getUcCode() == classInfo.getUcCode()) && (cls.getClassCode() == classInfo.getClassCode());});
+
+    classes.erase(newEnd, classes.end());
 }
 
 bool Student::operator<(const Student& second) const {
