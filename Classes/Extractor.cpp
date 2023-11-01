@@ -353,6 +353,11 @@ void Extractor::processAdd(Request request) {
         cout << "Reason: Class is at capacity" << endl;
     }
 
+    // Checking if class balance is maintained
+    if (!isBalanceMaintained(request.getTargetClass())) {
+        cout << "Request Denied" << endl;
+        cout << "Reason: Class balance is not maintained" << endl;
+    }
 }
 
 void Extractor::processRemove(Request request) {
@@ -459,4 +464,19 @@ bool Extractor::isSchedulePossible(Student student, Class newClass) {
     }
 
     return true;
+}
+
+bool Extractor::isBalanceMaintained(Class classInfo) {
+    int targetSize = schedules[searchSchedules(classInfo)].getStudents().size();
+    int maximumSize = 0, minimumSize = 41;
+
+    for (Schedule schedule: schedules) {
+        int size = schedule.getStudents().size();
+        if (size > maximumSize) maximumSize = size;
+        if (size < minimumSize) minimumSize = size;
+    }
+
+    if (targetSize < maximumSize) return true;
+    if (targetSize < minimumSize+4) return true;
+    return false;
 }

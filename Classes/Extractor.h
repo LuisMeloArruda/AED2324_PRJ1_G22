@@ -51,6 +51,7 @@ class Extractor {
         void sortAndPrintStudents(vector<Student>& classStudents, int mode) const;
         string formatedHours(float oldhour) const;
         bool isSchedulePossible(Student student, Class newClass);
+        bool isBalanceMaintained(Class classInfo);
 };
 
 #endif //AED2324_PRJ1_G22_EXTRACTOR_H
