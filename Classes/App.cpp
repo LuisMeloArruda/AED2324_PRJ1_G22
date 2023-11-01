@@ -34,9 +34,11 @@ int App::run() {
                         checkUcSchedule();
                         break;
                 }
-                cout << "\nWanna Continue? [Pressione qualquer tecla para continuar ou 'N' para encerrar]";
-                cin >> answer;
-                if (answer == "N" || answer == "n") return 0;
+                if (choiceSchedule != 0) {
+                    cout << "\nWanna Continue? [Pressione qualquer tecla para continuar ou 'N' para encerrar]";
+                    cin >> answer;
+                    if (answer == "N" || answer == "n") return 0;
+                }
             break;
             case 2:
                 choiceStudent = menuStudents();
@@ -53,9 +55,11 @@ int App::run() {
                         checkYearStudents();
                         break;
                 }
-                cout << "\nWanna Continue? [Pressione qualquer tecla para continuar ou 'N' para encerrar]";
-                cin >> answer;
-                if (answer == "N" || answer == "n") return 0;
+                if (choiceStudent != 0) {
+                    cout << "\nWanna Continue? [Pressione qualquer tecla para continuar ou 'N' para encerrar]";
+                    cin >> answer;
+                    if (answer == "N" || answer == "n") return 0;
+                }
             break;
             case 3:
                 checkStudentsWithNUcs();
