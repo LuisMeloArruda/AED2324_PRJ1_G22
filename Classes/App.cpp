@@ -16,6 +16,7 @@ App::App(const Extractor &information) {
 
 /**
  * @brief Method the runs the program, it calls the menu and the read files fuctions
+ * @details
  */
 void App::run() {
     information.readFiles();
@@ -55,6 +56,7 @@ void App::run() {
 
 /**
  * @brief Method which prints all the user's possibilities
+ * @details
  * @return user's choice
  */
 int App::menu() {
@@ -81,7 +83,8 @@ int App::menu() {
 }
 
 /**
- * @brief Method which prints possibilities of Schedules's menu
+ * @brief Method which prints possibilities of schedules's menu
+ * @details
  */
 void App::menuSchedules() const {
     system("clear");
@@ -116,7 +119,8 @@ void App::menuSchedules() const {
 }
 
 /**
- * @brief Method which prints possibilities of Students's menu
+ * @brief Method which prints possibilities of students's menu
+ * @details
  */
 void App::menuStudents() const {
     system("clear");
@@ -151,7 +155,7 @@ void App::menuStudents() const {
 }
 
 /**
- * @brief
+ * @brief Asks the user to input the Class's classCode and prints the schedule of that Class
  * @details
  */
 void App::checkClassSchedule() const {
@@ -162,7 +166,7 @@ void App::checkClassSchedule() const {
 }
 
 /**
- * @brief
+ * @brief Asks the user to input the Student's id and prints the schedule of that Student
  * @details
  */
 void App::checkStudentSchedule() const {
@@ -173,7 +177,7 @@ void App::checkStudentSchedule() const {
 }
 
 /**
- * @brief
+ * @brief Asks the user to input the course unit's code and prints the schedule of that course unit
  * @details
  */
 void App::checkUcSchedule() const {
@@ -184,7 +188,7 @@ void App::checkUcSchedule() const {
 }
 
 /**
- * @brief
+ * @brief Asks the user to input Students's classCode, way to sort and then prints the students of that Class
  * @details
  */
 void App::checkClassStudents() const {
@@ -200,7 +204,7 @@ void App::checkClassStudents() const {
 }
 
 /**
- * @brief
+ * @brief Asks the user to input Students's course unit, way to sort and then prints the students of that course unit
  * @details
  */
 void App::checkUcStudents() const {
@@ -215,7 +219,7 @@ void App::checkUcStudents() const {
 }
 
 /**
- * @brief
+ * @brief Asks the user to input Students's year, way to sort and then prints the students of that year
  * @details
  */
 void App::checkYearStudents() const {
@@ -230,7 +234,8 @@ void App::checkYearStudents() const {
 }
 
 /**
- * @brief
+ * @brief Asks the user to input how many course units the students need to have and then prints
+ * the number of students with that many of course units
  * @details
  */
 void App::checkStudentsWithNUcs() const {
@@ -241,7 +246,7 @@ void App::checkStudentsWithNUcs() const {
 }
 
 /**
- * @brief
+ * @brief Asks the user to input how many course units want to know the max number of students
  * @details
  */
 void App::checkTopNStudentsPerUc() const {
@@ -258,8 +263,11 @@ void App::checkTopNStudentsPerUc() const {
 }
 
 /**
- * @brief
+ * @brief Asks the user to input type, Student's id, course unit code, class code and them as a Request in queue
+ * if type equals to "S" it also asks for old course unit code and old class code
  * @details
+ * @see newRequest(studentId, oldUcCode, oldClassCode, ucCode, classCode)
+ * @see newRequest(studentId, ucCode, classCode, type)
  */
 void App::addNewRequest() {
     string studentId, ucCode, classCode, type, oldUcCode, oldClassCode;

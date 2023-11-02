@@ -1,7 +1,7 @@
 #include "Schedule.h"
 
 /**
- * @brief Constructor of Class Schedule, set the attribute Class to a given one
+ * @brief Constructor of class Schedule, set the attribute Class to a given one
  * @details
  * @param classInfo
  */
@@ -36,16 +36,16 @@ void Schedule::setLessons(const vector<Lesson>& lessons) {
 }
 
 /**
- * @brief Push back a lesson in the schedules's vector of lessons attribute
+ * @brief Push back a lesson in the Schedules's vector of Lessons
  * @details
- * @param lesson the lesson to add
+ * @param lesson the Lesson to add
  */
 void Schedule::addLesson(const Lesson& lesson) {
     lessons.push_back(lesson);
 }
 
 /**
- * @brief Returns the attribute set of students of the Schedule
+ * @brief Returns the attribute set of Students of the Schedule
  * @details
  * @return Set of Students
  */
@@ -54,7 +54,7 @@ set<Student> Schedule::getStudents() const {
 }
 
 /**
- * @brief Returns by reference the attribute set of students of the Schedule
+ * @brief Returns by reference the attribute set of Students of the Schedule
  * @details
  * @return Set of Students
  */
@@ -67,9 +67,9 @@ void Schedule::setStudents(const set<Student>& students) {
 }
 
 /**
- * @brief Inserts a student in Schedule's set of Students
+ * @brief Inserts a Student in Schedule's set of Students
  * @details
- * @param student the student to add
+ * @param student the Student to add
  */
 void Schedule::addStudent(const Student& student) {
     students.insert(student);

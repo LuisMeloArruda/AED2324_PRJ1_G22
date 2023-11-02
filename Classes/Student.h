@@ -7,13 +7,13 @@
 
 using namespace std;
 /**
- * @brief Class to keep details of a student
+ * @brief class to keep details of a Student
  */
 class Student{
     private:
         string name;
         string id;
-        /** @brief Vector of Class Object with all the classes of a student */
+        /** @brief Vector of Class Object with all the Classes of the Student */
         vector<Class> classes;
     public:
         Student(const string& id, const string& name);

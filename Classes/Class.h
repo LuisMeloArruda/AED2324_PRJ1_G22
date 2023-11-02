@@ -6,7 +6,7 @@
 using namespace std;
 
 /**
- * @brief Class that stores data about a given class in a course unit
+ * @brief class that stores data about a given class in a course unit
  */
 class Class{
     private:

@@ -19,9 +19,9 @@ Lesson::Lesson(const string& weekDay, const float& start, const float& duration,
  * @brief Constructor of Class Lesson, Constructor of Class Lesson, it sets all the attributes to the given ones, in this case
  * the attributes weekDay and duration are in another class Lesson
  * @details
- * @param baseLesson by reference a class lesson with the weekDay and duration of Lesson
- * @param start by reference when the lesson starts
- * @param type by reference type of the lesson
+ * @param baseLesson by reference a class Lesson with the weekDay and duration of Lesson
+ * @param start by reference when the Lesson starts
+ * @param type by reference type of the Lesson
  */
 Lesson::Lesson(const Lesson& baseLesson, const float& start, const string& type) {
     this->weekDay = baseLesson.getWeekDay();
@@ -31,7 +31,7 @@ Lesson::Lesson(const Lesson& baseLesson, const float& start, const string& type)
 }
 
 /**
- * @brief Returns the attribute weekDay of a lesson
+ * @brief Returns the attribute weekDay of a Lesson
  * @details
  * @return string weekDay of Lesson
  */
@@ -44,7 +44,7 @@ void Lesson::setWeekDay(const string& weekDay) {
 }
 
 /**
- * @brief Returns the attribute start of a lesson
+ * @brief Returns the attribute start of a Lesson
  * @details
  * @return float start of Lesson
  */
@@ -57,7 +57,7 @@ void Lesson::setStart(const float& start) {
 }
 
 /**
- * @brief Returns the attribute duration of a lesson
+ * @brief Returns the attribute duration of a Lesson
  * @details
  * @return float duration of Lesson
  */
@@ -70,7 +70,7 @@ void Lesson::setDuration(const float& duration) {
 }
 
 /**
- * @brief Returns the attribute type of a lesson
+ * @brief Returns the attribute type of a Lesson
  * @details
  * @return string type of Lesson
  */

@@ -2,7 +2,7 @@
 #include <algorithm>
 
 /**
- * @brief Constructor of Class Student, attributes id and name are set to the given ones
+ * @brief Constructor of class Student, attributes id and name are set to the given ones
  * @details
  * @param id
  * @param name
@@ -13,7 +13,7 @@ Student::Student(const string& id, const string& name) {
 }
 
 /**
- * @brief Standart Constructor of Class Student, the attributes id and name are set to "Not Initialized"
+ * @brief Standart Constructor of class Student, the attributes id and name are set to "Not Initialized"
  * @details
  */
 Student::Student(){
@@ -22,7 +22,7 @@ Student::Student(){
 }
 
 /**
- * @brief Returns the id of a student
+ * @brief Returns the id of a Student
  * @details
  * @return string id of Student
  */
@@ -35,7 +35,7 @@ void Student::setId(const string& id) {
 }
 
 /**
- * @brief Returns the name of a student
+ * @brief Returns the name of a Student
  * @details
  * @return string name of Student
  */
@@ -49,7 +49,7 @@ void Student::setName(const string& name) {
 }
 
 /**
- * @brief Returns the vector of classes of a student
+ * @brief Returns the vector of Classes of the class Student
  * @details
  * @return vector of classes of Student
  */
@@ -62,7 +62,7 @@ void Student::setClasses(const vector<Class>& classes){
 }
 
 /**
- * @brief Push back a class in Student's vector of classes attribute
+ * @brief Push back a class in Student's vector of Classes attribute
  * @details
  * @param classInfo by reference to add in Student's vector of classes
  */
@@ -71,7 +71,7 @@ void Student::addClass(const Class& classInfo) {
 }
 
 /**
- * @brief Find and erase a class in Student's vector of classes attribute
+ * @brief Find and erase a Class in Student's vector of Classes attribute
  * @details
  * @param classInfo by reference to remove from Student's vector of classes
  */

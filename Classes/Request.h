@@ -3,15 +3,15 @@
 
 #include "Student.h"
 /**
- * @brief Class to store details of a given request
+ * @brief class to store details of a given Request
  */
 class Request {
     private:
-    /** @brief Student Object that keeps student's information */
+    /** @brief Student Object that keeps Student's information */
         Student student;
-    /** @brief  Class Object that contains the attributes of a desired class */
+    /** @brief  Class Object that contains the attributes of a desired Class */
         Class targetClass;
-    /** @brief Class Object that encapsulates the attributes of the old class */
+    /** @brief Class Object that encapsulates the attributes of the old Class */
         Class auxClass;
         /**
          * @brief Type can be:

@@ -13,15 +13,15 @@
 #include <map>
 #include <iomanip>
 /**
- * @brief Class that keeps all information about the students, schedules and requests
+ * @brief class that keeps all information about the Students, Schedules and Requests
  */
 class Extractor {
     private:
-    /** @brief Set which holds all students */
+    /** @brief Set which holds all Students */
         set<Student> students;
-        /** @brief Vector to store all schedules */
+        /** @brief Vector to store all Schedules */
         vector<Schedule> schedules;
-        /** @brief Queue that keeps all requests */
+        /** @brief Queue that keeps all Requests */
         queue<Request> requests;
     public:
         Extractor();

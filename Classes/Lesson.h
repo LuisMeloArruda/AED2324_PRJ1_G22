@@ -6,14 +6,14 @@
 
 using namespace std;
 /**
- * @brief Class which holds all the necessary information to identify a lesson
+ * @brief class which holds all the necessary information to identify a Lesson
  */
 class Lesson{
     private:
         string weekDay;
         float start;
         float duration;
-        /** @brief type of a lesson can be:
+        /** @brief type of a Lesson can be:
          * T - Teórica;
          * P - Prática;
          * PL -  Prática Laboratorial: */

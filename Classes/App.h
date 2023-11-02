@@ -4,7 +4,7 @@
 #include "Extractor.h"
 
 /**
- * @brief Class which runs the program
+ * @brief class which runs the program
  */
 class App {
 public:

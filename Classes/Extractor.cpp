@@ -50,7 +50,7 @@ void Extractor::readClassesPerUc() {
 }
 
 /**
- * @brief Read "students_classes.csv" file and updates Extractor's vector of Schedules with Students and fills Extractor's set of Students with Students
+ * @brief Read "students_classes.csv" file and updates Extractor's vector of Schedules with Students and fills Extractor's set of Students
  * @details
  */
 void Extractor::readStudentsClasses() {
@@ -91,7 +91,7 @@ void Extractor::readStudentsClasses() {
 }
 
 /**
- * @brief Read "classes.csv" file and updates Extractor's vector of Schedules with lessons
+ * @brief Read "classes.csv" file and updates Extractor's vector of Schedules with Lessons
  * @details
  */
 void Extractor::readClasses() {
@@ -127,7 +127,7 @@ void Extractor::readClasses() {
 }
 
 /**
- * @brief Method that prints the schedule of a given Class
+ * @brief Method that prints the Schedule of a given Class
  * @details
  * @param classCode by reference
  */
@@ -164,7 +164,7 @@ void Extractor::getClassSchedule(const string& classCode) const {
 }
 
 /**
- * @brief Method that prints the schedule of a given Student
+ * @brief Method that prints the Schedule of a given Student
  * @details
  * @param id by reference the student's id
  */
@@ -207,7 +207,7 @@ void Extractor::getStudentSchedule(const string& id) const {
 }
 
 /**
- * @brief Method that prints the schedule of a given course unit
+ * @brief Method that prints the Schedule of a given course unit
  * @details
  * @param UcCode by reference
  */
@@ -245,7 +245,7 @@ void Extractor::getUcCodeSchedule(const string& UcCode) const {
 }
 
 /**
- * @brief Method that prints students of a given class
+ * @brief Method that prints Students of a given Class
  * @details
  * @param classCode by reference the students's class
  * @param mode by reference the way the information will be sorted and then printed
@@ -265,7 +265,7 @@ void Extractor::getClassStudents(const string& classCode, const int& mode) const
 }
 
 /**
- * @brief Method that prints students of a given course unit
+ * @brief Method that prints Students of a given course unit
  * @details
  * @param ucCode by reference the students's ucCode
  * @param mode by reference the way the information will be sorted and then printed
@@ -286,7 +286,7 @@ void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
 }
 
 /**
- * @brief Method that prints students of a given year
+ * @brief Method that prints Students of a given year
  * @details
  * @param year by reference the students's year
  * @param mode by reference the way the information will be sorted and then printed
@@ -307,7 +307,7 @@ void Extractor::getYearStudents(const string& year, const int& mode) const {
 }
 
 /**
- * @brief Method that prints the number of students with a given value of course units
+ * @brief Method that prints the number of Students with a given value of course units
  * @details
  * @param N by reference quantity of course units
  */
@@ -320,7 +320,7 @@ void Extractor::StudentsWithNUc(const int& N) const {
 }
 
 /**
- * @brief Method that prints the course units with the most students
+ * @brief Method that prints the course units with the most Students
  * @details
  * @param N by reference quantity of course units with the most students
  */
@@ -349,7 +349,7 @@ void Extractor::TopNStudentsPerUC(const int& N) const {
 }
 
 /**
- * @brief Function that emplaces new requests in the queue
+ * @brief Function that emplaces new Requests in the queue
  * @details
  * @param studentId by reference
  * @param ucCode by reference
@@ -369,7 +369,7 @@ void Extractor::newRequest(const string& studentId, const string& ucCode, const 
 }
 
 /**
- * @brief Function that emplaces new requests of type "S" in the queue
+ * @brief Function that emplaces new Requests of type "S" in the queue
  * @details
  * @param studentId by reference
  * @param oldUcCode by reference
@@ -390,7 +390,7 @@ void Extractor::newRequest(const string& studentId, const string& oldUcCode, con
 }
 
 /**
- * @brief Function that processes first request in the queue
+ * @brief Function that processes first Request in the queue
  * @details
  */
 void Extractor::processRequest() {
@@ -414,7 +414,7 @@ void Extractor::processRequest() {
 }
 
 /**
- * @brief Function that processes all requests in the queue
+ * @brief Function that processes all Requests in the queue
  * @details
  * @see processRequest()
  */
@@ -425,7 +425,7 @@ void Extractor::processAllRequests() {
 }
 
 /**
- * @brief Function that processes the request of type A in the queue
+ * @brief Function that processes the Request of type A in the queue
  * @details
  * @param request by reference
  */
@@ -490,7 +490,7 @@ void Extractor::processAdd(const Request& request) {
 }
 
 /**
- * @brief Function that processes the request of type R in the queue
+ * @brief Function that processes the Request of type R in the queue
  * @details
  * @param request by reference
  */
@@ -524,7 +524,7 @@ void Extractor::processRemove(const Request& request) {
 }
 
 /**
- * @brief Function that processes the request of type R in the queue
+ * @brief Function that processes the Request of type R in the queue
  * @details
  * @param request by reference
  */
@@ -588,7 +588,7 @@ void Extractor::processSwitch(const Request& request) {
 }
 
 /**
- * @brief A binary search for schedules using their class attribute
+ * @brief A binary search for Schedules using their Class attribute
  * @details
  * @param classInfo by reference a Class to search in the vector
  * @return Int index of the class in the vector
@@ -627,7 +627,7 @@ bool Extractor::studentNumerical(const Student& a, const Student& b) {
 }
 
 /**
- * @brief A function that prints the students in a specific sorted manner
+ * @brief A function that prints the Students in a specific sorted manner
  * @details
  * @param students by reference
  * @param mode by reference
@@ -680,11 +680,11 @@ string Extractor::formatedHours(const float& floathour) {
 }
 
 /**
- * @brief A function that checks if a given request conflicts with a student's schedule
+ * @brief A function that checks if a given Request conflicts with a student's schedule
  * @details
  * @param student by reference
  * @param newClass by reference
- * @return True if the request doesn't conflicts with the Student's Schedule, false otherwise
+ * @return True if the Request doesn't conflicts with the Student's Schedule, false otherwise
  */
 bool Extractor::isSchedulePossible(const Student& student, const Class& newClass) {
     map<Lesson, vector<Class>> orderedSchedule;
@@ -709,12 +709,12 @@ bool Extractor::isSchedulePossible(const Student& student, const Class& newClass
 }
 
 /**
- * @brief A function that checks if a given request of type "S" conflicts with a student's schedule
+ * @brief A function that checks if a given Request of type "S" conflicts with a Student's schedule
  * @details
  * @param student by reference
  * @param newClass by reference
  * @param auxClass by reference
- * @return True if the request doesn't conflicts with the Student's Schedule, false otherwise
+ * @return True if the Request doesn't conflicts with the Student's Schedule, false otherwise
  */
 bool Extractor::isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass) {
     map<Lesson, vector<Class>> orderedSchedule;
@@ -740,10 +740,10 @@ bool Extractor::isSchedulePossible(const Student& student, const Class& newClass
 }
 
 /**
- * @brief A function that checks if a given request conflicts with the class's balance
+ * @brief A function that checks if a given Request conflicts with the Class's balance
  * @details
  * @param classInfo by reference
- * @return True if the request doesn't conflicts with the class's balance, false otherwise
+ * @return True if the Request doesn't conflicts with the Class's balance, false otherwise
  */
 bool Extractor::isBalanceMaintained(const Class& classInfo) {
     int targetSize = schedules[searchSchedules(classInfo)].getStudents().size();
@@ -761,11 +761,11 @@ bool Extractor::isBalanceMaintained(const Class& classInfo) {
 }
 
 /**
- * @brief A function that checks if a given request of type "S" conflicts with the class's balance
+ * @brief A function that checks if a given Request of type "S" conflicts with the Class's balance
  * @details
  * @param classInfo by reference
  * @param auxClass by reference
- * @return True if the request doesn't conflicts with the class's balance, false otherwise
+ * @return True if the Request doesn't conflicts with the Class's balance, false otherwise
  */
 bool Extractor::isBalanceMaintained(const Class& classInfo, const Class& auxClass) {
     int targetSize = schedules[searchSchedules(classInfo)].getStudents().size();
