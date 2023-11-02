@@ -326,6 +326,12 @@ void Extractor::processRequest() {
     }
 }
 
+void Extractor::processAllRequests() {
+    while (!requests.empty()) {
+        processRequest();
+    }
+}
+
 void Extractor::processAdd(Request request) {
     // Checking if Student is enrolled in 7 UC
     if (request.getStudent().getClasses().size() >= 7) {

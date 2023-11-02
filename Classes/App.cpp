@@ -13,65 +13,25 @@ int App::run() {
     information.readFiles();
     while (true) {
         int choice = menu();
-        int choiceSchedule, choiceStudent;
-        string answer;
 
         switch (choice) {
             case 0:
                 return 0;
             case 1:
-                choiceSchedule = menuSchedules();
-                switch (choiceSchedule) {
-                    case 0:
-                        break;
-                    case 1:
-                        checkClassSchedule();
-                        break;
-                    case 2:
-                        checkStudentSchedule();
-                        break;
-                    case 3:
-                        checkUcSchedule();
-                        break;
-                }
-                if (choiceSchedule != 0) {
-                    cout << "\nWanna Continue? [Pressione qualquer tecla para continuar ou 'N' para encerrar]";
-                    cin >> answer;
-                    if (answer == "N" || answer == "n") return 0;
-                }
-            break;
+                menuSchedules();
+                if (continueQuestion()) return 0;
+                break;
             case 2:
-                choiceStudent = menuStudents();
-                switch (choiceStudent) {
-                    case 0:
-                        break;
-                    case 1:
-                        checkClassStudents();
-                        break;
-                    case 2:
-                        checkUcStudents();
-                        break;
-                    case 3:
-                        checkYearStudents();
-                        break;
-                }
-                if (choiceStudent != 0) {
-                    cout << "\nWanna Continue? [Pressione qualquer tecla para continuar ou 'N' para encerrar]";
-                    cin >> answer;
-                    if (answer == "N" || answer == "n") return 0;
-                }
-            break;
+                menuStudents();
+                if (continueQuestion()) return 0;
+                break;
             case 3:
                 checkStudentsWithNUcs();
-                cout << "\nWanna Continue? [Pressione qualquer tecla para continuar ou 'N' para encerrar]";
-                cin >> answer;
-                if (answer == "N" || answer == "n") return 0;
+                if (continueQuestion()) return 0;
                 break;
             case 4:
                 checkTopNStudentsPerUc();
-                cout << "\nWanna Continue? [Pressione qualquer tecla para continuar ou 'N' para encerrar]";
-                cin >> answer;
-                if (answer == "N" || answer == "n") return 0;
+                if (continueQuestion()) return 0;
                 break;
             case 5: {
                 string studentId, ucCode, classCode, type, oldUcCode, oldClassCode;
@@ -90,10 +50,8 @@ int App::run() {
                     cin >> oldClassCode;
                     information.newRequest(studentId, oldUcCode, oldClassCode, ucCode, classCode);
                 } else information.newRequest(studentId, ucCode, classCode, type);
-                cout << "\nWanna Continue? [Pressione qualquer tecla para continuar ou 'N' para encerrar]";
-                cin >> answer;
-                if (answer == "N" || answer == "n") return 0;
-                break;
+
+                if (continueQuestion()) return 0;
             }
             case 6: {
                 information.processRequest();
@@ -106,29 +64,29 @@ int App::run() {
 int App::menu() {
     system("clear");
     int choice;
+    // Print Menu
     cout << "\nEscolha uma opcao:"
             "\n0. Sair"
             "\n1. Schedules"
             "\n2. Students"
             "\n3. Quantidade de Estudantes com pelo menos N Unidades Curriculares"
-            "\n4. Verificar UC's com o maior numero de estudantes"
+            "\n4. Verificar UC's com o maior número de estudantes"
             "\n5. Novo Pedido"
             "\n6. Analisar Pedido"
     << "\nA sua opcao: ";
     cin >> choice;
-    if (cin.fail()) {
-        throw invalid_argument("Numero invalido");
-    }
-    while (choice < 0 || choice > 6) {
-        system("clear");
-        cout << "Opcao invalida. Insira novamente" << endl;
+
+    // Check if option is valid
+    while(!isValidOption(choice, 6)) {
         cin >> choice;
     }
+
     return choice;
 }
 
-int App::menuSchedules() {
+void App::menuSchedules() {
     system("clear");
+    // Print Menu
     int choice;
     cout << "\nEscolha uma opcao:"
             "\n0. Go Back"
@@ -136,35 +94,58 @@ int App::menuSchedules() {
             "\n2. Schedule of a Student"
             "\n3. Schedule of a Uc\n";
     cin >> choice;
-    if (cin.fail()) {
-        throw invalid_argument("Numero invalido");
-    }
-    while (choice < 0 || choice > 3) {
-        system("clear");
-        cout << "Opcao invalida." << endl;
+
+    // Check if option is valid
+    while(!isValidOption(choice, 3)) {
         cin >> choice;
     }
-    return choice;
+
+    // Call correct lookup function
+    switch (choice) {
+        case 0:
+            break;
+        case 1:
+            checkClassSchedule();
+            break;
+        case 2:
+            checkStudentSchedule();
+            break;
+        case 3:
+            checkUcSchedule();
+            break;
+    }
 }
 
-int App::menuStudents() {
+void App::menuStudents() {
     system("clear");
     int choice;
+    // Print Menu
     cout << "\nEscolha uma opcao:"
             "\n0. Go Back"
             "\n1. Class of Students"
             "\n2. Uc of Students"
             "\n3. Year of Students\n";
     cin >> choice;
-    if (cin.fail()) {
-        throw invalid_argument("Numero invalido");
-    }
-    while (choice < 0 || choice > 3) {
-        system("clear");
-        cout << "Opcao invalida." << endl;
+
+    // Check if option is valid
+    while(!isValidOption(choice, 3)) {
         cin >> choice;
     }
-    return choice;
+
+    // Call correct lookup function
+    switch (choice) {
+        case 0:
+            break;
+        case 1:
+            checkClassStudents();
+            break;
+        case 2:
+            checkUcStudents();
+            break;
+        case 3:
+            checkYearStudents();
+            break;
+    }
 }
 
 void App::checkClassSchedule() const {
@@ -236,4 +217,24 @@ void App::checkTopNStudentsPerUc() const {
     if (N > 0) {
         information.TopNStudentsPerUC(N);
     }
+}
+
+bool App::isValidOption(int choice, int numberOfOptions) {
+    if (cin.fail()) {
+        throw invalid_argument("Numero invalido");
+    }
+    if (choice < 0 || choice > numberOfOptions) {
+        system("clear");
+        cout << "Opcao invalida." << endl;
+        return false;
+    }
+    return true;
+}
+
+bool App::continueQuestion() {
+    cout << "\nWanna Continue? [S/N]: ";
+    string answer;
+    cin >> answer;
+    if (answer == "N" || answer == "n") return true;
+    return false;
 }

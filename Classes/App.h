@@ -7,12 +7,13 @@ class App {
 public:
     explicit App(const Extractor &information);
 
+    // Display functions
     int run();
     int menu();
-    int menuSchedules();
-    int menuStudents();
+    void menuSchedules();
+    void menuStudents();
 
-
+    // Lookup functions
     void checkClassSchedule() const;
     void checkStudentSchedule() const;
     void checkUcSchedule() const;
@@ -22,6 +23,9 @@ public:
     void checkStudentsWithNUcs() const;
     void checkTopNStudentsPerUc() const;
 
+    // Auxiliary Functions
+    bool isValidOption(int choice, int numberOfOptions);
+    bool continueQuestion();
 private:
     Extractor information;
 };

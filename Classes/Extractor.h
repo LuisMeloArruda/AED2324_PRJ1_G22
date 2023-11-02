@@ -38,6 +38,7 @@ class Extractor {
         void newRequest(string studentId, string ucCode, string classCode, string type);
         void newRequest(string studentId, string oldUcCode, string oldClassCode, string ucCode, string classCode);
         void processRequest();
+        void processAllRequests();
         void processAdd(Request request);
         void processRemove(Request request);
         void processSwitch(Request request);
