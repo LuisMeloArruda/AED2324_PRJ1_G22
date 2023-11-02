@@ -29,6 +29,8 @@ public:
     // Auxiliary Functions
     static bool isValidOption(int choice, int numberOfOptions);
     static bool continueQuestion();
+    static void printOrdeningModes();
+
 private:
     Extractor information;
 };

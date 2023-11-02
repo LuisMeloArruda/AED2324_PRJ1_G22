@@ -13,16 +13,16 @@ class Student{
         string id;
         vector<Class> classes;
     public:
-        Student(string id, string name);
+        Student(const string& id, const string& name);
         Student();
         string getId() const;
-        void setId(string id);
+        void setId(const string& id);
         string getName() const;
-        void setName(string name);
+        void setName(const string& name);
         vector<Class> getClasses() const;
-        void setClasses(vector<Class> classes);
-        void addClass(Class classInfo);
-        void removeClass(Class classinfo);
+        void setClasses(const vector<Class>& classes);
+        void addClass(const Class& classInfo);
+        void removeClass(const Class& classinfo);
         bool operator<(const Student& other) const;
 };
 

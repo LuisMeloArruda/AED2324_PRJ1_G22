@@ -10,16 +10,16 @@ class Request {
         Class auxClass;
         string type;
     public:
-        Request(Student student, Class targetClass, string Type);
-        Request(Student student, Class oldClass, Class targetClass);
+        Request(const Student& student, const Class& targetClass, const string& Type);
+        Request(const Student& student, const Class& oldClass, const Class& targetClass);
         Student getStudent() const;
-        void setStudent(Student student);
+        void setStudent(const Student& student);
         Class getTargetClass() const;
-        void setTargetClass(Class targetClass);
+        void setTargetClass(const Class& targetClass);
         Class getAuxClass() const;
-        void setAuxClass(Class auxClass);
+        void setAuxClass(const Class& auxClass);
         string getType() const;
-        void setType(string type);
+        void setType(const string& type);
 };
 
 #endif //AED2324_PRJ1_G22_REQUEST_H

@@ -10,13 +10,13 @@ class Class{
         string ucCode;
         string classCode;
     public:
-        Class(string ucCode, string classCode);
+        Class(const string& ucCode, const string& classCode);
         Class();
-        string getUcCode() const;
-        void setUcCode(string ucCode);
         string getClassCode() const;
-        void setClassCode(string classCode);
-        bool operator==(const Class& b);
+        void setClassCode(const string& classCode);
+        string getUcCode() const;
+        void setUcCode(const string& ucCode);
+        bool operator==(const Class& b) const;
         bool operator<(const Class& b);
 };
 

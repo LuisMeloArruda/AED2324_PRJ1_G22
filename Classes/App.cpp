@@ -158,6 +158,7 @@ void App::checkClassStudents() const {
     int mode;
     cout << "Class Code: ";
     cin >> classCode;
+    printOrdeningModes();
     cout << "Modo de ordenação: ";
     cin >> mode;
     information.getClassStudents(classCode, mode);
@@ -240,4 +241,12 @@ bool App::continueQuestion() {
     cin >> answer;
     if (answer == "N" || answer == "n") return true;
     return false;
+}
+
+void App::printOrdeningModes() {
+    cout << "\nModos de Ordenação dos estudantes: "
+            "\n1. Alfabeticamente Crescente"
+            "\n2. Alfabeticamente Decrescente"
+            "\n3. Numericamente Crescente"
+            "\n4. Numericamente Decrescente";
 }

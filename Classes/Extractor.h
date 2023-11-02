@@ -23,39 +23,38 @@ class Extractor {
         void readFiles();
 
         // Lookup Functions
-
-        void getClassSchedule(const string &classCode) const;
-        void getStudentSchedule(string id) const;
-        void getUcCodeSchedule(string UcCode) const;
-        void getClassStudents(string classCode, int mode) const;
-        void getUCStudents(string ucCode, int mode) const;
-        void getYearStudents(string year, int mode) const;
-        void StudentsWithNUc(int N) const;
-        void TopNStudentsPerUC(int N) const;
+        void getClassSchedule(const string& classCode) const;
+        void getStudentSchedule(const string& id) const;
+        void getUcCodeSchedule(const string& UcCode) const;
+        void getClassStudents(const string& classCode, const int& mode) const;
+        void getUCStudents(const string& ucCode, const int& mode) const;
+        void getYearStudents(const string& year, const int& mode) const;
+        void StudentsWithNUc(const int& N) const;
+        void TopNStudentsPerUC(const int& N) const;
 
 
         // Request Processing Functions
-        void newRequest(string studentId, string ucCode, string classCode, string type);
-        void newRequest(string studentId, string oldUcCode, string oldClassCode, string ucCode, string classCode);
+        void newRequest(const string& studentId, const string& ucCode, const string& classCode, const string& type);
+        void newRequest(const string& studentId, const string& oldUcCode, const string& oldClassCode, const string& ucCode, const string& classCode);
         void processRequest();
         void processAllRequests();
-        void processAdd(Request request);
-        void processRemove(Request request);
-        void processSwitch(Request request);
+        void processAdd(const Request& request);
+        void processRemove(const Request& request);
+        void processSwitch(const Request& request);
 
         // Auxiliary Functions
         void readClassesPerUc();
         void readStudentsClasses();
         void readClasses();
-        unsigned searchSchedules(Class classInfo) const;
-        static bool studentAlphabetical(Student a, Student b);
-        static bool studentNumerical(Student a, Student b);
-        void sortAndPrintStudents(vector<Student>& classStudents, int mode) const;
-        string formatedHours(float oldhour) const;
-        bool isSchedulePossible(Student student, Class newClass);
-        bool isSchedulePossible(Student student, Class newClass, Class auxClass);
-        bool isBalanceMaintained(Class classInfo);
-        bool isBalanceMaintained(Class classInfo, Class auxClass);
+        unsigned searchSchedules(const Class& classInfo) const;
+        static bool studentAlphabetical(const Student& a, const Student& b);
+        static bool studentNumerical(const Student& a, const Student& b);
+        void sortAndPrintStudents(vector<Student>& classStudents, const int& mode) const;
+        string formatedHours(const float& oldhour) const;
+        bool isSchedulePossible(const Student& student, const Class& newClass);
+        bool isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass);
+        bool isBalanceMaintained(const Class& classInfo);
+        bool isBalanceMaintained(const Class& classInfo, const Class& auxClass);
 };
 
 #endif //AED2324_PRJ1_G22_EXTRACTOR_H

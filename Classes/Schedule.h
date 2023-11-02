@@ -15,16 +15,16 @@ class Schedule{
         vector<Lesson> lessons;
         set<Student> students;
     public:
-        Schedule(Class classInfo);
+        Schedule(const Class& classInfo);
         Class getClassInfo() const;
-        void setClassInfo(Class classInfo);
+        void setClassInfo(const Class& classInfo);
         vector<Lesson> getLessons() const;
-        void setLessons(vector<Lesson> lessons);
-        void addLesson(Lesson lesson);
+        void setLessons(const vector<Lesson>& lessons);
+        void addLesson(const Lesson& lesson);
         set<Student> getStudents() const;
         set<Student>& getStudents();
-        void setStudents(set<Student> students);
-        void addStudent(Student student);
+        void setStudents(const set<Student>& students);
+        void addStudent(const Student& student);
 
 };
 

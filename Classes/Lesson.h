@@ -13,17 +13,17 @@ class Lesson{
         float duration;
         string type;
     public:
-        Lesson(string weekDay, float start, float duration, string type);
-        Lesson(Lesson baseLesson, float start, string type);
+        Lesson(const string& weekDay, const float& start, const float& duration, const string& type);
+        Lesson(const Lesson& baseLesson, const float& start, const string& type);
         string getWeekDay() const;
-        void setWeekDay(string weekDay);
+        void setWeekDay(const string& weekDay);
         float getStart() const;
-        void setStart(float start);
+        void setStart(const float& start);
         float getDuration() const;
-        void setDuration(float duration);
+        void setDuration(const float& duration);
         string getType() const;
-        void setType(string type);
-        bool operator<(Lesson b) const;
+        void setType(const string& type);
+        bool operator<(const Lesson& b) const;
 };
 
 #endif //AED2324_PRJ1_G22_LESSON_H
