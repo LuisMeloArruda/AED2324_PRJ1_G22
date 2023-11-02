@@ -5,10 +5,18 @@
 
 using namespace std;
 
+/**
+ * @brief Constructor of Class App, it sets the Extractor Object to the given information
+ * @details
+ * @param information
+ */
 App::App(const Extractor &information) {
     this->information = information;
 }
 
+/**
+ * @brief Method the runs the program, it calls the menu and the read files fuctions
+ */
 void App::run() {
     information.readFiles();
     while (true) {
@@ -45,6 +53,10 @@ void App::run() {
     }
 }
 
+/**
+ * @brief Method which prints all the user's possibilities
+ * @return user's choice
+ */
 int App::menu() {
     system("clear");
     int choice;
@@ -68,6 +80,9 @@ int App::menu() {
     return choice;
 }
 
+/**
+ * @brief Method which prints possibilities of Schedules's menu
+ */
 void App::menuSchedules() const {
     system("clear");
     // Print Menu
@@ -100,6 +115,9 @@ void App::menuSchedules() const {
     }
 }
 
+/**
+ * @brief Method which prints possibilities of Students's menu
+ */
 void App::menuStudents() const {
     system("clear");
     int choice;
@@ -132,6 +150,10 @@ void App::menuStudents() const {
     }
 }
 
+/**
+ * @brief
+ * @details
+ */
 void App::checkClassSchedule() const {
     string classCode;
     cout << "Class Code: ";
@@ -139,6 +161,10 @@ void App::checkClassSchedule() const {
     information.getClassSchedule(classCode);
 }
 
+/**
+ * @brief
+ * @details
+ */
 void App::checkStudentSchedule() const {
     string id;
     cout << "Student ID: ";
@@ -146,6 +172,10 @@ void App::checkStudentSchedule() const {
     information.getStudentSchedule(id);
 }
 
+/**
+ * @brief
+ * @details
+ */
 void App::checkUcSchedule() const {
     string UcCode;
     cout << "Insert UcCode: ";
@@ -153,6 +183,10 @@ void App::checkUcSchedule() const {
     information.getUcCodeSchedule(UcCode);
 }
 
+/**
+ * @brief
+ * @details
+ */
 void App::checkClassStudents() const {
     string classCode;
     int mode;
@@ -165,6 +199,10 @@ void App::checkClassStudents() const {
     information.getClassStudents(classCode, mode);
 }
 
+/**
+ * @brief
+ * @details
+ */
 void App::checkUcStudents() const {
     string ucCode;
     int mode;
@@ -176,6 +214,10 @@ void App::checkUcStudents() const {
     information.getUCStudents(ucCode, mode);
 }
 
+/**
+ * @brief
+ * @details
+ */
 void App::checkYearStudents() const {
     string year;
     int mode;
@@ -187,6 +229,10 @@ void App::checkYearStudents() const {
     information.getYearStudents(year, mode);
 }
 
+/**
+ * @brief
+ * @details
+ */
 void App::checkStudentsWithNUcs() const {
     int N;
     cout << "Quantas unidades curriculares o estudante deve ter? ";
@@ -194,6 +240,10 @@ void App::checkStudentsWithNUcs() const {
     information.StudentsWithNUc(N);
 }
 
+/**
+ * @brief
+ * @details
+ */
 void App::checkTopNStudentsPerUc() const {
     int N;
     cout << "Quantas unidades curriculares deseja buscar? \n";
@@ -207,6 +257,10 @@ void App::checkTopNStudentsPerUc() const {
     }
 }
 
+/**
+ * @brief
+ * @details
+ */
 void App::addNewRequest() {
     string studentId, ucCode, classCode, type, oldUcCode, oldClassCode;
     cout << "Action to be taken (A/R/S): ";
@@ -226,6 +280,12 @@ void App::addNewRequest() {
     } else information.newRequest(studentId, ucCode, classCode, type);
 }
 
+/**
+ * @brief Method to test if the given input is within the range of possibilities
+ * @param choice user's input
+ * @param numberOfOptions range of possibilities
+ * @return true if user's input is within range, false otherwise
+ */
 bool App::isValidOption(int choice, int numberOfOptions) {
     if (cin.fail()) {
         throw invalid_argument("Numero invalido");
@@ -238,6 +298,10 @@ bool App::isValidOption(int choice, int numberOfOptions) {
     return true;
 }
 
+/**
+ * @brief Method asking if the user wants to continue
+ * @return true if the user wants to end the program, false otherwise
+ */
 bool App::continueQuestion() {
     cout << "\nWanna Continue? [S/N]: ";
     string answer;
@@ -246,6 +310,9 @@ bool App::continueQuestion() {
     return false;
 }
 
+/**
+ * @brief Method which prints the possibilities to sort a given information
+ */
 void App::printOrdeningModes() {
     cout << "\nModos de Ordenação dos estudantes: "
             "\n1. Alfabeticamente Crescente"

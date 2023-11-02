@@ -1,5 +1,13 @@
 #include "Lesson.h"
 
+/**
+ * @brief Constructor of Class Lesson, it sets all the attributes to the given ones
+ * @details
+ * @param weekDay by reference day the lesson happens
+ * @param start by reference when the lesson starts
+ * @param duration by reference time the lesson takes
+ * @param type by reference type of the lesson
+ */
 Lesson::Lesson(const string& weekDay, const float& start, const float& duration, const string& type) {
     this->weekDay = weekDay;
     this->start = start;
@@ -7,6 +15,14 @@ Lesson::Lesson(const string& weekDay, const float& start, const float& duration,
     this->type = type;
 }
 
+/**
+ * @brief Constructor of Class Lesson, Constructor of Class Lesson, it sets all the attributes to the given ones, in this case
+ * the attributes weekDay and duration are in another class Lesson
+ * @details
+ * @param baseLesson by reference a class lesson with the weekDay and duration of Lesson
+ * @param start by reference when the lesson starts
+ * @param type by reference type of the lesson
+ */
 Lesson::Lesson(const Lesson& baseLesson, const float& start, const string& type) {
     this->weekDay = baseLesson.getWeekDay();
     this->start = start;
@@ -14,6 +30,11 @@ Lesson::Lesson(const Lesson& baseLesson, const float& start, const string& type)
     this->type = type;
 }
 
+/**
+ * @brief Returns the attribute weekDay of a lesson
+ * @details
+ * @return string weekDay of Lesson
+ */
 string Lesson::getWeekDay() const {
     return weekDay;
 }
@@ -22,6 +43,11 @@ void Lesson::setWeekDay(const string& weekDay) {
     this->weekDay = weekDay;
 }
 
+/**
+ * @brief Returns the attribute start of a lesson
+ * @details
+ * @return float start of Lesson
+ */
 float Lesson::getStart() const {
     return start;
 }
@@ -30,6 +56,11 @@ void Lesson::setStart(const float& start) {
     this->start = start;
 }
 
+/**
+ * @brief Returns the attribute duration of a lesson
+ * @details
+ * @return float duration of Lesson
+ */
 float Lesson::getDuration() const {
     return duration;
 }
@@ -38,6 +69,11 @@ void Lesson::setDuration(const float& duration) {
     this->duration = duration;
 }
 
+/**
+ * @brief Returns the attribute type of a lesson
+ * @details
+ * @return string type of Lesson
+ */
 string Lesson::getType() const {
     return type;
 }
@@ -46,6 +82,13 @@ void Lesson::setType(const string& type) {
     this->type = type;
 }
 
+/**
+ * @brief Checks whether one lesson occurs before another or if the lesson type is of lower precedence than the other
+ * @details
+ * @param b Lesson to compare
+ * @return true if a lesson happens before another, false otherwise
+ * if both are in the same time then returns true if type is lower than another, false otherwise
+ */
 bool Lesson::operator<(const Lesson& b) const {
     if (weekDay != b.weekDay) {
         map <string, int> daysValue = {{"Monday", 1}, {"Tuesday", 2}, {"Wednesday", 3}, {"Thursday", 4}, {"Friday", 5}, {"Saturday", 6}, {"Sunday", 7}};

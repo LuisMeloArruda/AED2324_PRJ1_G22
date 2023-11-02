@@ -9,10 +9,16 @@
 
 using namespace std;
 
+/**
+ * @brief Class which contains the information about a given class with lessons and students
+ */
 class Schedule{
     private:
+    /** @brief Class Object that holds schedule's class */
         Class classInfo;
+    /** @brief Vector of Lesson Object that keeps the lessons of a schedule */
         vector<Lesson> lessons;
+    /** @brief Set of Student Object to store all students with the schedule */
         set<Student> students;
     public:
         Schedule(const Class& classInfo);

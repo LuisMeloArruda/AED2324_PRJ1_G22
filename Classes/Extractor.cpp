@@ -1,17 +1,32 @@
 #include "Extractor.h"
 
+/**
+ * @brief Standard Constructor, sets all the attributes to their respective empty values
+ * @details
+ */
 Extractor::Extractor() {
     this->students = set<Student>();
     this->schedules = vector<Schedule>();
     this->requests = queue<Request>();
 }
 
+/**
+ * @brief Runs read methods and fills Extractor's attributes
+ * @details
+ * @see readClassesPerUc()
+ * @see readStudentsClasses()
+ * @see readClasses()
+ */
 void Extractor::readFiles() {
     readClassesPerUc();
     readStudentsClasses();
     readClasses();
 }
 
+/**
+ * @brief Read "classes_per_uc.csv" file and fills Extractor's vector of schedules with only classes: course units and classCode
+ * @details
+ */
 void Extractor::readClassesPerUc() {
     fstream file("../data/classes_per_uc.csv");
 
@@ -34,6 +49,10 @@ void Extractor::readClassesPerUc() {
     }
 }
 
+/**
+ * @brief Read "students_classes.csv" file and updates Extractor's vector 
+ * @details
+ */
 void Extractor::readStudentsClasses() {
     fstream file("../data/students_classes.csv");
 
@@ -71,6 +90,10 @@ void Extractor::readStudentsClasses() {
     }
 }
 
+/**
+ * @brief
+ * @details
+ */
 void Extractor::readClasses() {
     fstream file("../data/classes.csv");
 
@@ -103,6 +126,11 @@ void Extractor::readClasses() {
     }
 }
 
+/**
+ * @brief
+ * @details
+ * @param classCode
+ */
 void Extractor::getClassSchedule(const string& classCode) const {
     map<Lesson, vector<Class>> orderedSchedule;
 
@@ -135,6 +163,11 @@ void Extractor::getClassSchedule(const string& classCode) const {
     }
 }
 
+/**
+ * @brief
+ * @details
+ * @param id
+ */
 void Extractor::getStudentSchedule(const string& id) const {
     auto studentIt = students.find(Student(id, "PlaceHolder"));
     if (studentIt == students.end()) {
@@ -173,6 +206,11 @@ void Extractor::getStudentSchedule(const string& id) const {
     }
 }
 
+/**
+ * @brief
+ * @details
+ * @param UcCode
+ */
 void Extractor::getUcCodeSchedule(const string& UcCode) const {
     map<Lesson, vector<Class>> orderedSchedule;
 
@@ -206,6 +244,12 @@ void Extractor::getUcCodeSchedule(const string& UcCode) const {
     }
 }
 
+/**
+ * @brief
+ * @details
+ * @param classCode
+ * @param mode
+ */
 void Extractor::getClassStudents(const string& classCode, const int& mode) const {
     vector<Student> classStudents;
     for (const Student& student: students) {
@@ -220,6 +264,12 @@ void Extractor::getClassStudents(const string& classCode, const int& mode) const
     sortAndPrintStudents(classStudents, mode);
 }
 
+/**
+ * @brief
+ * @details
+ * @param ucCode
+ * @param mode
+ */
 void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
     vector<Student> ucStudents;
 
@@ -235,6 +285,12 @@ void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
     sortAndPrintStudents(ucStudents, mode);
 }
 
+/**
+ * @brief
+ * @details
+ * @param year
+ * @param mode
+ */
 void Extractor::getYearStudents(const string& year, const int& mode) const {
     vector<Student> yearStudents;
 
@@ -250,6 +306,11 @@ void Extractor::getYearStudents(const string& year, const int& mode) const {
     sortAndPrintStudents(yearStudents, mode);
 }
 
+/**
+ * @brief
+ * @details
+ * @param N
+ */
 void Extractor::StudentsWithNUc(const int& N) const {
     int count = 0;
     for (const Student& student: students) {
@@ -258,6 +319,11 @@ void Extractor::StudentsWithNUc(const int& N) const {
     cout << count << endl;
 }
 
+/**
+ * @brief
+ * @details
+ * @param N
+ */
 void Extractor::TopNStudentsPerUC(const int& N) const {
     map<string, int> ucStudentCount;
 
@@ -282,6 +348,14 @@ void Extractor::TopNStudentsPerUC(const int& N) const {
     }
 }
 
+/**
+ * @brief
+ * @details
+ * @param studentId
+ * @param ucCode
+ * @param classCode
+ * @param type
+ */
 void Extractor::newRequest(const string& studentId, const string& ucCode, const string& classCode, const string& type) {
     auto studentIt = students.find(Student(studentId, ""));
 
@@ -294,6 +368,15 @@ void Extractor::newRequest(const string& studentId, const string& ucCode, const 
     cout << "Pedido Guardado" << endl;
 }
 
+/**
+ * @brief
+ * @details
+ * @param studentId
+ * @param oldUcCode
+ * @param oldClassCode
+ * @param ucCode
+ * @param classCode
+ */
 void Extractor::newRequest(const string& studentId, const string& oldUcCode, const string& oldClassCode, const string& ucCode, const string& classCode) {
     auto studentIt = students.find(Student(studentId, ""));
 
@@ -306,6 +389,10 @@ void Extractor::newRequest(const string& studentId, const string& oldUcCode, con
     cout << "Pedido Guardado" << endl;
 }
 
+/**
+ * @brief
+ * @details
+ */
 void Extractor::processRequest() {
     Request request = requests.front();
     requests.pop();
@@ -326,12 +413,21 @@ void Extractor::processRequest() {
     }
 }
 
+/**
+ * @brief
+ * @details
+ */
 void Extractor::processAllRequests() {
     while (!requests.empty()) {
         processRequest();
     }
 }
 
+/**
+ * @brief
+ * @details
+ * @param request
+ */
 void Extractor::processAdd(const Request& request) {
     // Checking if Student is enrolled in 7 UC
     if (request.getStudent().getClasses().size() >= 7) {
@@ -392,6 +488,11 @@ void Extractor::processAdd(const Request& request) {
     cout << "Request Approved" << endl;
 }
 
+/**
+ * @brief
+ * @details
+ * @param request
+ */
 void Extractor::processRemove(const Request& request) {
     // Remover a classe do aluno
     auto itr = students.find(request.getStudent());
@@ -421,6 +522,11 @@ void Extractor::processRemove(const Request& request) {
     }
 }
 
+/**
+ * @brief
+ * @details
+ * @param request
+ */
 void Extractor::processSwitch(const Request& request) {
     // Checking if Student is enrolled in 7 UC
     if (request.getStudent().getClasses().size() > 7) {
@@ -480,6 +586,12 @@ void Extractor::processSwitch(const Request& request) {
     }
 }
 
+/**
+ * @brief
+ * @details
+ * @param classInfo
+ * @return
+ */
 unsigned Extractor::searchSchedules(const Class& classInfo) const {
     unsigned low = 0, high = schedules.size()-1, middle = high/2;
     while (low <= high) {
@@ -491,14 +603,34 @@ unsigned Extractor::searchSchedules(const Class& classInfo) const {
     return -1;
 }
 
+/**
+ * @brief
+ * @details
+ * @param a
+ * @param b
+ * @return
+ */
 bool Extractor::studentAlphabetical(const Student& a, const Student& b) {
     return a.getName() < b.getName();
 }
 
+/**
+ * @brief
+ * @details
+ * @param a
+ * @param b
+ * @return
+ */
 bool Extractor::studentNumerical(const Student& a, const Student& b) {
     return a.getId() < b.getId();
 }
 
+/**
+ * @brief
+ * @details
+ * @param students
+ * @param mode
+ */
 void Extractor::sortAndPrintStudents(vector<Student>& students, const int& mode) {
     switch (mode) {
         case 1:
@@ -524,6 +656,12 @@ void Extractor::sortAndPrintStudents(vector<Student>& students, const int& mode)
     }
 }
 
+/**
+ * @brief
+ * @details
+ * @param oldhour
+ * @return
+ */
 string Extractor::formatedHours(const float& oldhour) {
     int hour = oldhour;
     int minutes = (oldhour - hour) * 60;
@@ -540,6 +678,13 @@ string Extractor::formatedHours(const float& oldhour) {
     return oss.str();
 }
 
+/**
+ * @brief
+ * @details
+ * @param student
+ * @param newClass
+ * @return
+ */
 bool Extractor::isSchedulePossible(const Student& student, const Class& newClass) {
     map<Lesson, vector<Class>> orderedSchedule;
 
@@ -562,6 +707,14 @@ bool Extractor::isSchedulePossible(const Student& student, const Class& newClass
     return true;
 }
 
+/**
+ * @brief
+ * @details
+ * @param student
+ * @param newClass
+ * @param auxClass
+ * @return
+ */
 bool Extractor::isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass) {
     map<Lesson, vector<Class>> orderedSchedule;
 
@@ -585,6 +738,12 @@ bool Extractor::isSchedulePossible(const Student& student, const Class& newClass
     return true;
 }
 
+/**
+ * @brief
+ * @details
+ * @param classInfo
+ * @return
+ */
 bool Extractor::isBalanceMaintained(const Class& classInfo) {
     int targetSize = schedules[searchSchedules(classInfo)].getStudents().size();
     int maximumSize = 0, minimumSize = 41;
@@ -600,6 +759,13 @@ bool Extractor::isBalanceMaintained(const Class& classInfo) {
     return false;
 }
 
+/**
+ * @brief
+ * @details
+ * @param classInfo
+ * @param auxClass
+ * @return
+ */
 bool Extractor::isBalanceMaintained(const Class& classInfo, const Class& auxClass) {
     int targetSize = schedules[searchSchedules(classInfo)].getStudents().size();
     int auxSize = schedules[searchSchedules(auxClass)].getStudents().size();

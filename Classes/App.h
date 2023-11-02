@@ -3,6 +3,9 @@
 
 #include "Extractor.h"
 
+/**
+ * @brief Class which runs the program
+ */
 class App {
 public:
     explicit App(const Extractor &information);
@@ -32,6 +35,7 @@ public:
     static void printOrdeningModes();
 
 private:
+    /** @brief Extractor object which keeps all students, schedules, requests and their fuctions */
     Extractor information;
 };
 

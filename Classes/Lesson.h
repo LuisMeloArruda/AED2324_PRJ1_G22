@@ -5,12 +5,18 @@
 #include <map>
 
 using namespace std;
-
+/**
+ * @brief Class which holds all the necessary information to identify a lesson
+ */
 class Lesson{
     private:
         string weekDay;
         float start;
         float duration;
+        /** @brief type of a lesson can be:
+         * T - Teórica;
+         * P - Prática;
+         * PL -  Prática Laboratorial: */
         string type;
     public:
         Lesson(const string& weekDay, const float& start, const float& duration, const string& type);

@@ -6,11 +6,14 @@
 #include "Class.h"
 
 using namespace std;
-
+/**
+ * @brief Class to keep details of a student
+ */
 class Student{
     private:
         string name;
         string id;
+        /** @brief Vector of Class Object with all the classes of a student */
         vector<Class> classes;
     public:
         Student(const string& id, const string& name);

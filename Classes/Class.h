@@ -5,9 +5,14 @@
 
 using namespace std;
 
+/**
+ * @brief Class that stores data about a given class in a course unit
+ */
 class Class{
     private:
+    /** @brief ID of a course unit */
         string ucCode;
+    /** @brief ID of a class */
         string classCode;
     public:
         Class(const string& ucCode, const string& classCode);

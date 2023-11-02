@@ -12,11 +12,16 @@
 #include <iostream>
 #include <map>
 #include <iomanip>
-
+/**
+ * @brief Class that keeps all information about the students, schedules and requests
+ */
 class Extractor {
     private:
+    /** @brief Set which holds all students */
         set<Student> students;
+        /** @brief Vector to store all schedules */
         vector<Schedule> schedules;
+        /** @brief Queue that keeps all requests */
         queue<Request> requests;
     public:
         Extractor();
