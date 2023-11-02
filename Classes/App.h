@@ -9,9 +9,9 @@ public:
 
     // Display functions
     void run();
-    int menu();
-    void menuSchedules();
-    void menuStudents();
+    static int menu();
+    void menuSchedules() const;
+    void menuStudents() const;
 
     // Lookup functions
     void checkClassSchedule() const;
@@ -27,8 +27,8 @@ public:
     void addNewRequest();
 
     // Auxiliary Functions
-    bool isValidOption(int choice, int numberOfOptions);
-    bool continueQuestion();
+    static bool isValidOption(int choice, int numberOfOptions);
+    static bool continueQuestion();
 private:
     Extractor information;
 };

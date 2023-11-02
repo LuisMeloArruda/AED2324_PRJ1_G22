@@ -7,7 +7,7 @@ using namespace std;
 
 App::App(const Extractor &information) {
     this->information = information;
-};
+}
 
 void App::run() {
     information.readFiles();
@@ -68,7 +68,7 @@ int App::menu() {
     return choice;
 }
 
-void App::menuSchedules() {
+void App::menuSchedules() const {
     system("clear");
     // Print Menu
     int choice;
@@ -100,7 +100,7 @@ void App::menuSchedules() {
     }
 }
 
-void App::menuStudents() {
+void App::menuStudents() const {
     system("clear");
     int choice;
     // Print Menu
