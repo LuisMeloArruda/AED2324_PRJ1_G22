@@ -9,49 +9,33 @@ App::App(const Extractor &information) {
     this->information = information;
 };
 
-int App::run() {
+void App::run() {
     information.readFiles();
     while (true) {
         int choice = menu();
 
         switch (choice) {
             case 0:
-                return 0;
+                return;
             case 1:
                 menuSchedules();
-                if (continueQuestion()) return 0;
+                if (continueQuestion()) return;
                 break;
             case 2:
                 menuStudents();
-                if (continueQuestion()) return 0;
+                if (continueQuestion()) return;
                 break;
             case 3:
                 checkStudentsWithNUcs();
-                if (continueQuestion()) return 0;
+                if (continueQuestion()) return;
                 break;
             case 4:
                 checkTopNStudentsPerUc();
-                if (continueQuestion()) return 0;
+                if (continueQuestion()) return;
                 break;
             case 5: {
-                string studentId, ucCode, classCode, type, oldUcCode, oldClassCode;
-                cout << "Action to be taken (A/R/S): ";
-                cin >> type;
-                cout << "Student ID: ";
-                cin >> studentId;
-                cout << "UC Code: ";
-                cin >> ucCode;
-                cout << "Class Code: ";
-                cin >> classCode;
-                if (type == "S") {
-                    cout << "UC Code to change: ";
-                    cin >> oldUcCode;
-                    cout << "Class Code to change: ";
-                    cin >> oldClassCode;
-                    information.newRequest(studentId, oldUcCode, oldClassCode, ucCode, classCode);
-                } else information.newRequest(studentId, ucCode, classCode, type);
-
-                if (continueQuestion()) return 0;
+                addNewRequest();
+                if (continueQuestion()) return;
             }
             case 6: {
                 information.processRequest();
@@ -217,6 +201,25 @@ void App::checkTopNStudentsPerUc() const {
     if (N > 0) {
         information.TopNStudentsPerUC(N);
     }
+}
+
+void App::addNewRequest() {
+    string studentId, ucCode, classCode, type, oldUcCode, oldClassCode;
+    cout << "Action to be taken (A/R/S): ";
+    cin >> type;
+    cout << "Student ID: ";
+    cin >> studentId;
+    cout << "UC Code: ";
+    cin >> ucCode;
+    cout << "Class Code: ";
+    cin >> classCode;
+    if (type == "S") {
+        cout << "UC Code to change: ";
+        cin >> oldUcCode;
+        cout << "Class Code to change: ";
+        cin >> oldClassCode;
+        information.newRequest(studentId, oldUcCode, oldClassCode, ucCode, classCode);
+    } else information.newRequest(studentId, ucCode, classCode, type);
 }
 
 bool App::isValidOption(int choice, int numberOfOptions) {

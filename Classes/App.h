@@ -8,7 +8,7 @@ public:
     explicit App(const Extractor &information);
 
     // Display functions
-    int run();
+    void run();
     int menu();
     void menuSchedules();
     void menuStudents();
@@ -22,6 +22,9 @@ public:
     void checkYearStudents() const;
     void checkStudentsWithNUcs() const;
     void checkTopNStudentsPerUc() const;
+
+    // Request functions
+    void addNewRequest();
 
     // Auxiliary Functions
     bool isValidOption(int choice, int numberOfOptions);
