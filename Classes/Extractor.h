@@ -49,8 +49,8 @@ class Extractor {
         unsigned searchSchedules(const Class& classInfo) const;
         static bool studentAlphabetical(const Student& a, const Student& b);
         static bool studentNumerical(const Student& a, const Student& b);
-        void sortAndPrintStudents(vector<Student>& classStudents, const int& mode) const;
-        string formatedHours(const float& oldhour) const;
+        static void sortAndPrintStudents(vector<Student>& classStudents, const int& mode) ;
+        static string formatedHours(const float& oldhour) ;
         bool isSchedulePossible(const Student& student, const Class& newClass);
         bool isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass);
         bool isBalanceMaintained(const Class& classInfo);

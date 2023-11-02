@@ -161,6 +161,7 @@ void App::checkClassStudents() const {
     printOrdeningModes();
     cout << "Modo de ordenação: ";
     cin >> mode;
+    while (!isValidOption(mode, 4)) cin >> mode;
     information.getClassStudents(classCode, mode);
 }
 
@@ -171,6 +172,7 @@ void App::checkUcStudents() const {
     cin >> ucCode;
     cout << "Modo de ordenação: ";
     cin >> mode;
+    while (!isValidOption(mode, 4)) cin >> mode;
     information.getUCStudents(ucCode, mode);
 }
 
@@ -181,6 +183,7 @@ void App::checkYearStudents() const {
     cin >> year;
     cout << "Modo de ordenação: ";
     cin >> mode;
+    while (!isValidOption(mode, 4)) cin >> mode;
     information.getYearStudents(year, mode);
 }
 

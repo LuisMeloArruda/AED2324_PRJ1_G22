@@ -10,7 +10,7 @@ class Request {
         Class auxClass;
         string type;
     public:
-        Request(const Student& student, const Class& targetClass, const string& Type);
+        Request(const Student& student, const Class& targetClass, const string& type);
         Request(const Student& student, const Class& oldClass, const Class& targetClass);
         Student getStudent() const;
         void setStudent(const Student& student);

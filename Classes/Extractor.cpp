@@ -30,7 +30,7 @@ void Extractor::readClassesPerUc() {
         getline(ss, classCode);
 
         // classes_per_uc is ordered therefore schedules will be ordered by Class
-        schedules.push_back(Schedule(Class(ucCode, classCode)));
+        schedules.emplace_back(Class(ucCode, classCode));
     }
 }
 
@@ -106,9 +106,9 @@ void Extractor::readClasses() {
 void Extractor::getClassSchedule(const string& classCode) const {
     map<Lesson, vector<Class>> orderedSchedule;
 
-    for (Schedule schedule: schedules) {
+    for (const Schedule& schedule: schedules) {
         if (schedule.getClassInfo().getClassCode() == classCode) {
-            for (Lesson lesson: schedule.getLessons()) {
+            for (const Lesson& lesson: schedule.getLessons()) {
                 orderedSchedule[lesson].push_back(schedule.getClassInfo());
             }
         }
@@ -120,13 +120,13 @@ void Extractor::getClassSchedule(const string& classCode) const {
     }
 
     cout << "---SCHEDULE---" << endl;
-    string currentDay = "";
+    string currentDay;
     for (pair<Lesson, vector<Class>> lesson : orderedSchedule) {
         if (lesson.first.getWeekDay() != currentDay){
             cout << "-> " << lesson.first.getWeekDay() << ": " << endl;
             currentDay = lesson.first.getWeekDay();
         }
-        for (Class classInfo: lesson.second) {
+        for (const Class& classInfo: lesson.second) {
             cout << "START_TIME: " << setw(5) << formatedHours(lesson.first.getStart()) << " END_TIME: "
                  << setw(5) << formatedHours(lesson.first.getStart() + lesson.first.getDuration())
                  << " TYPE: " << setw(5) << lesson.first.getType() << " UC_CODE: "
@@ -144,9 +144,9 @@ void Extractor::getStudentSchedule(const string& id) const {
 
     map<Lesson, vector<Class>> orderedSchedule;
 
-    for (Class classInfo: studentIt->getClasses()) {
+    for (const Class& classInfo: studentIt->getClasses()) {
         Schedule schedule = schedules[searchSchedules(classInfo)];
-        for (Lesson lesson: schedule.getLessons()) {
+        for (const Lesson& lesson: schedule.getLessons()) {
             orderedSchedule[lesson].push_back(classInfo);
         }
     }
@@ -158,13 +158,13 @@ void Extractor::getStudentSchedule(const string& id) const {
 
     cout << "STUDENT_NAME: " << studentIt->getName() << endl;
     cout << "---SCHEDULE---" << endl;
-    string currentDay = "";
+    string currentDay;
     for (pair<Lesson, vector<Class>> lesson : orderedSchedule) {
         if (lesson.first.getWeekDay() != currentDay){
             cout << "-> " << lesson.first.getWeekDay() << ": " << endl;
             currentDay = lesson.first.getWeekDay();
         }
-        for (Class classInfo: lesson.second) {
+        for (const Class& classInfo: lesson.second) {
             cout << "START_TIME: " << setw(5) << formatedHours(lesson.first.getStart()) << " END_TIME: "
             << setw(5) << formatedHours(lesson.first.getStart() + lesson.first.getDuration()) << " TYPE: "
             << setw(5) << lesson.first.getType() << " UC_CODE: " << setw(5) << classInfo.getUcCode()
@@ -176,9 +176,9 @@ void Extractor::getStudentSchedule(const string& id) const {
 void Extractor::getUcCodeSchedule(const string& UcCode) const {
     map<Lesson, vector<Class>> orderedSchedule;
 
-    for (const Schedule schedule : schedules) {
+    for (const Schedule& schedule : schedules) {
         if (schedule.getClassInfo().getUcCode() == UcCode) {
-            for (const Lesson lesson : schedule.getLessons()) {
+            for (const Lesson& lesson : schedule.getLessons()) {
                 orderedSchedule[lesson].push_back(schedule.getClassInfo());
             }
         }
@@ -190,7 +190,7 @@ void Extractor::getUcCodeSchedule(const string& UcCode) const {
     }
 
     cout << "---SCHEDULE---" << endl;
-    string currentDay = "";
+    string currentDay;
     for (pair<Lesson, vector<Class>> lesson : orderedSchedule) {
         if (lesson.first.getWeekDay() != currentDay){
             cout << "-> " << lesson.first.getWeekDay() << ": " << endl;
@@ -199,7 +199,7 @@ void Extractor::getUcCodeSchedule(const string& UcCode) const {
         cout << "START_TIME: " << setw(5) << formatedHours(lesson.first.getStart()) << " END_TIME: "
              << setw(5) << formatedHours(lesson.first.getStart() + lesson.first.getDuration()) << " TYPE: "
              << setw(5) << lesson.first.getType() << " ClassCode: ";
-        for (Class classInfo: lesson.second) {
+        for (const Class& classInfo: lesson.second) {
             cout << classInfo.getClassCode() << " ";
         }
         cout << endl;
@@ -208,8 +208,8 @@ void Extractor::getUcCodeSchedule(const string& UcCode) const {
 
 void Extractor::getClassStudents(const string& classCode, const int& mode) const {
     vector<Student> classStudents;
-    for (Student student: students) {
-        for (Class classInfo: student.getClasses()) {
+    for (const Student& student: students) {
+        for (const Class& classInfo: student.getClasses()) {
             if (classInfo.getClassCode() == classCode) {
                 classStudents.push_back(student);
                 break;
@@ -223,9 +223,9 @@ void Extractor::getClassStudents(const string& classCode, const int& mode) const
 void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
     vector<Student> ucStudents;
 
-    for (Schedule schedule: schedules) {
+    for (const Schedule& schedule: schedules) {
         if (schedule.getClassInfo().getUcCode() == ucCode) {
-            for (Student student: schedule.getStudents()) {
+            for (const Student& student: schedule.getStudents()) {
                 ucStudents.push_back(student);
             }
         }
@@ -238,8 +238,8 @@ void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
 void Extractor::getYearStudents(const string& year, const int& mode) const {
     vector<Student> yearStudents;
 
-    for (Student student: students) {
-        for (Class classInfo: student.getClasses()) {
+    for (const Student& student: students) {
+        for (const Class& classInfo: student.getClasses()) {
             if (classInfo.getClassCode()[0] == year[0]) {
                 yearStudents.push_back(student);
                 break;
@@ -252,7 +252,7 @@ void Extractor::getYearStudents(const string& year, const int& mode) const {
 
 void Extractor::StudentsWithNUc(const int& N) const {
     int count = 0;
-    for (Student student: students) {
+    for (const Student& student: students) {
         if (student.getClasses().size() >= N) count++;
     }
     cout << count << endl;
@@ -290,7 +290,7 @@ void Extractor::newRequest(const string& studentId, const string& ucCode, const 
         return;
     }
 
-    requests.push(Request(*studentIt, Class(ucCode, classCode), type));
+    requests.emplace(*studentIt, Class(ucCode, classCode), type);
     cout << "Pedido Guardado" << endl;
 }
 
@@ -302,7 +302,7 @@ void Extractor::newRequest(const string& studentId, const string& oldUcCode, con
         return;
     }
 
-    requests.push(Request(*studentIt, Class(oldUcCode, oldClassCode), Class(ucCode, classCode)));
+    requests.emplace(*studentIt, Class(oldUcCode, oldClassCode), Class(ucCode, classCode));
     cout << "Pedido Guardado" << endl;
 }
 
@@ -349,7 +349,7 @@ void Extractor::processAdd(const Request& request) {
     }
 
     // Checking if Student is already enrolled in target UC
-    for (Class classInfo: request.getStudent().getClasses()) {
+    for (const Class& classInfo: request.getStudent().getClasses()) {
         if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
             cout << "Request Denied" << endl;
             cout << "Reason: Student is already enrolled in target UC" << endl;
@@ -441,7 +441,7 @@ void Extractor::processSwitch(const Request& request) {
     // Checking if Student is already enrolled in UC that is going to be added
     // And if Student is not enrolled in the UC to be removed
     bool found = false;
-    for (Class classInfo: request.getStudent().getClasses()) {
+    for (const Class& classInfo: request.getStudent().getClasses()) {
         if (classInfo.getUcCode() == request.getAuxClass().getUcCode()) {
             cout << "Request Denied" << endl;
             cout << "Reason: Student is already enrolled in target UC" << endl;
@@ -499,7 +499,7 @@ bool Extractor::studentNumerical(const Student& a, const Student& b) {
     return a.getId() < b.getId();
 }
 
-void Extractor::sortAndPrintStudents(vector<Student>& students, const int& mode) const {
+void Extractor::sortAndPrintStudents(vector<Student>& students, const int& mode) {
     switch (mode) {
         case 1:
             sort(students.begin(), students.end(), studentAlphabetical);
@@ -519,12 +519,12 @@ void Extractor::sortAndPrintStudents(vector<Student>& students, const int& mode)
             break;
     }
 
-    for (Student student: students) {
+    for (const Student& student: students) {
         cout << "ID: " << student.getId() << " NAME: " << student.getName() << endl;
     }
 }
 
-string Extractor::formatedHours(const float& oldhour) const {
+string Extractor::formatedHours(const float& oldhour) {
     int hour = oldhour;
     int minutes = (oldhour - hour) * 60;
 
@@ -543,15 +543,15 @@ string Extractor::formatedHours(const float& oldhour) const {
 bool Extractor::isSchedulePossible(const Student& student, const Class& newClass) {
     map<Lesson, vector<Class>> orderedSchedule;
 
-    for (Class classInfo: student.getClasses()) {
+    for (const Class& classInfo: student.getClasses()) {
         Schedule schedule = schedules[searchSchedules(classInfo)];
-        for (Lesson lesson: schedule.getLessons()) {
+        for (const Lesson& lesson: schedule.getLessons()) {
             orderedSchedule[lesson].push_back(classInfo);
         }
     }
 
     Schedule newSchedule = schedules[searchSchedules(newClass)];
-    for (Lesson lesson: newSchedule.getLessons()) {
+    for (const Lesson& lesson: newSchedule.getLessons()) {
         if (lesson.getType() == "T") continue;
         for (int i = 0; i < lesson.getDuration()/0.5; i++) {
             if (orderedSchedule.find(Lesson(lesson, lesson.getStart()+(i*0.5), "PL")) != orderedSchedule.end()) return false;
@@ -565,16 +565,16 @@ bool Extractor::isSchedulePossible(const Student& student, const Class& newClass
 bool Extractor::isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass) {
     map<Lesson, vector<Class>> orderedSchedule;
 
-    for (Class classInfo: student.getClasses()) {
+    for (const Class& classInfo: student.getClasses()) {
         if (classInfo == auxClass) continue;
         Schedule schedule = schedules[searchSchedules(classInfo)];
-        for (Lesson lesson: schedule.getLessons()) {
+        for (const Lesson& lesson: schedule.getLessons()) {
             orderedSchedule[lesson].push_back(classInfo);
         }
     }
 
     Schedule newSchedule = schedules[searchSchedules(newClass)];
-    for (Lesson lesson: newSchedule.getLessons()) {
+    for (const Lesson& lesson: newSchedule.getLessons()) {
         if (lesson.getType() == "T") continue;
         for (int i = 0; i < lesson.getDuration()/0.5; i++) {
             if (orderedSchedule.find(Lesson(lesson, lesson.getStart()+(i*0.5), "PL")) != orderedSchedule.end()) return false;
