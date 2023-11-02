@@ -50,7 +50,7 @@ void Extractor::readClassesPerUc() {
 }
 
 /**
- * @brief Read "students_classes.csv" file and updates Extractor's vector 
+ * @brief Read "students_classes.csv" file and updates Extractor's vector of Schedules with Students and fills Extractor's set of Students with Students
  * @details
  */
 void Extractor::readStudentsClasses() {
@@ -91,7 +91,7 @@ void Extractor::readStudentsClasses() {
 }
 
 /**
- * @brief
+ * @brief Read "classes.csv" file and updates Extractor's vector of Schedules with lessons
  * @details
  */
 void Extractor::readClasses() {
@@ -127,7 +127,7 @@ void Extractor::readClasses() {
 }
 
 /**
- * @brief
+ * @brief Method that prints the schedule of a given Class
  * @details
  * @param classCode
  */
@@ -164,7 +164,7 @@ void Extractor::getClassSchedule(const string& classCode) const {
 }
 
 /**
- * @brief
+ * @brief Method that prints
  * @details
  * @param id
  */
@@ -207,7 +207,7 @@ void Extractor::getStudentSchedule(const string& id) const {
 }
 
 /**
- * @brief
+ * @brief Method that prints
  * @details
  * @param UcCode
  */
@@ -245,7 +245,7 @@ void Extractor::getUcCodeSchedule(const string& UcCode) const {
 }
 
 /**
- * @brief
+ * @brief Method that prints
  * @details
  * @param classCode
  * @param mode
@@ -265,7 +265,7 @@ void Extractor::getClassStudents(const string& classCode, const int& mode) const
 }
 
 /**
- * @brief
+ * @brief Method that prints
  * @details
  * @param ucCode
  * @param mode
@@ -286,7 +286,7 @@ void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
 }
 
 /**
- * @brief
+ * @brief Method that prints
  * @details
  * @param year
  * @param mode
@@ -307,9 +307,9 @@ void Extractor::getYearStudents(const string& year, const int& mode) const {
 }
 
 /**
- * @brief
+ * @brief Method that prints the number of students with a given value of course units
  * @details
- * @param N
+ * @param N quantity of course units
  */
 void Extractor::StudentsWithNUc(const int& N) const {
     int count = 0;
@@ -320,9 +320,9 @@ void Extractor::StudentsWithNUc(const int& N) const {
 }
 
 /**
- * @brief
+ * @brief Method that prints the course units with the most students
  * @details
- * @param N
+ * @param N quantity of course units with the most students
  */
 void Extractor::TopNStudentsPerUC(const int& N) const {
     map<string, int> ucStudentCount;
