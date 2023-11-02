@@ -321,6 +321,7 @@ void Extractor::processRequest() {
             break;
         case 'S':
             cout << "Processing Switch Request from student " << request.getStudent().getName() << endl;
+            processSwitch(request);
             break;
     }
 }
@@ -414,6 +415,65 @@ void Extractor::processRemove(Request request) {
     }
 }
 
+void Extractor::processSwitch(Request request) {
+    // Checking if Student is enrolled in 7 UC
+    if (request.getStudent().getClasses().size() > 7) {
+        cout << "Request Denied" << endl;
+        cout << "Reason: Student is already enrolled in 7 UC" << endl;
+        return;
+    }
+
+    // Checking if classes exist
+    if (searchSchedules(request.getTargetClass()) == -1 or
+        searchSchedules(request.getAuxClass()) == -1) {
+        cout << "Request Denied" << endl;
+        cout << "Reason: The following class does not exist" << endl;
+        cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
+        return;
+    }
+
+    // Checking if Student is already enrolled in UC that is going to be added
+    // And if Student is not enrolled in the UC to be removed
+    bool found = false;
+    for (Class classInfo: request.getStudent().getClasses()) {
+        if (classInfo.getUcCode() == request.getAuxClass().getUcCode()) {
+            cout << "Request Denied" << endl;
+            cout << "Reason: Student is already enrolled in target UC" << endl;
+            return;
+        } else if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
+            found = true;
+        }
+    }
+    if (!found) {
+        cout << "Request Denied" << endl;
+        cout << "Reason: Student is not enrolled in the following class" << endl;
+        cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
+        return;
+    }
+
+    // Checking if resulting schedule is possible
+    if (!isSchedulePossible(request.getStudent(), request.getTargetClass(), request.getAuxClass())) {
+        cout << "Request Denied" << endl;
+        cout << "Reason: Schedule is not compatible" << endl;
+        return;
+    }
+
+    // Checking if target class has available space
+    unsigned index = searchSchedules(request.getTargetClass());
+    if (schedules[index].getStudents().size() > 40) {
+        cout << "Request Denied" << endl;
+        cout << "Reason: Class is at capacity" << endl;
+        return;
+    }
+
+    // Checking if class balance is maintained
+    if (!isBalanceMaintained(request.getTargetClass(), request.getAuxClass())) {
+        cout << "Request Denied" << endl;
+        cout << "Reason: Class balance is not maintained" << endl;
+        return;
+    }
+}
+
 unsigned Extractor::searchSchedules(Class classInfo) const {
     unsigned low = 0, high = schedules.size()-1, middle = high/2;
     while (low <= high) {
@@ -496,6 +556,29 @@ bool Extractor::isSchedulePossible(Student student, Class newClass) {
     return true;
 }
 
+bool Extractor::isSchedulePossible(Student student, Class newClass, Class auxClass) {
+    map<Lesson, vector<Class>> orderedSchedule;
+
+    for (Class classInfo: student.getClasses()) {
+        if (classInfo == auxClass) continue;
+        Schedule schedule = schedules[searchSchedules(classInfo)];
+        for (Lesson lesson: schedule.getLessons()) {
+            orderedSchedule[lesson].push_back(classInfo);
+        }
+    }
+
+    Schedule newSchedule = schedules[searchSchedules(newClass)];
+    for (Lesson lesson: newSchedule.getLessons()) {
+        if (lesson.getType() == "T") continue;
+        for (int i = 0; i < lesson.getDuration()/0.5; i++) {
+            if (orderedSchedule.find(Lesson(lesson, lesson.getStart()+(i*0.5), "PL")) != orderedSchedule.end()) return false;
+            if (orderedSchedule.find(Lesson(lesson, lesson.getStart()+(i*0.5), "TP")) != orderedSchedule.end()) return false;
+        }
+    }
+
+    return true;
+}
+
 bool Extractor::isBalanceMaintained(Class classInfo) {
     int targetSize = schedules[searchSchedules(classInfo)].getStudents().size();
     int maximumSize = 0, minimumSize = 41;
@@ -507,6 +590,23 @@ bool Extractor::isBalanceMaintained(Class classInfo) {
     }
 
     if (targetSize < maximumSize) return true;
+    if (targetSize < minimumSize+4) return true;
+    return false;
+}
+
+bool Extractor::isBalanceMaintained(Class classInfo, Class auxClass) {
+    int targetSize = schedules[searchSchedules(classInfo)].getStudents().size();
+    int auxSize = schedules[searchSchedules(auxClass)].getStudents().size();
+    int maximumSize = 0, minimumSize = 41;
+
+    for (Schedule schedule: schedules) {
+        int size = schedule.getStudents().size();
+        if (schedule.getClassInfo() == auxClass) size--;
+        if (size > maximumSize) maximumSize = size;
+        if (size < minimumSize) minimumSize = size;
+    }
+
+    if (auxSize-1 > targetSize) return true;
     if (targetSize < minimumSize+4) return true;
     return false;
 }

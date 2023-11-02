@@ -40,6 +40,7 @@ class Extractor {
         void processRequest();
         void processAdd(Request request);
         void processRemove(Request request);
+        void processSwitch(Request request);
 
         // Auxiliary Functions
         void readClassesPerUc();
@@ -51,7 +52,9 @@ class Extractor {
         void sortAndPrintStudents(vector<Student>& classStudents, int mode) const;
         string formatedHours(float oldhour) const;
         bool isSchedulePossible(Student student, Class newClass);
+        bool isSchedulePossible(Student student, Class newClass, Class auxClass);
         bool isBalanceMaintained(Class classInfo);
+        bool isBalanceMaintained(Class classInfo, Class auxClass);
 };
 
 #endif //AED2324_PRJ1_G22_EXTRACTOR_H
