@@ -13,7 +13,7 @@
 #include <map>
 #include <iomanip>
 /**
- * @brief class that keeps all information about the Students, Schedules and Requests
+ * @brief The class that keeps all information about the Students, Schedules and Requests
  */
 class Extractor {
     private:

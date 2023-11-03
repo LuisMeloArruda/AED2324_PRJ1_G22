@@ -10,7 +10,7 @@
 using namespace std;
 
 /**
- * @brief class which contains the information about a given class, Lessons and Students
+ * @brief The class which contains the information about a given class, Lessons and Students
  */
 class Schedule{
     private:

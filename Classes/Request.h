@@ -3,7 +3,7 @@
 
 #include "Student.h"
 /**
- * @brief class to store details of a given Request
+ * @brief The class to store details of a given Request
  */
 class Request {
     private:
