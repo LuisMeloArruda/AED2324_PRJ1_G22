@@ -24,7 +24,7 @@ void Extractor::readFiles() {
 
 /**
  * @brief Read "classes_per_uc.csv" file and fills Extractor's vector of schedules with only classes: course units and classCode
- * @details
+ * @details Time complexity: O(n), where "n" is the number of files's lines
  */
 void Extractor::readClassesPerUc() {
     fstream file("../data/classes_per_uc.csv");
@@ -50,7 +50,7 @@ void Extractor::readClassesPerUc() {
 
 /**
  * @brief Read "students_classes.csv" file and updates Extractor's vector of Schedules with Students and fills Extractor's set of Students
- * @details
+ * @details Time complexity: O(n * (log m + log k)) where "n" is the number of files's lines, "m" is the number os students and k is the number of schedules
  */
 void Extractor::readStudentsClasses() {
     fstream file("../data/students_classes.csv");
@@ -91,7 +91,7 @@ void Extractor::readStudentsClasses() {
 
 /**
  * @brief Read "classes.csv" file and updates Extractor's vector of Schedules with Lessons
- * @details
+ * @details  Time complexity:
  */
 void Extractor::readClasses() {
     fstream file("../data/classes.csv");
@@ -127,7 +127,7 @@ void Extractor::readClasses() {
 
 /**
  * @brief Method that prints the Schedule of a given Class
- * @details
+ * @details  Time complexity: O(n + log k), where "n" is the number of files's lines and "k" is the number of schedules
  * @param classCode by reference
  */
 void Extractor::getClassSchedule(const string& classCode) const {
@@ -164,7 +164,8 @@ void Extractor::getClassSchedule(const string& classCode) const {
 
 /**
  * @brief Method that prints the Schedule of a given Student
- * @details
+ * @details Time complexity: O(log m + k * (log p + f)), where "m" is the number os students, "k" is the number of student's classes, "p" is the number of maps's elements
+ * and "f" is the number of lessons of a schedule
  * @param id by reference the student's id
  */
 void Extractor::getStudentSchedule(const string& id) const {
@@ -207,7 +208,8 @@ void Extractor::getStudentSchedule(const string& id) const {
 
 /**
  * @brief Method that prints the Schedule of a given course unit
- * @details
+ * @details Time complexity: O(n * (log p * f)), where "n" is the number of schedules, "p" is the number of map's elements
+ * and "f" is the number of lessons of a schedule
  * @param UcCode by reference
  */
 void Extractor::getUcCodeSchedule(const string& UcCode) const {
@@ -245,7 +247,7 @@ void Extractor::getUcCodeSchedule(const string& UcCode) const {
 
 /**
  * @brief Method that prints Students of a given Class
- * @details
+ * @details Time complexity: O(n * m + log n), where "n" is the number of students and "m" is the number of classes per student
  * @param classCode by reference the students's class
  * @param mode by reference the way the information will be sorted and then printed
  */
@@ -265,7 +267,7 @@ void Extractor::getClassStudents(const string& classCode, const int& mode) const
 
 /**
  * @brief Method that prints Students of a given course unit
- * @details
+ * @details Time complexity: O(n * m + log n), where "n" is the number of schedules and "m" is the number of students per schedule
  * @param ucCode by reference the students's ucCode
  * @param mode by reference the way the information will be sorted and then printed
  */
@@ -286,7 +288,7 @@ void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
 
 /**
  * @brief Method that prints Students of a given year
- * @details
+ * @details Time complexity: O(n * m + log n), where "n" is the number of students and "m" is the number of classes per student
  * @param year by reference the students's year
  * @param mode by reference the way the information will be sorted and then printed
  */
@@ -307,7 +309,7 @@ void Extractor::getYearStudents(const string& year, const int& mode) const {
 
 /**
  * @brief Method that prints the number of Students with a given value of course units
- * @details
+ * @details Time complexity: O(n), where "n" is the number of students
  * @param N by reference quantity of course units
  */
 void Extractor::StudentsWithNUc(const int& N) const {
@@ -320,7 +322,7 @@ void Extractor::StudentsWithNUc(const int& N) const {
 
 /**
  * @brief Method that prints the course units with the most Students
- * @details
+ * @details Time complexity: O(n * m + log m + m), where "n" is the number of students and "m" is the number of classes per student
  * @param N by reference quantity of course units with the most students
  */
 void Extractor::TopNStudentsPerUC(const int& N) const {
@@ -349,7 +351,7 @@ void Extractor::TopNStudentsPerUC(const int& N) const {
 
 /**
  * @brief Function that emplaces new Requests in the queue
- * @details
+ * @details Time complexity: O(log n), where "n" is the number of students
  * @param studentId by reference
  * @param ucCode by reference
  * @param classCode by reference
@@ -369,7 +371,7 @@ void Extractor::newRequest(const string& studentId, const string& ucCode, const 
 
 /**
  * @brief Function that emplaces new Requests of type "S" in the queue
- * @details
+ * @details Time complexity: O(log m), where "m" is the number of students
  * @param studentId by reference
  * @param oldUcCode by reference
  * @param oldClassCode by reference
@@ -390,7 +392,9 @@ void Extractor::newRequest(const string& studentId, const string& oldUcCode, con
 
 /**
  * @brief Function that processes first Request in the queue
- * @details
+ * @see processAdd(request)
+ * @see processRemove(request)
+ * @see processSwitch(request)
  */
 void Extractor::processRequest() {
     if (requests.empty()) {
@@ -419,7 +423,6 @@ void Extractor::processRequest() {
 
 /**
  * @brief Function that processes all Requests in the queue
- * @details
  * @see processRequest()
  */
 void Extractor::processAllRequests() {
@@ -430,7 +433,9 @@ void Extractor::processAllRequests() {
 
 /**
  * @brief Function that processes the Request of type A in the queue
- * @details
+ * @details Time complexity: O(log n) + O(m) + O(s * log g * h + log j * k * w) + O(log q) + O(z + 2log z) + O(2log a + 2a) + O(2log u )
+ * @see isSchedulePossible(const Student& student, const Class& newClass)
+ * @see isBalanceMaintained(const Class& classInfo)
  * @param request by reference
  */
 void Extractor::processAdd(const Request& request) {
@@ -442,7 +447,7 @@ void Extractor::processAdd(const Request& request) {
     }
 
     // Checking if class exists
-    if (searchSchedules(request.getTargetClass()) == -1) {
+    if (searchSchedules(request.getTargetClass()) == -1) { //O(log n)
         cout << "Request Denied" << endl;
         cout << "Reason: The following class does not exist" << endl;
         cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
@@ -450,7 +455,7 @@ void Extractor::processAdd(const Request& request) {
     }
 
     // Checking if Student is already enrolled in target UC
-    for (const Class& classInfo: request.getStudent().getClasses()) {
+    for (const Class& classInfo: request.getStudent().getClasses()) { //O(m)
         if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
             cout << "Request Denied" << endl;
             cout << "Reason: Student is already enrolled in target UC" << endl;
@@ -459,14 +464,14 @@ void Extractor::processAdd(const Request& request) {
     }
 
     // Checking if resulting schedule is possible
-    if (!isSchedulePossible(request.getStudent(), request.getTargetClass())) {
+    if (!isSchedulePossible(request.getStudent(), request.getTargetClass())) { //O(s * log g * h + log j * k * w)
         cout << "Request Denied" << endl;
         cout << "Reason: Schedule is not compatible" << endl;
         return;
     }
 
     // Checking if target class has available space
-    unsigned index = searchSchedules(request.getTargetClass());
+    unsigned index = searchSchedules(request.getTargetClass()); //O(log q)
     if (schedules[index].getStudents().size() > 40) {
         cout << "Request Denied" << endl;
         cout << "Reason: Class is at capacity" << endl;
@@ -474,41 +479,42 @@ void Extractor::processAdd(const Request& request) {
     }
 
     // Checking if class balance is maintained
-    if (!isBalanceMaintained(request.getTargetClass())) {
+    if (!isBalanceMaintained(request.getTargetClass())) { //O(z + 2log z)
         cout << "Request Denied" << endl;
         cout << "Reason: Class balance is not maintained" << endl;
         return;
     }
 
     // Adicionar a classe do aluno
-    auto itr = students.find(request.getStudent());
+    auto itr = students.find(request.getStudent()); //O(log a)
     Student student = *itr;
-    students.erase(request.getStudent());
-    student.addClass(request.getTargetClass());
-    students.insert(student);
+    students.erase(request.getStudent()); // O(a)
+    student.addClass(request.getTargetClass()); // O(a)
+    students.insert(student); // O(log a)
 
     // Adicionar o aluno ao horário
-    index = searchSchedules(request.getTargetClass());
-    schedules[index].getStudents().insert(request.getStudent());
+    index = searchSchedules(request.getTargetClass()); // O(log u)
+    schedules[index].getStudents().insert(request.getStudent()); // O(log u)
     cout << "Request Approved" << endl;
     addRecord(request);
 }
 
 /**
  * @brief Function that processes the Request of type R in the queue
- * @details
+ * @details Time complexity: O(log n) + O(n) + O(l) + O(log n) + O(log l) + O(log n) + O(x),
+ * where "n" is the number of students, "l" is the number of classes of a given student and "x" is the number of schedules of a created set
  * @param request by reference
  */
 void Extractor::processRemove(const Request& request) {
     // Remover a classe do aluno
-    auto itr = students.find(request.getStudent());
+    auto itr = students.find(request.getStudent()); //O(log n)
     Student student = *itr;
-    students.erase(request.getStudent());
-    student.removeClass(request.getTargetClass());
-    students.insert(student);
+    students.erase(request.getStudent()); // O(n)
+    student.removeClass(request.getTargetClass()); // O(l)
+    students.insert(student); // O(log n)
 
     // Remover o aluno do horário
-    unsigned index = searchSchedules(request.getTargetClass());
+    unsigned index = searchSchedules(request.getTargetClass()); // O(log l)
 
     if (index == -1) {
         cout << "Request Denied" << endl;
@@ -517,9 +523,9 @@ void Extractor::processRemove(const Request& request) {
     }
 
     set<Student>& scheduleStudents = schedules[index].getStudents();
-    auto scheduleItr = scheduleStudents.find(request.getStudent());
+    auto scheduleItr = scheduleStudents.find(request.getStudent()); //O(log n)
     if (scheduleItr != scheduleStudents.end()) {
-        scheduleStudents.erase(scheduleItr);
+        scheduleStudents.erase(scheduleItr); //O(x)
         cout << "Request Approved" << endl;
         addRecord(request);
     } else {
@@ -531,7 +537,9 @@ void Extractor::processRemove(const Request& request) {
 
 /**
  * @brief Function that processes the Request of type R in the queue
- * @details
+ * @details Time complexity: O(log n * log m) + O(k) + O(n * log m * p + log m * l * a) + O(n + log n)
+ * @see isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass)
+ * @see isBalanceMaintained(const Class& classInfo, const Class& auxClass)
  * @param request by reference
  */
 void Extractor::processSwitch(const Request& request) {
@@ -543,7 +551,7 @@ void Extractor::processSwitch(const Request& request) {
     }
 
     // Checking if classes exist
-    if (searchSchedules(request.getTargetClass()) == -1 or
+    if (searchSchedules(request.getTargetClass()) == -1 or //O(log n * log m)
         searchSchedules(request.getAuxClass()) == -1) {
         cout << "Request Denied" << endl;
         cout << "Reason: The following class does not exist" << endl;
@@ -554,7 +562,7 @@ void Extractor::processSwitch(const Request& request) {
     // Checking if Student is already enrolled in UC that is going to be added
     // And if Student is not enrolled in the UC to be removed
     bool found = false;
-    for (const Class& classInfo: request.getStudent().getClasses()) {
+    for (const Class& classInfo: request.getStudent().getClasses()) { //O(k)
         if (classInfo.getUcCode() == request.getAuxClass().getUcCode()) {
             cout << "Request Denied" << endl;
             cout << "Reason: Student is already enrolled in target UC" << endl;
@@ -570,7 +578,7 @@ void Extractor::processSwitch(const Request& request) {
         return;
     }
 
-    // Checking if resulting schedule is possible
+    // Checking if resulting schedule is possible //O(n * log m * p + log m * l * a)
     if (!isSchedulePossible(request.getStudent(), request.getTargetClass(), request.getAuxClass())) {
         cout << "Request Denied" << endl;
         cout << "Reason: Schedule is not compatible" << endl;
@@ -585,7 +593,7 @@ void Extractor::processSwitch(const Request& request) {
         return;
     }
 
-    // Checking if class balance is maintained
+    // Checking if class balance is maintained //O(n + log n)
     if (!isBalanceMaintained(request.getTargetClass(), request.getAuxClass())) {
         cout << "Request Denied" << endl;
         cout << "Reason: Class balance is not maintained" << endl;
@@ -595,7 +603,7 @@ void Extractor::processSwitch(const Request& request) {
 
 /**
  * @brief A binary search for Schedules using their Class attribute
- * @details
+ * @details Time complexity: O(log n), where "n" is the number of schedules
  * @param classInfo by reference a Class to search in the vector
  * @return Int index of the class in the vector
  */
@@ -612,7 +620,7 @@ unsigned Extractor::searchSchedules(const Class& classInfo) const {
 
 /**
  * @brief Check if a Student's name is lower that other
- * @details
+ * @details Time complexity: O(1)
  * @param a first Student to compare
  * @param b second Student to compare
  * @return True if first Student's name is lower than second, false otherwise
@@ -623,7 +631,7 @@ bool Extractor::studentAlphabetical(const Student& a, const Student& b) {
 
 /**
  * @brief Check if a Student's id is lower that other
- * @details
+ * @details Time complexity: O(1)
  * @param a first Student to compare
  * @param b second Student to compare
  * @return True if first Student's id is lower than second, false otherwise
@@ -634,7 +642,7 @@ bool Extractor::studentNumerical(const Student& a, const Student& b) {
 
 /**
  * @brief A function that prints the Students in a specific sorted manner
- * @details
+ * @details Time complexity: O(n + log n), where "n" is the number of students
  * @param students by reference
  * @param mode by reference
  */
@@ -665,7 +673,7 @@ void Extractor::sortAndPrintStudents(vector<Student>& students, const int& mode)
 
 /**
  * @brief Receives a floating-point number and converts it to the American time format
- * @details
+ * @details Time complexity: O(1)
  * @param floathour by reference
  * @return String in the American time format
  */
@@ -687,7 +695,8 @@ string Extractor::formatedHours(const float& floathour) {
 
 /**
  * @brief A function that checks if a given Request conflicts with a student's schedule
- * @details
+ * @details Time complexity: O(n * log m * p + log m * l * a), where "n" is the number of student's classes, "m" is the number of shedules per class
+ *"p" is the number of lessons per schedule, "l" is the number of lessons of the new schedule and "a" is the number of durations of each lesson
  * @param student by reference
  * @param newClass by reference
  * @return True if the Request doesn't conflicts with the Student's Schedule, false otherwise
@@ -716,7 +725,8 @@ bool Extractor::isSchedulePossible(const Student& student, const Class& newClass
 
 /**
  * @brief A function that checks if a given Request of type "S" conflicts with a Student's schedule
- * @details
+ * @details Time complexity: O(n * log m * p + log m * l * a), where "n" is the number of student's classes, "m" is the number of shedules per class
+ *"p" is the number of lessons per schedule, "l" is the number of lessons of the new schedule and "a" is the number of durations of each lesson
  * @param student by reference
  * @param newClass by reference
  * @param auxClass by reference
@@ -747,7 +757,7 @@ bool Extractor::isSchedulePossible(const Student& student, const Class& newClass
 
 /**
  * @brief A function that checks if a given Request conflicts with the Class's balance
- * @details
+ * @details Time complexity: O(n + log n), where "n" is the number of schedules
  * @param classInfo by reference
  * @return True if the Request doesn't conflicts with the Class's balance, false otherwise
  */
@@ -768,7 +778,7 @@ bool Extractor::isBalanceMaintained(const Class& classInfo) {
 
 /**
  * @brief A function that checks if a given Request of type "S" conflicts with the Class's balance
- * @details
+ * @details Time complexity: O(n + 2log n), where "n" is the number of schedules
  * @param classInfo by reference
  * @param auxClass by reference
  * @return True if the Request doesn't conflicts with the Class's balance, false otherwise
@@ -792,7 +802,7 @@ bool Extractor::isBalanceMaintained(const Class& classInfo, const Class& auxClas
 
 /**
  * @brief Function to save information about processed requests
- * @details
+ * @details Time complexity: O(1)
  * @param request by reference
  */
 void Extractor::addRecord(const Request& request) {
