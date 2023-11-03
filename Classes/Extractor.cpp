@@ -32,11 +32,11 @@ void Extractor::readClassesPerUc() {
     fstream file("../data/classes_per_uc.csv");
 
     if (!file.is_open()) {
-        cerr << "Erro ao abrir o arquivo!" << endl;
+        cerr << "Error opening file!" << endl;
     }
 
     string line;
-    getline(file, line); // Ignorar o cabeçalho
+    getline(file, line); // Ignore header
 
     while (getline(file, line)) {
         // Extracting Info
@@ -58,11 +58,11 @@ void Extractor::readStudentsClasses() {
     fstream file("../data/students_classes.csv");
 
     if (!file.is_open()) {
-        cerr << "Erro ao abrir o arquivo!" << endl;
+        cerr << "Error opening file!" << endl;
     }
 
     string line;
-    getline(file, line); // Ignorar o cabeçalho
+    getline(file, line); // Ignore Header
 
     while (getline(file, line)) {
         // Extracting Info
@@ -99,11 +99,11 @@ void Extractor::readClasses() {
     fstream file("../data/classes.csv");
 
     if (!file.is_open()) {
-        cerr << "Erro ao abrir o arquivo!" << endl;
+        cerr << "Error opening file!" << endl;
     }
 
     string line;
-    getline(file, line); // Ignorar o cabeçalho
+    getline(file, line); // Ignore Header
 
     while(getline(file, line)) {
         istringstream ss(line);
@@ -114,9 +114,9 @@ void Extractor::readClasses() {
         getline(ss, ucCode, ',');
         getline(ss, weekDay, ',');
         ss >> startHour;
-        ss.ignore(1); // Ignorar a vírgula
+        ss.ignore(1); // Ignore comma
         ss >> duration;
-        ss.ignore(1); // Ignorar a vírgula
+        ss.ignore(1); // Ignore comma
         getline(ss, type);
 
         Class classInfo(ucCode, classCode);
@@ -132,7 +132,7 @@ void Extractor::readModifications() {
     if (!file.is_open()) return;
 
     string line;
-    getline(file, line); // Ignorar o cabeçalho
+    getline(file, line); // Ignore Header
 
     while(getline(file, line)) {
         istringstream ss(line);
@@ -306,7 +306,7 @@ void Extractor::getClassStudents(const string& classCode, const int& mode) const
 /**
  * @brief Method that prints Students of a given course unit
  * @details
- * @param ucCode by reference the students's ucCode
+ * @param ucCode by reference the student's ucCode
  * @param mode by reference the way the information will be sorted and then printed
  */
 void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
@@ -327,7 +327,7 @@ void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
 /**
  * @brief Method that prints Students of a given year
  * @details
- * @param year by reference the students's year
+ * @param year by reference the student's year
  * @param mode by reference the way the information will be sorted and then printed
  */
 void Extractor::getYearStudents(const string& year, const int& mode) const {
@@ -381,14 +381,14 @@ void Extractor::TopNStudentsPerUC(const int& N) const {
 
     sort(sortedUcs.begin(), sortedUcs.end(), compareUcs);
 
-    cout << "A(s) " << N << " UC(s) com o maior numero de estudantes e(sao):" << endl;
+    cout << "The " << N << " UC/s with the larger number of students is/are:" << endl;
     for (int i = 0; i < min(N, static_cast<int>(sortedUcs.size())); i++) {
-        cout << i + 1 << ". " << sortedUcs[i].first << " (" << sortedUcs[i].second << " estudantes)" << endl;
+        cout << i + 1 << ". " << sortedUcs[i].first << " (" << sortedUcs[i].second << " students)" << endl;
     }
 }
 
 /**
- * @brief Function that emplaces new Requests in the queue
+ * @brief Function that places new Requests in the queue
  * @details
  * @param studentId by reference
  * @param ucCode by reference
@@ -397,11 +397,11 @@ void Extractor::TopNStudentsPerUC(const int& N) const {
  */
 void Extractor::newRequest(const string& studentId, const string& ucCode, const string& classCode, const string& type) {
     requests.emplace(Student(studentId, ""), Class(ucCode, classCode), type);
-    cout << "Pedido Guardado" << endl;
+    cout << "Request Logged" << endl;
 }
 
 /**
- * @brief Function that emplaces new Requests of type "S" in the queue
+ * @brief Function that places new Requests of type "S" in the queue
  * @details
  * @param studentId by reference
  * @param oldUcCode by reference
@@ -411,7 +411,7 @@ void Extractor::newRequest(const string& studentId, const string& ucCode, const 
  */
 void Extractor::newRequest(const string& studentId, const string& oldUcCode, const string& oldClassCode, const string& ucCode, const string& classCode) {
     requests.emplace(Student(studentId, ""), Class(oldUcCode, oldClassCode), Class(ucCode, classCode));
-    cout << "Pedido Guardado" << endl;
+    cout << "Request Logged" << endl;
 }
 
 /**
@@ -513,14 +513,14 @@ void Extractor::processAdd(const Request& request, int print) {
         return;
     }
 
-    // Adicionar a classe do aluno
+    // Adding class to student
     auto itr = students.find(request.getStudent());
     Student student = *itr;
     students.erase(request.getStudent());
     student.addClass(request.getTargetClass());
     students.insert(student);
 
-    // Adicionar o aluno ao horário
+    // Adding student to schedule
     index = searchSchedules(request.getTargetClass());
     schedules[index].getStudents().insert(student);
     if (print) {
@@ -535,7 +535,7 @@ void Extractor::processAdd(const Request& request, int print) {
  * @param request by reference
  */
 void Extractor::processRemove(const Request& request, int print) {
-    // Remover o aluno do horário
+    // Removing student from schedule
     unsigned index = searchSchedules(request.getTargetClass());
 
     if (index == -1) {
@@ -560,7 +560,7 @@ void Extractor::processRemove(const Request& request, int print) {
         return;
     }
 
-    // Remover a classe do aluno
+    // Removing class from student
     auto itr = students.find(request.getStudent());
     Student student = *itr;
     students.erase(request.getStudent());
@@ -632,7 +632,7 @@ void Extractor::processSwitch(const Request& request, int print) {
         return;
     }
 
-    // Remover o aluno do horário
+    // Removing student from schedule
     set<Student>& scheduleStudents = schedules[indexAuxClass].getStudents();
     auto scheduleItr = scheduleStudents.find(request.getStudent());
     if (scheduleItr != scheduleStudents.end()) {
@@ -652,7 +652,7 @@ void Extractor::processSwitch(const Request& request, int print) {
     student.addClass(request.getTargetClass());
     students.insert(student);
 
-    // Adicionar o aluno ao horário
+    // Adding student to schedule
     schedules[indexTargetClass].getStudents().insert(request.getStudent());
 
     if (print) {
@@ -737,9 +737,9 @@ void Extractor::sortAndPrintStudents(vector<Student>& students, const int& mode)
  * @param floathour by reference
  * @return String in the American time format
  */
-string Extractor::formatedHours(const float& floathour) {
-    int hour = floathour;
-    int minutes = (floathour - hour) * 60;
+string Extractor::formatedHours(const float& floatHour) {
+    int hour = floatHour;
+    int minutes = (floatHour - hour) * 60;
 
     string Pm_Am = "AM";
 
