@@ -20,6 +20,7 @@ void Extractor::readFiles() {
     readClassesPerUc();
     readStudentsClasses();
     readClasses();
+    readModifications();
 }
 
 /**
@@ -30,11 +31,11 @@ void Extractor::readClassesPerUc() {
     fstream file("../data/classes_per_uc.csv");
 
     if (!file.is_open()) {
-        cerr << "Erro ao abrir o arquivo!" << endl;
+        cerr << "Error opening file!" << endl;
     }
 
     string line;
-    getline(file, line); // Ignorar o cabeçalho
+    getline(file, line); // Ignore header
 
     while (getline(file, line)) {
         // Extracting Info
@@ -56,11 +57,11 @@ void Extractor::readStudentsClasses() {
     fstream file("../data/students_classes.csv");
 
     if (!file.is_open()) {
-        cerr << "Erro ao abrir o arquivo!" << endl;
+        cerr << "Error opening file!" << endl;
     }
 
     string line;
-    getline(file, line); // Ignorar o cabeçalho
+    getline(file, line); // Ignore Header
 
     while (getline(file, line)) {
         // Extracting Info
@@ -97,11 +98,11 @@ void Extractor::readClasses() {
     fstream file("../data/classes.csv");
 
     if (!file.is_open()) {
-        cerr << "Erro ao abrir o arquivo!" << endl;
+        cerr << "Error opening file!" << endl;
     }
 
     string line;
-    getline(file, line); // Ignorar o cabeçalho
+    getline(file, line); // Ignore Header
 
     while(getline(file, line)) {
         istringstream ss(line);
@@ -112,9 +113,9 @@ void Extractor::readClasses() {
         getline(ss, ucCode, ',');
         getline(ss, weekDay, ',');
         ss >> startHour;
-        ss.ignore(1); // Ignorar a vírgula
+        ss.ignore(1); // Ignore comma
         ss >> duration;
-        ss.ignore(1); // Ignorar a vírgula
+        ss.ignore(1); // Ignore comma
         getline(ss, type);
 
         Class classInfo(ucCode, classCode);
@@ -123,6 +124,44 @@ void Extractor::readClasses() {
         index = searchSchedules(classInfo);
         schedules[index].addLesson(lesson);
     }
+}
+
+void Extractor::readModifications() {
+    fstream file("../data/records.csv");
+    if (!file.is_open()) return;
+
+    string line;
+    getline(file, line); // Ignore Header
+
+    while(getline(file, line)) {
+        istringstream ss(line);
+        string studentCode, type, targetUcCode, targetClassCode, oldUcCode, oldClassCode;
+
+        getline(ss, studentCode, ',');
+        getline(ss, type, ',');
+        getline(ss, targetUcCode, ',');
+        getline(ss, targetClassCode, ',');
+        getline(ss, oldUcCode, ',');
+        getline(ss, oldClassCode);
+
+        if (type == "Add") type = "A";
+        if (type == "Remove") type = "R";
+        if (type == "Switch") type = "S";
+
+        switch (type[0]) {
+            case 'A':
+                processAdd(Request(Student(studentCode, ""), Class(targetUcCode, targetClassCode), type), 0);
+                break;
+            case 'R':
+                processRemove(Request(Student(studentCode, ""), Class(targetUcCode, targetClassCode), type), 0);
+                break;
+            case 'S':
+                processSwitch(Request(Student(studentCode, ""), Class(oldUcCode, oldClassCode), Class(targetUcCode, targetClassCode)), 0);
+                break;
+        }
+    }
+
+    processAllRequests();
 }
 
 /**
@@ -185,7 +224,7 @@ void Extractor::getStudentSchedule(const string& id) const {
     }
 
     if (orderedSchedule.empty()) {
-        cout << "Invalid UcCode" << endl;
+        cout << "Student is not enrolled in any class" << endl;
         return;
     }
 
@@ -267,8 +306,13 @@ void Extractor::getClassStudents(const string& classCode, const int& mode) const
 
 /**
  * @brief Method that prints Students of a given course unit
+<<<<<<< HEAD
  * @details Time complexity: O(n * m + log n), where "n" is the number of schedules and "m" is the number of students per schedule
  * @param ucCode by reference the students's ucCode
+=======
+ * @details
+ * @param ucCode by reference the student's ucCode
+>>>>>>> develop
  * @param mode by reference the way the information will be sorted and then printed
  */
 void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
@@ -288,8 +332,13 @@ void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
 
 /**
  * @brief Method that prints Students of a given year
+<<<<<<< HEAD
  * @details Time complexity: O(n * m + log n), where "n" is the number of students and "m" is the number of classes per student
  * @param year by reference the students's year
+=======
+ * @details
+ * @param year by reference the student's year
+>>>>>>> develop
  * @param mode by reference the way the information will be sorted and then printed
  */
 void Extractor::getYearStudents(const string& year, const int& mode) const {
@@ -343,35 +392,38 @@ void Extractor::TopNStudentsPerUC(const int& N) const {
 
     sort(sortedUcs.begin(), sortedUcs.end(), compareUcs);
 
-    cout << "A(s) " << N << " UC(s) com o maior numero de estudantes e(sao):" << endl;
+    cout << "The " << N << " UC/s with the larger number of students is/are:" << endl;
     for (int i = 0; i < min(N, static_cast<int>(sortedUcs.size())); i++) {
-        cout << i + 1 << ". " << sortedUcs[i].first << " (" << sortedUcs[i].second << " estudantes)" << endl;
+        cout << i + 1 << ". " << sortedUcs[i].first << " (" << sortedUcs[i].second << " students)" << endl;
     }
 }
 
 /**
+<<<<<<< HEAD
  * @brief Function that emplaces new Requests in the queue
  * @details Time complexity: O(log n), where "n" is the number of students
+=======
+ * @brief Function that places new Requests in the queue
+ * @details
+>>>>>>> develop
  * @param studentId by reference
  * @param ucCode by reference
  * @param classCode by reference
  * @param type by reference
  */
 void Extractor::newRequest(const string& studentId, const string& ucCode, const string& classCode, const string& type) {
-    auto studentIt = students.find(Student(studentId, ""));
-
-    if (studentIt == students.end()) {
-        cout << "Student not Found!" << endl;
-        return;
-    }
-
-    requests.emplace(*studentIt, Class(ucCode, classCode), type);
-    cout << "Pedido Guardado" << endl;
+    requests.emplace(Student(studentId, ""), Class(ucCode, classCode), type);
+    cout << "Request Logged" << endl;
 }
 
 /**
+<<<<<<< HEAD
  * @brief Function that emplaces new Requests of type "S" in the queue
  * @details Time complexity: O(log m), where "m" is the number of students
+=======
+ * @brief Function that places new Requests of type "S" in the queue
+ * @details
+>>>>>>> develop
  * @param studentId by reference
  * @param oldUcCode by reference
  * @param oldClassCode by reference
@@ -379,15 +431,8 @@ void Extractor::newRequest(const string& studentId, const string& ucCode, const 
  * @param classCode by reference
  */
 void Extractor::newRequest(const string& studentId, const string& oldUcCode, const string& oldClassCode, const string& ucCode, const string& classCode) {
-    auto studentIt = students.find(Student(studentId, ""));
-
-    if (studentIt == students.end()) {
-        cout << "Student not Found!" << endl;
-        return;
-    }
-
-    requests.emplace(*studentIt, Class(oldUcCode, oldClassCode), Class(ucCode, classCode));
-    cout << "Pedido Guardado" << endl;
+    requests.emplace(Student(studentId, ""), Class(oldUcCode, oldClassCode), Class(ucCode, classCode));
+    cout << "Request Logged" << endl;
 }
 
 /**
@@ -404,6 +449,13 @@ void Extractor::processRequest() {
 
     Request request = requests.front();
     requests.pop();
+
+    auto studentIt = students.find(Student(request.getStudent().getId(), ""));
+
+    if (studentIt == students.end()) {
+        cout << "Student not Found!" << endl;
+        return;
+    }else request.setStudent(*studentIt);
 
     switch (request.getType()[0]) {
         case 'A':
@@ -438,7 +490,7 @@ void Extractor::processAllRequests() {
  * @see isBalanceMaintained(const Class& classInfo)
  * @param request by reference
  */
-void Extractor::processAdd(const Request& request) {
+void Extractor::processAdd(const Request& request, int print) {
     // Checking if Student is enrolled in 7 UC
     if (request.getStudent().getClasses().size() >= 7) {
         cout << "Request Denied" << endl;
@@ -485,18 +537,20 @@ void Extractor::processAdd(const Request& request) {
         return;
     }
 
-    // Adicionar a classe do aluno
+    // Adding class to student
     auto itr = students.find(request.getStudent()); //O(log a)
     Student student = *itr;
     students.erase(request.getStudent()); // O(a)
     student.addClass(request.getTargetClass()); // O(a)
     students.insert(student); // O(log a)
 
-    // Adicionar o aluno ao horário
-    index = searchSchedules(request.getTargetClass()); // O(log u)
-    schedules[index].getStudents().insert(request.getStudent()); // O(log u)
-    cout << "Request Approved" << endl;
-    addRecord(request);
+    // Adding student to schedule
+    index = searchSchedules(request.getTargetClass());// O(log u)
+    schedules[index].getStudents().insert(student);// O(log u)
+    if (print) {
+        cout << "Request Approved" << endl;
+        addRecord(request);
+    }
 }
 
 /**
@@ -505,44 +559,49 @@ void Extractor::processAdd(const Request& request) {
  * where "n" is the number of students, "l" is the number of classes of a given student and "x" is the number of schedules of a created set
  * @param request by reference
  */
-void Extractor::processRemove(const Request& request) {
-    // Remover a classe do aluno
-    auto itr = students.find(request.getStudent()); //O(log n)
-    Student student = *itr;
-    students.erase(request.getStudent()); // O(n)
-    student.removeClass(request.getTargetClass()); // O(l)
-    students.insert(student); // O(log n)
 
-    // Remover o aluno do horário
-    unsigned index = searchSchedules(request.getTargetClass()); // O(log l)
+void Extractor::processRemove(const Request& request, int print) {
+    // Removing student from schedule
+    unsigned index = searchSchedules(request.getTargetClass());// O(log l)
 
     if (index == -1) {
         cout << "Request Denied" << endl;
         cout << "Reason: The following class does not exist" <<  endl;
         cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
+        return;
     }
 
     set<Student>& scheduleStudents = schedules[index].getStudents();
     auto scheduleItr = scheduleStudents.find(request.getStudent()); //O(log n)
     if (scheduleItr != scheduleStudents.end()) {
         scheduleStudents.erase(scheduleItr); //O(x)
-        cout << "Request Approved" << endl;
-        addRecord(request);
+        if (print) {
+            cout << "Request Approved" << endl;
+            addRecord(request);
+        }
     } else {
         cout << "Request Denied" << endl;
         cout << "Reason: Student is not enrolled in the following class" <<  endl;
         cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
+        return;
     }
+
+    // Removing class from student
+    auto itr = students.find(request.getStudent());//O(log n)
+    Student student = *itr;
+    students.erase(request.getStudent());  // O(n)
+    student.removeClass(request.getTargetClass()); // O(l)
+    students.insert(student); // O(log n)
 }
 
 /**
- * @brief Function that processes the Request of type R in the queue
- * @details Time complexity: O(log n * log m) + O(k) + O(n * log m * p + log m * l * a) + O(n + log n)
+ * @brief Function that processes the Request of type S in the queue
+ * @details Time complexity: O (2log n) + O(k) + O(n * log m * p + log m * l * a) + O(n + log n)
  * @see isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass)
  * @see isBalanceMaintained(const Class& classInfo, const Class& auxClass)
  * @param request by reference
  */
-void Extractor::processSwitch(const Request& request) {
+void Extractor::processSwitch(const Request& request, int print) {
     // Checking if Student is enrolled in 7 UC
     if (request.getStudent().getClasses().size() > 7) {
         cout << "Request Denied" << endl;
@@ -551,8 +610,10 @@ void Extractor::processSwitch(const Request& request) {
     }
 
     // Checking if classes exist
-    if (searchSchedules(request.getTargetClass()) == -1 or //O(log n * log m)
-        searchSchedules(request.getAuxClass()) == -1) {
+    unsigned indexTargetClass = searchSchedules(request.getTargetClass());
+    unsigned indexAuxClass = searchSchedules(request.getAuxClass());
+    if ( indexTargetClass == -1 or //O (2log n)
+         indexAuxClass == -1) {
         cout << "Request Denied" << endl;
         cout << "Reason: The following class does not exist" << endl;
         cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
@@ -564,11 +625,11 @@ void Extractor::processSwitch(const Request& request) {
     bool found = false;
     for (const Class& classInfo: request.getStudent().getClasses()) { //O(k)
         if (classInfo.getUcCode() == request.getAuxClass().getUcCode()) {
+            found = true;
+        } else if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
             cout << "Request Denied" << endl;
             cout << "Reason: Student is already enrolled in target UC" << endl;
             return;
-        } else if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
-            found = true;
         }
     }
     if (!found) {
@@ -586,8 +647,7 @@ void Extractor::processSwitch(const Request& request) {
     }
 
     // Checking if target class has available space
-    unsigned index = searchSchedules(request.getTargetClass());
-    if (schedules[index].getStudents().size() > 40) {
+    if (schedules[indexTargetClass].getStudents().size() > 40) {
         cout << "Request Denied" << endl;
         cout << "Reason: Class is at capacity" << endl;
         return;
@@ -598,6 +658,34 @@ void Extractor::processSwitch(const Request& request) {
         cout << "Request Denied" << endl;
         cout << "Reason: Class balance is not maintained" << endl;
         return;
+    }
+
+    // Removing student from schedule
+    set<Student>& scheduleStudents = schedules[indexAuxClass].getStudents();
+    auto scheduleItr = scheduleStudents.find(request.getStudent());
+    if (scheduleItr != scheduleStudents.end()) {
+        scheduleStudents.erase(scheduleItr);
+    } else {
+        cout << "Request Denied" << endl;
+        cout << "Reason: Student is not enrolled in the following class" <<  endl;
+        cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
+        return;
+    }
+
+    // Removing and Adding respective classes to Student
+    auto itr = students.find(request.getStudent());
+    Student student = *itr;
+    students.erase(request.getStudent());
+    student.removeClass(request.getAuxClass());
+    student.addClass(request.getTargetClass());
+    students.insert(student);
+
+    // Adding student to schedule
+    schedules[indexTargetClass].getStudents().insert(request.getStudent());
+
+    if (print) {
+        cout << "Request Approved" << endl;
+        addRecord(request);
     }
 }
 
@@ -677,9 +765,9 @@ void Extractor::sortAndPrintStudents(vector<Student>& students, const int& mode)
  * @param floathour by reference
  * @return String in the American time format
  */
-string Extractor::formatedHours(const float& floathour) {
-    int hour = floathour;
-    int minutes = (floathour - hour) * 60;
+string Extractor::formatedHours(const float& floatHour) {
+    int hour = floatHour;
+    int minutes = (floatHour - hour) * 60;
 
     string Pm_Am = "AM";
 
@@ -807,14 +895,24 @@ bool Extractor::isBalanceMaintained(const Class& classInfo, const Class& auxClas
  */
 void Extractor::addRecord(const Request& request) {
     ifstream infile("../data/records.csv");
-    // Create and open Records file
-    ofstream record("../data/records.csv");
-    if (!infile.good()) { record << "StudentCode,StudentName,Type,TargetUcCode,TargetClassCode" << endl; }
+    ofstream record;
+
+    if (!infile.good()) {
+        // Create and open Records file
+        record = ofstream("../data/records.csv");
+        record << "StudentCode,Type,TargetUcCode,TargetClassCode,OldUcCode,OldClassCode" << endl;
+    } else record = ofstream("../data/records.csv", ios_base::app);
     infile.close();
 
-    record << request.getStudent().getId() << ',' << request.getStudent().getName() << ',';
-    if (request.getType() == "A") record << "ADD";
-    if (request.getType() == "R") record << "REMOVE";
-    if (request.getType() == "S") record << "SWITCH";
-    record << ',' << request.getTargetClass().getUcCode() << ',' << request.getTargetClass().getClassCode() << endl;
+    record << request.getStudent().getId() << ',';
+    if (request.getType() == "A") record << "Add";
+    if (request.getType() == "R") record << "Remove";
+    if (request.getType() == "S") record << "Switch";
+    record << ',' << request.getTargetClass().getUcCode() << ',' << request.getTargetClass().getClassCode() << ',';
+    if (request.getType() != "S") {
+        record << "-,-" << endl;
+    } else {
+        record << request.getAuxClass().getUcCode() << ',' << request.getAuxClass().getClassCode() << endl;
+    }
+    record.close();
 }
