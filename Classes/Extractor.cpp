@@ -21,6 +21,7 @@ void Extractor::readFiles() {
     readClassesPerUc();
     readStudentsClasses();
     readClasses();
+    readModifications();
 }
 
 /**
@@ -124,6 +125,44 @@ void Extractor::readClasses() {
         index = searchSchedules(classInfo);
         schedules[index].addLesson(lesson);
     }
+}
+
+void Extractor::readModifications() {
+    fstream file("../data/records.csv");
+    if (!file.is_open()) return;
+
+    string line;
+    getline(file, line); // Ignorar o cabeçalho
+
+    while(getline(file, line)) {
+        istringstream ss(line);
+        string studentCode, type, targetUcCode, targetClassCode, oldUcCode, oldClassCode;
+
+        getline(ss, studentCode, ',');
+        getline(ss, type, ',');
+        getline(ss, targetUcCode, ',');
+        getline(ss, targetClassCode, ',');
+        getline(ss, oldUcCode, ',');
+        getline(ss, oldClassCode);
+
+        if (type == "Add") type = "A";
+        if (type == "Remove") type = "R";
+        if (type == "Switch") type = "S";
+
+        switch (type[0]) {
+            case 'A':
+                processAdd(Request(Student(studentCode, ""), Class(targetUcCode, targetClassCode), type), 0);
+                break;
+            case 'R':
+                processRemove(Request(Student(studentCode, ""), Class(targetUcCode, targetClassCode), type), 0);
+                break;
+            case 'S':
+                processSwitch(Request(Student(studentCode, ""), Class(oldUcCode, oldClassCode), Class(targetUcCode, targetClassCode)), 0);
+                break;
+        }
+    }
+
+    processAllRequests();
 }
 
 /**
@@ -427,7 +466,7 @@ void Extractor::processAllRequests() {
  * @details
  * @param request by reference
  */
-void Extractor::processAdd(const Request& request) {
+void Extractor::processAdd(const Request& request, int print) {
     // Checking if Student is enrolled in 7 UC
     if (request.getStudent().getClasses().size() >= 7) {
         cout << "Request Denied" << endl;
@@ -484,8 +523,10 @@ void Extractor::processAdd(const Request& request) {
     // Adicionar o aluno ao horário
     index = searchSchedules(request.getTargetClass());
     schedules[index].getStudents().insert(student);
-    cout << "Request Approved" << endl;
-    addRecord(request);
+    if (print) {
+        cout << "Request Approved" << endl;
+        addRecord(request);
+    }
 }
 
 /**
@@ -493,7 +534,7 @@ void Extractor::processAdd(const Request& request) {
  * @details
  * @param request by reference
  */
-void Extractor::processRemove(const Request& request) {
+void Extractor::processRemove(const Request& request, int print) {
     // Remover o aluno do horário
     unsigned index = searchSchedules(request.getTargetClass());
 
@@ -508,8 +549,10 @@ void Extractor::processRemove(const Request& request) {
     auto scheduleItr = scheduleStudents.find(request.getStudent());
     if (scheduleItr != scheduleStudents.end()) {
         scheduleStudents.erase(scheduleItr);
-        cout << "Request Approved" << endl;
-        addRecord(request);
+        if (print) {
+            cout << "Request Approved" << endl;
+            addRecord(request);
+        }
     } else {
         cout << "Request Denied" << endl;
         cout << "Reason: Student is not enrolled in the following class" <<  endl;
@@ -530,7 +573,7 @@ void Extractor::processRemove(const Request& request) {
  * @details
  * @param request by reference
  */
-void Extractor::processSwitch(const Request& request) {
+void Extractor::processSwitch(const Request& request, int print) {
     // Checking if Student is enrolled in 7 UC
     if (request.getStudent().getClasses().size() > 7) {
         cout << "Request Denied" << endl;
@@ -612,8 +655,10 @@ void Extractor::processSwitch(const Request& request) {
     // Adicionar o aluno ao horário
     schedules[indexTargetClass].getStudents().insert(request.getStudent());
 
-    cout << "Request Approved" << endl;
-    addRecord(request);
+    if (print) {
+        cout << "Request Approved" << endl;
+        addRecord(request);
+    }
 }
 
 /**
@@ -820,11 +865,11 @@ void Extractor::addRecord(const Request& request) {
     if (!infile.good()) {
         // Create and open Records file
         record = ofstream("../data/records.csv");
-        record << "StudentCode,StudentName,Type,TargetUcCode,TargetClassCode,OldUcCode,OldClassCode" << endl;
+        record << "StudentCode,Type,TargetUcCode,TargetClassCode,OldUcCode,OldClassCode" << endl;
     } else record = ofstream("../data/records.csv", ios_base::app);
     infile.close();
 
-    record << request.getStudent().getId() << ',' << request.getStudent().getName() << ',';
+    record << request.getStudent().getId() << ',';
     if (request.getType() == "A") record << "Add";
     if (request.getType() == "R") record << "Remove";
     if (request.getType() == "S") record << "Switch";

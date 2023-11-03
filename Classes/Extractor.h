@@ -43,14 +43,15 @@ class Extractor {
         void newRequest(const string& studentId, const string& oldUcCode, const string& oldClassCode, const string& ucCode, const string& classCode);
         void processRequest();
         void processAllRequests();
-        void processAdd(const Request& request);
-        void processRemove(const Request& request);
-        void processSwitch(const Request& request);
+        void processAdd(const Request& request, int print=1);
+        void processRemove(const Request& request, int print=1);
+        void processSwitch(const Request& request, int print=1);
 
         // Auxiliary Functions
         void readClassesPerUc();
         void readStudentsClasses();
         void readClasses();
+        void readModifications();
         unsigned searchSchedules(const Class& classInfo) const;
         static bool studentAlphabetical(const Student& a, const Student& b);
         static bool studentNumerical(const Student& a, const Student& b);
