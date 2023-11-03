@@ -95,7 +95,8 @@ void App::menuSchedules() const {
             "\n0. Go Back"
             "\n1. Schedule of Class"
             "\n2. Schedule of a Student"
-            "\n3. Schedule of a Uc\n";
+            "\n3. Schedule of a Uc\n"
+            "A sua opção: ";
     cin >> choice;
 
     // Check if option is valid
@@ -131,7 +132,8 @@ void App::menuStudents() const {
             "\n0. Go Back"
             "\n1. Class of Students"
             "\n2. Uc of Students"
-            "\n3. Year of Students\n";
+            "\n3. Year of Students"
+            "\nA sua opção: ";
     cin >> choice;
 
     // Check if option is valid
@@ -213,6 +215,7 @@ void App::checkUcStudents() const {
     int mode;
     cout << "UC Code: ";
     cin >> ucCode;
+    printOrdeningModes();
     cout << "Modo de ordenação: ";
     cin >> mode;
     while (!isValidOption(mode, 4)) cin >> mode;
@@ -228,6 +231,7 @@ void App::checkYearStudents() const {
     int mode;
     cout << "Year: ";
     cin >> year;
+    printOrdeningModes();
     cout << "Modo de ordenação: ";
     cin >> mode;
     while (!isValidOption(mode, 4)) cin >> mode;
@@ -276,14 +280,14 @@ void App::addNewRequest() {
     cin >> type;
     cout << "Student ID: ";
     cin >> studentId;
-    cout << "UC Code: ";
+    cout << "Destination UC Code: ";
     cin >> ucCode;
-    cout << "Class Code: ";
+    cout << "Destination Class Code: ";
     cin >> classCode;
     if (type == "S") {
-        cout << "UC Code to change: ";
+        cout << "UC Code to be removed: ";
         cin >> oldUcCode;
-        cout << "Class Code to change: ";
+        cout << "Class Code to be removed: ";
         cin >> oldClassCode;
         information.newRequest(studentId, oldUcCode, oldClassCode, ucCode, classCode);
     } else information.newRequest(studentId, ucCode, classCode, type);
@@ -327,5 +331,5 @@ void App::printOrdeningModes() {
             "\n1. Alfabeticamente Crescente"
             "\n2. Alfabeticamente Decrescente"
             "\n3. Numericamente Crescente"
-            "\n4. Numericamente Decrescente";
+            "\n4. Numericamente Decrescente\n";
 }

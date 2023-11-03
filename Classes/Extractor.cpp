@@ -185,7 +185,7 @@ void Extractor::getStudentSchedule(const string& id) const {
     }
 
     if (orderedSchedule.empty()) {
-        cout << "Invalid UcCode" << endl;
+        cout << "Student is not enrolled in any class" << endl;
         return;
     }
 
@@ -357,14 +357,7 @@ void Extractor::TopNStudentsPerUC(const int& N) const {
  * @param type by reference
  */
 void Extractor::newRequest(const string& studentId, const string& ucCode, const string& classCode, const string& type) {
-    auto studentIt = students.find(Student(studentId, ""));
-
-    if (studentIt == students.end()) {
-        cout << "Student not Found!" << endl;
-        return;
-    }
-
-    requests.emplace(*studentIt, Class(ucCode, classCode), type);
+    requests.emplace(Student(studentId, ""), Class(ucCode, classCode), type);
     cout << "Pedido Guardado" << endl;
 }
 
@@ -378,14 +371,7 @@ void Extractor::newRequest(const string& studentId, const string& ucCode, const 
  * @param classCode by reference
  */
 void Extractor::newRequest(const string& studentId, const string& oldUcCode, const string& oldClassCode, const string& ucCode, const string& classCode) {
-    auto studentIt = students.find(Student(studentId, ""));
-
-    if (studentIt == students.end()) {
-        cout << "Student not Found!" << endl;
-        return;
-    }
-
-    requests.emplace(*studentIt, Class(oldUcCode, oldClassCode), Class(ucCode, classCode));
+    requests.emplace(Student(studentId, ""), Class(oldUcCode, oldClassCode), Class(ucCode, classCode));
     cout << "Pedido Guardado" << endl;
 }
 
@@ -401,6 +387,13 @@ void Extractor::processRequest() {
 
     Request request = requests.front();
     requests.pop();
+
+    auto studentIt = students.find(Student(request.getStudent().getId(), ""));
+
+    if (studentIt == students.end()) {
+        cout << "Student not Found!" << endl;
+        return;
+    }else request.setStudent(*studentIt);
 
     switch (request.getType()[0]) {
         case 'A':
@@ -490,7 +483,7 @@ void Extractor::processAdd(const Request& request) {
 
     // Adicionar o aluno ao horário
     index = searchSchedules(request.getTargetClass());
-    schedules[index].getStudents().insert(request.getStudent());
+    schedules[index].getStudents().insert(student);
     cout << "Request Approved" << endl;
     addRecord(request);
 }
@@ -501,13 +494,6 @@ void Extractor::processAdd(const Request& request) {
  * @param request by reference
  */
 void Extractor::processRemove(const Request& request) {
-    // Remover a classe do aluno
-    auto itr = students.find(request.getStudent());
-    Student student = *itr;
-    students.erase(request.getStudent());
-    student.removeClass(request.getTargetClass());
-    students.insert(student);
-
     // Remover o aluno do horário
     unsigned index = searchSchedules(request.getTargetClass());
 
@@ -515,6 +501,7 @@ void Extractor::processRemove(const Request& request) {
         cout << "Request Denied" << endl;
         cout << "Reason: The following class does not exist" <<  endl;
         cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
+        return;
     }
 
     set<Student>& scheduleStudents = schedules[index].getStudents();
@@ -527,11 +514,19 @@ void Extractor::processRemove(const Request& request) {
         cout << "Request Denied" << endl;
         cout << "Reason: Student is not enrolled in the following class" <<  endl;
         cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
+        return;
     }
+
+    // Remover a classe do aluno
+    auto itr = students.find(request.getStudent());
+    Student student = *itr;
+    students.erase(request.getStudent());
+    student.removeClass(request.getTargetClass());
+    students.insert(student);
 }
 
 /**
- * @brief Function that processes the Request of type R in the queue
+ * @brief Function that processes the Request of type S in the queue
  * @details
  * @param request by reference
  */
@@ -544,8 +539,10 @@ void Extractor::processSwitch(const Request& request) {
     }
 
     // Checking if classes exist
-    if (searchSchedules(request.getTargetClass()) == -1 or
-        searchSchedules(request.getAuxClass()) == -1) {
+    unsigned indexTargetClass = searchSchedules(request.getTargetClass());
+    unsigned indexAuxClass = searchSchedules(request.getAuxClass());
+    if ( indexTargetClass == -1 or
+         indexAuxClass == -1) {
         cout << "Request Denied" << endl;
         cout << "Reason: The following class does not exist" << endl;
         cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
@@ -557,11 +554,11 @@ void Extractor::processSwitch(const Request& request) {
     bool found = false;
     for (const Class& classInfo: request.getStudent().getClasses()) {
         if (classInfo.getUcCode() == request.getAuxClass().getUcCode()) {
+            found = true;
+        } else if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
             cout << "Request Denied" << endl;
             cout << "Reason: Student is already enrolled in target UC" << endl;
             return;
-        } else if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
-            found = true;
         }
     }
     if (!found) {
@@ -579,8 +576,7 @@ void Extractor::processSwitch(const Request& request) {
     }
 
     // Checking if target class has available space
-    unsigned index = searchSchedules(request.getTargetClass());
-    if (schedules[index].getStudents().size() > 40) {
+    if (schedules[indexTargetClass].getStudents().size() > 40) {
         cout << "Request Denied" << endl;
         cout << "Reason: Class is at capacity" << endl;
         return;
@@ -592,6 +588,32 @@ void Extractor::processSwitch(const Request& request) {
         cout << "Reason: Class balance is not maintained" << endl;
         return;
     }
+
+    // Remover o aluno do horário
+    set<Student>& scheduleStudents = schedules[indexAuxClass].getStudents();
+    auto scheduleItr = scheduleStudents.find(request.getStudent());
+    if (scheduleItr != scheduleStudents.end()) {
+        scheduleStudents.erase(scheduleItr);
+    } else {
+        cout << "Request Denied" << endl;
+        cout << "Reason: Student is not enrolled in the following class" <<  endl;
+        cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
+        return;
+    }
+
+    // Removing and Adding respective classes to Student
+    auto itr = students.find(request.getStudent());
+    Student student = *itr;
+    students.erase(request.getStudent());
+    student.removeClass(request.getAuxClass());
+    student.addClass(request.getTargetClass());
+    students.insert(student);
+
+    // Adicionar o aluno ao horário
+    schedules[indexTargetClass].getStudents().insert(request.getStudent());
+
+    cout << "Request Approved" << endl;
+    addRecord(request);
 }
 
 /**
@@ -793,14 +815,23 @@ bool Extractor::isBalanceMaintained(const Class& classInfo, const Class& auxClas
 
 void Extractor::addRecord(const Request& request) {
     ifstream infile("../data/records.csv");
-    // Create and open Records file
-    ofstream record("../data/records.csv");
-    if (!infile.good()) { record << "StudentCode,StudentName,Type,TargetUcCode,TargetClassCode" << endl; }
+    ofstream record;
+
+    if (!infile.good()) {
+        // Create and open Records file
+        record = ofstream("../data/records.csv");
+        record << "StudentCode,StudentName,Type,TargetUcCode,TargetClassCode,OldUcCode,OldClassCode" << endl;
+    } else ofstream ofstream("../data/records.csv", ios_base::app);
     infile.close();
 
     record << request.getStudent().getId() << ',' << request.getStudent().getName() << ',';
-    if (request.getType() == "A") record << "ADD";
-    if (request.getType() == "R") record << "REMOVE";
-    if (request.getType() == "S") record << "SWITCH";
-    record << ',' << request.getTargetClass().getUcCode() << ',' << request.getTargetClass().getClassCode() << endl;
+    if (request.getType() == "A") record << "Add";
+    if (request.getType() == "R") record << "Remove";
+    if (request.getType() == "S") record << "Switch";
+    record << ',' << request.getTargetClass().getUcCode() << ',' << request.getTargetClass().getClassCode() << ',';
+    if (request.getType() != "S") {
+        record << "-,-" << endl;
+    } else {
+        record << request.getAuxClass().getUcCode() << ',' << request.getAuxClass().getClassCode() << endl;
+    }
 }
