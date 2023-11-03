@@ -821,7 +821,7 @@ void Extractor::addRecord(const Request& request) {
         // Create and open Records file
         record = ofstream("../data/records.csv");
         record << "StudentCode,StudentName,Type,TargetUcCode,TargetClassCode,OldUcCode,OldClassCode" << endl;
-    } else ofstream ofstream("../data/records.csv", ios_base::app);
+    } else record = ofstream("../data/records.csv", ios_base::app);
     infile.close();
 
     record << request.getStudent().getId() << ',' << request.getStudent().getName() << ',';
@@ -834,4 +834,5 @@ void Extractor::addRecord(const Request& request) {
     } else {
         record << request.getAuxClass().getUcCode() << ',' << request.getAuxClass().getClassCode() << endl;
     }
+    record.close();
 }
