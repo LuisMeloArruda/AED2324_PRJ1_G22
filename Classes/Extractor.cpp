@@ -306,13 +306,8 @@ void Extractor::getClassStudents(const string& classCode, const int& mode) const
 
 /**
  * @brief Method that prints Students of a given course unit
-<<<<<<< HEAD
  * @details Time complexity: O(n * m + log n), where "n" is the number of schedules and "m" is the number of students per schedule
  * @param ucCode by reference the students's ucCode
-=======
- * @details
- * @param ucCode by reference the student's ucCode
->>>>>>> develop
  * @param mode by reference the way the information will be sorted and then printed
  */
 void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
@@ -332,13 +327,8 @@ void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
 
 /**
  * @brief Method that prints Students of a given year
-<<<<<<< HEAD
  * @details Time complexity: O(n * m + log n), where "n" is the number of students and "m" is the number of classes per student
  * @param year by reference the students's year
-=======
- * @details
- * @param year by reference the student's year
->>>>>>> develop
  * @param mode by reference the way the information will be sorted and then printed
  */
 void Extractor::getYearStudents(const string& year, const int& mode) const {
@@ -399,13 +389,8 @@ void Extractor::TopNStudentsPerUC(const int& N) const {
 }
 
 /**
-<<<<<<< HEAD
  * @brief Function that emplaces new Requests in the queue
  * @details Time complexity: O(log n), where "n" is the number of students
-=======
- * @brief Function that places new Requests in the queue
- * @details
->>>>>>> develop
  * @param studentId by reference
  * @param ucCode by reference
  * @param classCode by reference
@@ -416,14 +401,8 @@ void Extractor::newRequest(const string& studentId, const string& ucCode, const 
     cout << "Request Logged" << endl;
 }
 
-/**
-<<<<<<< HEAD
  * @brief Function that emplaces new Requests of type "S" in the queue
  * @details Time complexity: O(log m), where "m" is the number of students
-=======
- * @brief Function that places new Requests of type "S" in the queue
- * @details
->>>>>>> develop
  * @param studentId by reference
  * @param oldUcCode by reference
  * @param oldClassCode by reference
