@@ -2,7 +2,7 @@
 
 /**
  * @brief Standard Constructor, sets all the attributes to their respective empty values
- * @details
+ * @details Time complexity: O(1)
  */
 Extractor::Extractor() {
     this->students = set<Student>();
@@ -12,7 +12,6 @@ Extractor::Extractor() {
 
 /**
  * @brief Runs read methods and fills Extractor's attributes
- * @details
  * @see readClassesPerUc()
  * @see readStudentsClasses()
  * @see readClasses()
@@ -791,6 +790,11 @@ bool Extractor::isBalanceMaintained(const Class& classInfo, const Class& auxClas
     return false;
 }
 
+/**
+ * @brief Function to save information about processed requests
+ * @details
+ * @param request by reference
+ */
 void Extractor::addRecord(const Request& request) {
     ifstream infile("../data/records.csv");
     // Create and open Records file

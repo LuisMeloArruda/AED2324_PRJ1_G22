@@ -3,7 +3,7 @@
 
 /**
  * @brief Constructor of class Student, attributes id and name are set to the given ones
- * @details
+ * @details Time complexity: O(1)
  * @param id
  * @param name
  */
@@ -14,7 +14,7 @@ Student::Student(const string& id, const string& name) {
 
 /**
  * @brief Standart Constructor of class Student, the attributes id and name are set to "Not Initialized"
- * @details
+ * @details Time complexity: O(1)
  */
 Student::Student(){
     this->id = "Not Initialized";
@@ -23,7 +23,7 @@ Student::Student(){
 
 /**
  * @brief Returns the id of a Student
- * @details
+ * @details Time complexity: O(1)
  * @return string id of Student
  */
 string Student::getId() const {
@@ -36,7 +36,7 @@ void Student::setId(const string& id) {
 
 /**
  * @brief Returns the name of a Student
- * @details
+ * @details Time complexity: O(1)
  * @return string name of Student
  */
 string Student::getName() const {
@@ -50,7 +50,7 @@ void Student::setName(const string& name) {
 
 /**
  * @brief Returns the vector of Classes of the class Student
- * @details
+ * @details Time complexity: O(1)
  * @return vector of classes of Student
  */
 vector<Class> Student::getClasses() const{
@@ -63,7 +63,7 @@ void Student::setClasses(const vector<Class>& classes){
 
 /**
  * @brief Push back a class in Student's vector of Classes attribute
- * @details
+ * @details Time complexity: O(1)
  * @param classInfo by reference to add in Student's vector of classes
  */
 void Student::addClass(const Class& classInfo) {
@@ -72,7 +72,7 @@ void Student::addClass(const Class& classInfo) {
 
 /**
  * @brief Find and erase a Class in Student's vector of Classes attribute
- * @details
+ * @details Time complexity: O(n)
  * @param classInfo by reference to remove from Student's vector of classes
  */
 void Student::removeClass(const Class& classInfo) {
@@ -84,7 +84,7 @@ void Student::removeClass(const Class& classInfo) {
 
 /**
  * @brief Checks if a Student's id is lower than other
- * @details
+ * @details Time complexity: O(1)
  * @param second Student to compare
  * @return True if first student's id is lower that second, false otherwise
  */

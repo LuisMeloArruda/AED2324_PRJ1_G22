@@ -2,7 +2,7 @@
 
 /**
  * @brief Constructor of Class Lesson, it sets all the attributes to the given ones
- * @details
+ * @details Time complexity: O(1)
  * @param weekDay by reference day the lesson happens
  * @param start by reference when the lesson starts
  * @param duration by reference time the lesson takes
@@ -18,7 +18,7 @@ Lesson::Lesson(const string& weekDay, const float& start, const float& duration,
 /**
  * @brief Constructor of Class Lesson, Constructor of Class Lesson, it sets all the attributes to the given ones, in this case
  * the attributes weekDay and duration are in another class Lesson
- * @details
+ * @details Time complexity: O(1)
  * @param baseLesson by reference a class Lesson with the weekDay and duration of Lesson
  * @param start by reference when the Lesson starts
  * @param type by reference type of the Lesson
@@ -32,7 +32,7 @@ Lesson::Lesson(const Lesson& baseLesson, const float& start, const string& type)
 
 /**
  * @brief Returns the attribute weekDay of a Lesson
- * @details
+ * @details Time complexity: O(1)
  * @return string weekDay of Lesson
  */
 string Lesson::getWeekDay() const {
@@ -45,7 +45,7 @@ void Lesson::setWeekDay(const string& weekDay) {
 
 /**
  * @brief Returns the attribute start of a Lesson
- * @details
+ * @details Time complexity: O(1)
  * @return float start of Lesson
  */
 float Lesson::getStart() const {
@@ -58,7 +58,7 @@ void Lesson::setStart(const float& start) {
 
 /**
  * @brief Returns the attribute duration of a Lesson
- * @details
+ * @details Time complexity: O(1)
  * @return float duration of Lesson
  */
 float Lesson::getDuration() const {
@@ -71,7 +71,7 @@ void Lesson::setDuration(const float& duration) {
 
 /**
  * @brief Returns the attribute type of a Lesson
- * @details
+ * @details Time complexity: O(1)
  * @return string type of Lesson
  */
 string Lesson::getType() const {
@@ -84,7 +84,7 @@ void Lesson::setType(const string& type) {
 
 /**
  * @brief Checks whether one lesson occurs before another or if the lesson type is of lower precedence than the other
- * @details
+ * @details Time complexity: O(1)
  * @param b Lesson to compare
  * @return true if a lesson happens before another, false otherwise
  * if both are in the same time then returns true if type is lower than another, false otherwise

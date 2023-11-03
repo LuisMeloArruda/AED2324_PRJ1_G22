@@ -2,7 +2,7 @@
 
 /**
  * @brief Constructor of Class Request, it sets Student, targetClass and type attributes to the given ones
- * @details
+ * @details Time complexity: O(1)
  * @param student by reference Student who made the Request
  * @param targetClass by reference Student's desired Class
  * @param type by reference type of the Request
@@ -15,7 +15,7 @@ Request::Request(const Student& student, const Class& targetClass, const string&
 
 /**
  * @brief Constructor of Class Request if type equals to "S", it sets Student, targetClass and auxClass attributes to the given ones
- * @details
+ * @details Time complexity: O(1)
  * @param student by reference Student who made the Request
  * @param oldClass by reference Student's old Class
  * @param targetClass by reference Student's desired Class
@@ -29,7 +29,7 @@ Request::Request(const Student& student, const Class& oldClass, const Class& tar
 
 /**
  * @brief Returns the attribute class Student of Request
- * @details
+ * @details Time complexity: O(1)
  * @return Class Student of Request
  */
 Student Request::getStudent() const {
@@ -42,7 +42,7 @@ void Request::setStudent(const Student& student) {
 
 /**
  * @brief Returns the attribute Class targetClass of Request
- * @details
+ * @details Time complexity: O(1)
  * @return Class Object targetClass of Request
  */
 Class Request::getTargetClass() const {
@@ -55,7 +55,7 @@ void Request::setTargetClass(const Class& targetClass) {
 
 /**
  * @brief Returns the attribute Class auxClass of Request
- * @details
+ * @details Time complexity: O(1)
  * @return Class Object auxClass of Request
  */
 Class Request::getAuxClass() const {
@@ -68,7 +68,7 @@ void Request::setAuxClass(const Class& auxClass) {
 
 /**
  * @brief Returns the attribute type of Request
- * @details
+ * @details Time complexity: O(1)
  * @return string type of Request
  */
 string Request::getType() const {

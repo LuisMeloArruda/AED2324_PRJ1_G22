@@ -2,7 +2,7 @@
 
 /**
  * @brief Standart Constructor of Class class, all the attributes are set to "Not Initialized"
- * @details
+ * @details Time complexity: O(1)
  */
 Class::Class(){
     this->ucCode = "Not Initialized";
@@ -11,7 +11,7 @@ Class::Class(){
 
 /**
  * @brief Constructor of Class class, all the attributes are set to the given values
- * @details
+ * @details Time complexity: O(1)
  * @param ucCode ID of course unit
  * @param classCode ID of class
  */
@@ -22,7 +22,7 @@ Class::Class(const string& ucCode,const string& classCode) {
 
 /**
  * @brief Returns the ID of class
- * @details
+ * @details Time complexity: O(1)
  * @return The ID of class
  */
 string Class::getClassCode() const {
@@ -35,7 +35,7 @@ void Class::setClassCode(const string& classCode) {
 
 /**
  * @brief Returns the ID of course unit
- * @details
+ * @details Time complexity: O(1)
  * @return The ID of course unit
  */
 string Class::getUcCode() const {
@@ -48,7 +48,7 @@ void Class::setUcCode(const string& ucCode) {
 
 /**
  * @brief Checks if a class is equal to another
- * @details
+ * @details Time complexity: O(1)
  * @param b Class to compare
  * @return true if equal, false otherwise
  */
@@ -58,7 +58,7 @@ bool Class::operator==(const Class& b) const {
 
 /**
  * @brief Checks if a class is lower that another
- * @details
+ * @details Time complexity: O(1)
  * @param b Class to compare
  * @return true if lower, false otherwise
  */

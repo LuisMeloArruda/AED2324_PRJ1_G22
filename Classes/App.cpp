@@ -7,7 +7,6 @@ using namespace std;
 
 /**
  * @brief Constructor of Class App, it sets the Extractor Object to the given information
- * @details
  * @param information
  */
 App::App(const Extractor &information) {
@@ -16,7 +15,6 @@ App::App(const Extractor &information) {
 
 /**
  * @brief Method the runs the program, it calls the menu and the read files fuctions
- * @details
  */
 void App::run() {
     information.readFiles();
@@ -57,7 +55,6 @@ void App::run() {
 
 /**
  * @brief Method which prints all the user's possibilities
- * @details
  * @return user's choice
  */
 int App::menu() {
@@ -85,7 +82,6 @@ int App::menu() {
 
 /**
  * @brief Method which prints possibilities of schedules's menu
- * @details
  */
 void App::menuSchedules() const {
     system("clear");
@@ -121,7 +117,6 @@ void App::menuSchedules() const {
 
 /**
  * @brief Method which prints possibilities of students's menu
- * @details
  */
 void App::menuStudents() const {
     system("clear");
@@ -157,7 +152,6 @@ void App::menuStudents() const {
 
 /**
  * @brief Asks the user to input the Class's classCode and prints the schedule of that Class
- * @details
  */
 void App::checkClassSchedule() const {
     string classCode;
@@ -168,7 +162,6 @@ void App::checkClassSchedule() const {
 
 /**
  * @brief Asks the user to input the Student's id and prints the schedule of that Student
- * @details
  */
 void App::checkStudentSchedule() const {
     string id;
@@ -179,7 +172,6 @@ void App::checkStudentSchedule() const {
 
 /**
  * @brief Asks the user to input the course unit's code and prints the schedule of that course unit
- * @details
  */
 void App::checkUcSchedule() const {
     string UcCode;
@@ -190,7 +182,6 @@ void App::checkUcSchedule() const {
 
 /**
  * @brief Asks the user to input Students's classCode, way to sort and then prints the students of that Class
- * @details
  */
 void App::checkClassStudents() const {
     string classCode;
@@ -206,7 +197,6 @@ void App::checkClassStudents() const {
 
 /**
  * @brief Asks the user to input Students's course unit, way to sort and then prints the students of that course unit
- * @details
  */
 void App::checkUcStudents() const {
     string ucCode;
@@ -221,7 +211,6 @@ void App::checkUcStudents() const {
 
 /**
  * @brief Asks the user to input Students's year, way to sort and then prints the students of that year
- * @details
  */
 void App::checkYearStudents() const {
     string year;
@@ -237,7 +226,6 @@ void App::checkYearStudents() const {
 /**
  * @brief Asks the user to input how many course units the students need to have and then prints
  * the number of students with that many of course units
- * @details
  */
 void App::checkStudentsWithNUcs() const {
     int N;
@@ -248,7 +236,6 @@ void App::checkStudentsWithNUcs() const {
 
 /**
  * @brief Asks the user to input how many course units want to know the max number of students
- * @details
  */
 void App::checkTopNStudentsPerUc() const {
     int N;
@@ -266,7 +253,6 @@ void App::checkTopNStudentsPerUc() const {
 /**
  * @brief Asks the user to input type, Student's id, course unit code, class code and them as a Request in queue
  * if type equals to "S" it also asks for old course unit code and old class code
- * @details
  * @see newRequest(studentId, oldUcCode, oldClassCode, ucCode, classCode)
  * @see newRequest(studentId, ucCode, classCode, type)
  */
@@ -291,6 +277,7 @@ void App::addNewRequest() {
 
 /**
  * @brief Method to test if the given input is within the range of possibilities
+ * @details Time complexity: O(1)
  * @param choice user's input
  * @param numberOfOptions range of possibilities
  * @return true if user's input is within range, false otherwise
@@ -309,6 +296,7 @@ bool App::isValidOption(int choice, int numberOfOptions) {
 
 /**
  * @brief Method asking if the user wants to continue
+ * @details Time complexity: O(1)
  * @return true if the user wants to end the program, false otherwise
  */
 bool App::continueQuestion() {
@@ -321,6 +309,7 @@ bool App::continueQuestion() {
 
 /**
  * @brief Method which prints the possibilities to sort a given information
+ * @details Time complexity: O(1)
  */
 void App::printOrdeningModes() {
     cout << "\nModos de Ordenação dos estudantes: "
