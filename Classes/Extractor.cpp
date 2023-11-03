@@ -394,6 +394,11 @@ void Extractor::newRequest(const string& studentId, const string& oldUcCode, con
  * @details
  */
 void Extractor::processRequest() {
+    if (requests.empty()) {
+        cout << "No request to process" << endl;
+        return;
+    }
+
     Request request = requests.front();
     requests.pop();
 
@@ -487,6 +492,7 @@ void Extractor::processAdd(const Request& request) {
     index = searchSchedules(request.getTargetClass());
     schedules[index].getStudents().insert(request.getStudent());
     cout << "Request Approved" << endl;
+    addRecord(request);
 }
 
 /**
@@ -516,6 +522,7 @@ void Extractor::processRemove(const Request& request) {
     if (scheduleItr != scheduleStudents.end()) {
         scheduleStudents.erase(scheduleItr);
         cout << "Request Approved" << endl;
+        addRecord(request);
     } else {
         cout << "Request Denied" << endl;
         cout << "Reason: Student is not enrolled in the following class" <<  endl;
@@ -782,4 +789,18 @@ bool Extractor::isBalanceMaintained(const Class& classInfo, const Class& auxClas
     if (auxSize-1 > targetSize) return true;
     if (targetSize < minimumSize+4) return true;
     return false;
+}
+
+void Extractor::addRecord(const Request& request) {
+    ifstream infile("../data/records.csv");
+    // Create and open Records file
+    ofstream record("../data/records.csv");
+    if (!infile.good()) { record << "StudentCode,StudentName,Type,TargetUcCode,TargetClassCode" << endl; }
+    infile.close();
+
+    record << request.getStudent().getId() << ',' << request.getStudent().getName() << ',';
+    if (request.getType() == "A") record << "ADD";
+    if (request.getType() == "R") record << "REMOVE";
+    if (request.getType() == "S") record << "SWITCH";
+    record << ',' << request.getTargetClass().getUcCode() << ',' << request.getTargetClass().getClassCode() << endl;
 }

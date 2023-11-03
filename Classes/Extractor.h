@@ -60,6 +60,7 @@ class Extractor {
         bool isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass);
         bool isBalanceMaintained(const Class& classInfo);
         bool isBalanceMaintained(const Class& classInfo, const Class& auxClass);
+        static void addRecord(const Request& request);
 };
 
 #endif //AED2324_PRJ1_G22_EXTRACTOR_H

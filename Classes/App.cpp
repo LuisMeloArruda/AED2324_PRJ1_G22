@@ -45,6 +45,7 @@ void App::run() {
             case 5: {
                 addNewRequest();
                 if (continueQuestion()) return;
+                break;
             }
             case 6: {
                 information.processRequest();
