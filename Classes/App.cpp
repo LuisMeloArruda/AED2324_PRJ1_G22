@@ -58,18 +58,17 @@ void App::run() {
  * @return user's choice
  */
 int App::menu() {
-    system("clear");
     int choice;
     // Print Menu
-    cout << "\nEscolha uma opcao:"
-            "\n0. Sair"
+    cout << "\nChoose a option:"
+            "\n0. Exit"
             "\n1. Schedules"
             "\n2. Students"
-            "\n3. Quantidade de Estudantes com pelo menos N Unidades Curriculares"
-            "\n4. Verificar UC's com o maior número de estudantes"
-            "\n5. Novo Pedido"
-            "\n6. Analisar Pedido"
-    << "\nA sua opcao: ";
+            "\n3. The number of students with at least N curriculum units"
+            "\n4. Identify the curriculum units with the highest number of students"
+            "\n5. New Request"
+            "\n6. Process Request"
+    << "\nYour option: ";
     cin >> choice;
 
     // Check if option is valid
@@ -84,10 +83,9 @@ int App::menu() {
  * @brief Method which prints possibilities of schedules's menu
  */
 void App::menuSchedules() const {
-    system("clear");
     // Print Menu
     int choice;
-    cout << "\nEscolha uma opcao:"
+    cout << "\nChoose a option:"
             "\n0. Go Back"
             "\n1. Schedule of Class"
             "\n2. Schedule of a Student"
@@ -119,7 +117,6 @@ void App::menuSchedules() const {
  * @brief Method which prints possibilities of students's menu
  */
 void App::menuStudents() const {
-    system("clear");
     int choice;
     // Print Menu
     cout << "\nEscolha uma opcao:"
@@ -189,7 +186,7 @@ void App::checkClassStudents() const {
     cout << "Class Code: ";
     cin >> classCode;
     printOrdeningModes();
-    cout << "Modo de ordenação: ";
+    cout << "Sorting mode: ";
     cin >> mode;
     while (!isValidOption(mode, 4)) cin >> mode;
     information.getClassStudents(classCode, mode);
@@ -203,7 +200,7 @@ void App::checkUcStudents() const {
     int mode;
     cout << "UC Code: ";
     cin >> ucCode;
-    cout << "Modo de ordenação: ";
+    cout << "Sorting mode: ";
     cin >> mode;
     while (!isValidOption(mode, 4)) cin >> mode;
     information.getUCStudents(ucCode, mode);
@@ -217,7 +214,7 @@ void App::checkYearStudents() const {
     int mode;
     cout << "Year: ";
     cin >> year;
-    cout << "Modo de ordenação: ";
+    cout << "Sorting mode: ";
     cin >> mode;
     while (!isValidOption(mode, 4)) cin >> mode;
     information.getYearStudents(year, mode);
@@ -229,7 +226,7 @@ void App::checkYearStudents() const {
  */
 void App::checkStudentsWithNUcs() const {
     int N;
-    cout << "Quantas unidades curriculares o estudante deve ter? ";
+    cout << "How many course units the student will have? ";
     cin >> N;
     information.StudentsWithNUc(N);
 }
@@ -239,10 +236,10 @@ void App::checkStudentsWithNUcs() const {
  */
 void App::checkTopNStudentsPerUc() const {
     int N;
-    cout << "Quantas unidades curriculares deseja buscar? \n";
+    cout << "How many course units you want to search? \n";
     cin >> N;
     while (N <= 0) {
-        cout << "O numero deve ser maior que zero. Digite outra vez: \n";
+        cout << "The number needs to be higher than zero. Try again: \n";
         cin >> N;
     }
     if (N > 0) {
@@ -284,11 +281,10 @@ void App::addNewRequest() {
  */
 bool App::isValidOption(int choice, int numberOfOptions) {
     if (cin.fail()) {
-        throw invalid_argument("Numero invalido");
+        throw invalid_argument("Invalid number");
     }
     if (choice < 0 || choice > numberOfOptions) {
-        system("clear");
-        cout << "Opcao invalida." << endl;
+        cout << "Invalid option." << endl;
         return false;
     }
     return true;
@@ -300,7 +296,7 @@ bool App::isValidOption(int choice, int numberOfOptions) {
  * @return true if the user wants to end the program, false otherwise
  */
 bool App::continueQuestion() {
-    cout << "\nWanna Continue? [S/N]: ";
+    cout << "\nWanna Continue? [Y/N]: ";
     string answer;
     cin >> answer;
     if (answer == "N" || answer == "n") return true;
@@ -312,9 +308,9 @@ bool App::continueQuestion() {
  * @details Time complexity: O(1)
  */
 void App::printOrdeningModes() {
-    cout << "\nModos de Ordenação dos estudantes: "
-            "\n1. Alfabeticamente Crescente"
-            "\n2. Alfabeticamente Decrescente"
-            "\n3. Numericamente Crescente"
-            "\n4. Numericamente Decrescente";
+    cout << "\nChoose the sorting mode: "
+            "\n1. Alphabetically Ascending"
+            "\n2. Alphabetically Descending"
+            "\n3. Numerically Ascending"
+            "\n4. Numerically Descending";
 }
