@@ -49,6 +49,10 @@ void App::run() {
                 information.processRequest();
                 break;
             }
+            case 7: {
+                information.PermanentDataChange();
+                break;
+            }
         }
     }
 }
@@ -68,14 +72,14 @@ int App::menu() {
             "\n4. Identify the curriculum units with the highest number of students"
             "\n5. New Request"
             "\n6. Process Request"
+            "\n7. Permanent data change"
     << "\nYour option: ";
     cin >> choice;
 
     // Check if option is valid
-    while(!isValidOption(choice, 6)) {
+    while(!isValidOption(choice, 7)) {
         cin >> choice;
     }
-
     return choice;
 }
 

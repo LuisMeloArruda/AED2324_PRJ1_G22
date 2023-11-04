@@ -62,6 +62,7 @@ class Extractor {
         bool isBalanceMaintained(const Class& classInfo);
         bool isBalanceMaintained(const Class& classInfo, const Class& auxClass);
         static void addRecord(const Request& request);
+        void PermanentDataChange();
 };
 
 #endif //AED2324_PRJ1_G22_EXTRACTOR_H
