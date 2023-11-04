@@ -905,3 +905,23 @@ void Extractor::addRecord(const Request& request) {
     }
     record.close();
 }
+
+/**
+ * @brief Function that saves all changes permanently
+ * @details Time complexity: O(n * k), where "n" is the number of students and "k" is the number of students' classes
+ */
+void Extractor::PermanentDataChange() {
+    const char* records_txt = "../data/records.csv";
+    const char* students_classes_txt = "../data/students_classes.csv";
+    ofstream records(records_txt, ios::trunc);
+    ofstream students1(students_classes_txt, ios::trunc);
+    records << "StudentCode,Type,TargetUcCode,TargetClassCode,OldUcCode,OldClassCode\n";
+    students1 << "StudentCode,StudentName,UcCode,ClassCode\n";
+    for (Student student: students) {
+        for(Class c: student.getClasses())
+        students1 << student.getId() << "," << student.getName() << "," << c.getUcCode() << "," << c.getClassCode() << "\n";
+    }
+    records.close();
+    students1.close();
+
+}

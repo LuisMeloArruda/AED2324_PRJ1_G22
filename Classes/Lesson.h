@@ -6,7 +6,7 @@
 
 using namespace std;
 /**
- * @brief class which holds all the necessary information to identify a Lesson
+ * @brief The class which holds all the necessary information to identify a Lesson
  */
 class Lesson{
     private:

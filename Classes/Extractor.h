@@ -13,7 +13,7 @@
 #include <map>
 #include <iomanip>
 /**
- * @brief class that keeps all information about the Students, Schedules and Requests
+ * @brief The class that keeps all information about the Students, Schedules and Requests
  */
 class Extractor {
     private:
@@ -62,6 +62,7 @@ class Extractor {
         bool isBalanceMaintained(const unsigned& classScheduleIndex);
         bool isBalanceMaintained(const Class& classInfo, const Class& auxClass);
         static void addRecord(const Request& request);
+        void PermanentDataChange();
 };
 
 #endif //AED2324_PRJ1_G22_EXTRACTOR_H

@@ -4,7 +4,7 @@
 #include "Extractor.h"
 
 /**
- * @brief class which runs the program
+ * @brief The class which runs the program
  */
 class App {
 public:
@@ -13,8 +13,8 @@ public:
     // Display functions
     void run();
     static int menu();
-    void menuSchedules() const;
-    void menuStudents() const;
+    bool menuSchedules() const;
+    bool menuStudents() const;
 
     // Lookup functions
     void checkClassSchedule() const;

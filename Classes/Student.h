@@ -8,7 +8,7 @@
 
 using namespace std;
 /**
- * @brief class to keep details of a Student
+ * @brief The class to keep details of a Student
  */
 class Student{
     private:

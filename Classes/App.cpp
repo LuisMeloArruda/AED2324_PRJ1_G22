@@ -25,11 +25,11 @@ void App::run() {
             case 0:
                 return;
             case 1:
-                menuSchedules();
+                if (menuSchedules()) break;
                 if (continueQuestion()) return;
                 break;
             case 2:
-                menuStudents();
+                if (menuStudents()) break;
                 if (continueQuestion()) return;
                 break;
             case 3:
@@ -47,6 +47,10 @@ void App::run() {
             }
             case 6: {
                 information.processRequest();
+                break;
+            }
+            case 7: {
+                information.PermanentDataChange();
                 break;
             }
         }
@@ -68,21 +72,21 @@ int App::menu() {
             "\n4. Identify the curriculum units with the highest number of students"
             "\n5. New Request"
             "\n6. Process Request"
+            "\n7. Permanent data change"
     << "\nYour option: ";
     cin >> choice;
 
     // Check if option is valid
-    while(!isValidOption(choice, 6)) {
+    while(!isValidOption(choice, 7)) {
         cin >> choice;
     }
-
     return choice;
 }
 
 /**
  * @brief Method which prints possibilities of schedules' menu
  */
-void App::menuSchedules() const {
+bool App::menuSchedules() const {
     // Print Menu
     int choice;
     cout << "\nChoose a option:"
@@ -112,12 +116,13 @@ void App::menuSchedules() const {
             checkUcSchedule();
             break;
     }
+    return (choice == 0);
 }
 
 /**
  * @brief Method which prints possibilities of students' menu
  */
-void App::menuStudents() const {
+bool App::menuStudents() const {
     int choice;
     // Print Menu
     cout << "\nEscolha uma opcao:"
@@ -147,6 +152,7 @@ void App::menuStudents() const {
             checkYearStudents();
             break;
     }
+    return (choice == 0);
 }
 
 /**
