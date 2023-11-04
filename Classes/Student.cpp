@@ -77,9 +77,10 @@ void Student::addClass(const Class& classInfo) {
 void Student::removeClass(const Class& classInfo) {
     vector<Class> newClassesVector;
     for (const Class& cls: classes) {
-        if (cls == classInfo ) continue;
+        if (cls == classInfo) continue;
         newClassesVector.push_back(cls);
     }
+    classes = newClassesVector;
 }
 
 /**

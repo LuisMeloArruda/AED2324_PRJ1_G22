@@ -80,3 +80,6 @@ Footer
 
 # Files created during runtime
 data/records.csv
+data/classes.csv
+data/classes_per_uc.csv
+data/students_classes.csv

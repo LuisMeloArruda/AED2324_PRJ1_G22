@@ -146,24 +146,39 @@ void Extractor::readModifications() {
         getline(ss, oldUcCode, ',');
         getline(ss, oldClassCode);
 
-        if (type == "Add") type = "A";
-        if (type == "Remove") type = "R";
-        if (type == "Switch") type = "S";
+        Request request = Request(Student(studentCode, ""), Class(targetUcCode, targetClassCode), type);
+        if (type == "Add") {
+            type = "A";
+        }
+        if (type == "Remove") {
+            type = "R";
+        }
+        if (type == "Switch") {
+            type = "S";
+            request = Request(Student(studentCode, ""), Class(oldUcCode, oldClassCode), Class(targetUcCode, targetClassCode));
+        }
+
+        auto studentIt = students.find(Student(request.getStudent().getId(), ""));
+
+        if (studentIt == students.end()) {
+            cout << "Request Denied" << endl;
+            cout << "Student not Found!" << endl;
+            return;
+        }else request.setStudent(*studentIt);
 
         switch (type[0]) {
             case 'A':
-                processAdd(Request(Student(studentCode, ""), Class(targetUcCode, targetClassCode), type), 0);
+                processAdd(request, 0);
                 break;
             case 'R':
-                processRemove(Request(Student(studentCode, ""), Class(targetUcCode, targetClassCode), type), 0);
+                processRemove(request, 0);
                 break;
             case 'S':
-                processSwitch(Request(Student(studentCode, ""), Class(oldUcCode, oldClassCode), Class(targetUcCode, targetClassCode)), 0);
+                processSwitch(request, 0);
                 break;
         }
     }
 
-    processAllRequests();
 }
 
 /**
@@ -439,6 +454,7 @@ void Extractor::processRequest() {
     auto studentIt = students.find(Student(request.getStudent().getId(), ""));
 
     if (studentIt == students.end()) {
+        cout << "Request Denied" << endl;
         cout << "Student not Found!" << endl;
         return;
     }else request.setStudent(*studentIt);
@@ -455,6 +471,10 @@ void Extractor::processRequest() {
         case 'S':
             cout << "Processing Switch Request from student " << request.getStudent().getName() << endl;
             processSwitch(request);
+            break;
+        default:
+            cout << "Request Denied" << endl;
+            cout << "Invalid Type" << endl;
             break;
     }
 }
@@ -525,12 +545,13 @@ void Extractor::processAdd(const Request& request, int print) {
         return;
     }
 
-    // Adding class to student
+    // Finding student
     auto itr = students.find(request.getStudent()); //O(log n)
 
     // Adding student to schedule
     schedules[targetScheduleIndex].getStudents().insert(Student(itr->getId(), itr->getName()));// O(log n)
 
+    // Adding class to student
     Student student = *itr;
     itr = students.erase(itr);
     student.addClass(request.getTargetClass());

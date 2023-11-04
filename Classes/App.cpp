@@ -46,11 +46,13 @@ void App::run() {
                 break;
             }
             case 6: {
-                information.processRequest();
+                if (menuProcess()) break;
+                if (continueQuestion()) return;
                 break;
             }
             case 7: {
                 information.PermanentDataChange();
+                if (continueQuestion()) return;
                 break;
             }
         }
@@ -85,11 +87,12 @@ int App::menu() {
 
 /**
  * @brief Method which prints possibilities of schedules' menu
+ * @return true if user wants to go back and false if an option was chosen
  */
 bool App::menuSchedules() const {
     // Print Menu
     int choice;
-    cout << "\nChoose a option:"
+    cout << "\nChoose an option:"
             "\n0. Go Back"
             "\n1. Schedule of Class"
             "\n2. Schedule of a Student"
@@ -121,11 +124,12 @@ bool App::menuSchedules() const {
 
 /**
  * @brief Method which prints possibilities of students' menu
+ * @return true if user wants to go back and false if an option was chosen
  */
 bool App::menuStudents() const {
     int choice;
     // Print Menu
-    cout << "\nEscolha uma opcao:"
+    cout << "\nChose an option:"
             "\n0. Go Back"
             "\n1. Class of Students"
             "\n2. Uc of Students"
@@ -150,6 +154,39 @@ bool App::menuStudents() const {
             break;
         case 3:
             checkYearStudents();
+            break;
+    }
+    return (choice == 0);
+}
+
+/**
+ * @brief Method which prints possibilities of request processing
+ * @returntrue if user wants to go back and false if an option was chosen
+ */
+bool App::menuProcess() {
+    int choice;
+    // Print Menu
+    cout << "\nChose an option:"
+            "\n0. Go Back"
+            "\n1. Process oldest request"
+            "\n2. Process all the pending requests"
+            "\nYour option: ";
+    cin >> choice;
+
+    // Check if option is valid
+    while(!isValidOption(choice, 3)) {
+        cin >> choice;
+    }
+
+    // Call correct lookup function
+    switch (choice) {
+        case 0:
+            break;
+        case 1:
+            information.processRequest();
+            break;
+        case 2:
+            information.processAllRequests();
             break;
     }
     return (choice == 0);

@@ -15,6 +15,7 @@ public:
     static int menu();
     bool menuSchedules() const;
     bool menuStudents() const;
+    bool menuProcess();
 
     // Lookup functions
     void checkClassSchedule() const;
