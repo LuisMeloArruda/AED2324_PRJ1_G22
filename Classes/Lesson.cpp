@@ -16,7 +16,7 @@ Lesson::Lesson(const string& weekDay, const float& start, const float& duration,
 }
 
 /**
- * @brief Constructor of Class Lesson, Constructor of Class Lesson, it sets all the attributes to the given ones, in this case
+ * @brief Constructor of Class Lesson, it sets all the attributes to the given ones, in this case
  * the attributes weekDay and duration are in another class Lesson
  * @details Time complexity: O(1)
  * @param baseLesson by reference a class Lesson with the weekDay and duration of Lesson

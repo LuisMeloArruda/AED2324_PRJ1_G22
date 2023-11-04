@@ -1,5 +1,4 @@
 #include "Student.h"
-#include <algorithm>
 
 /**
  * @brief Constructor of class Student, attributes id and name are set to the given ones
@@ -72,14 +71,15 @@ void Student::addClass(const Class& classInfo) {
 
 /**
  * @brief Find and erase a Class in Student's vector of Classes attribute
- * @details Time complexity: O(n)
+ * @details Time complexity: O(n), where "n" is the number of the student's classes
  * @param classInfo by reference to remove from Student's vector of classes
  */
 void Student::removeClass(const Class& classInfo) {
-    auto newEnd = remove_if(classes.begin(), classes.end(), [&classInfo](const Class& cls)
-    {return classInfo == cls;});
-
-    classes.erase(newEnd, classes.end());
+    vector<Class> newClassesVector;
+    for (const Class& cls: classes) {
+        if (cls == classInfo ) continue;
+        newClassesVector.push_back(cls);
+    }
 }
 
 /**

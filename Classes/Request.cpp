@@ -36,6 +36,11 @@ Student Request::getStudent() const {
     return student;
 }
 
+/**
+ * @brief Sets attribute student to the given argument
+ * @details Time complexity: O(1)
+ * @param student by reference Student to set attribute as
+ */
 void Request::setStudent(const Student& student) {
     this->student = student;
 }

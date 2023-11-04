@@ -80,7 +80,7 @@ int App::menu() {
 }
 
 /**
- * @brief Method which prints possibilities of schedules's menu
+ * @brief Method which prints possibilities of schedules' menu
  */
 void App::menuSchedules() const {
     // Print Menu
@@ -90,7 +90,7 @@ void App::menuSchedules() const {
             "\n1. Schedule of Class"
             "\n2. Schedule of a Student"
             "\n3. Schedule of a Uc\n"
-            "A sua opção: ";
+            "Your option: ";
     cin >> choice;
 
     // Check if option is valid
@@ -115,7 +115,7 @@ void App::menuSchedules() const {
 }
 
 /**
- * @brief Method which prints possibilities of students's menu
+ * @brief Method which prints possibilities of students' menu
  */
 void App::menuStudents() const {
     int choice;
@@ -125,7 +125,7 @@ void App::menuStudents() const {
             "\n1. Class of Students"
             "\n2. Uc of Students"
             "\n3. Year of Students"
-            "\nA sua opção: ";
+            "\nYour option: ";
     cin >> choice;
 
     // Check if option is valid
@@ -180,7 +180,7 @@ void App::checkUcSchedule() const {
 }
 
 /**
- * @brief Asks the user to input Students's classCode, way to sort and then prints the students of that Class
+ * @brief Asks the user to input Students' classCode, way to sort and then prints the students of that Class
  */
 void App::checkClassStudents() const {
     string classCode;
@@ -195,7 +195,7 @@ void App::checkClassStudents() const {
 }
 
 /**
- * @brief Asks the user to input Students's course unit, way to sort and then prints the students of that course unit
+ * @brief Asks the user to input Students' course unit, way to sort and then prints the students of that course unit
  */
 void App::checkUcStudents() const {
     string ucCode;
@@ -210,7 +210,7 @@ void App::checkUcStudents() const {
 }
 
 /**
- * @brief Asks the user to input Students's year, way to sort and then prints the students of that year
+ * @brief Asks the user to input Students' year, way to sort and then prints the students of that year
  */
 void App::checkYearStudents() const {
     string year;
@@ -252,7 +252,7 @@ void App::checkTopNStudentsPerUc() const {
 }
 
 /**
- * @brief Asks the user to input type, Student's id, course unit code, class code and them as a Request in queue
+ * @brief Asks the user to input type, Student's id, course unit code, class code and add them as a Request in queue
  * if type equals to "S" it also asks for old course unit code and old class code
  * @see newRequest(studentId, oldUcCode, oldClassCode, ucCode, classCode)
  * @see newRequest(studentId, ucCode, classCode, type)

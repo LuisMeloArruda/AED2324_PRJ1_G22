@@ -12,6 +12,7 @@ Extractor::Extractor() {
 
 /**
  * @brief Runs read methods and fills Extractor's attributes
+ * @details Time complexity: O(n
  * @see readClassesPerUc()
  * @see readStudentsClasses()
  * @see readClasses()
@@ -25,7 +26,7 @@ void Extractor::readFiles() {
 
 /**
  * @brief Read "classes_per_uc.csv" file and fills Extractor's vector of schedules with only classes: course units and classCode
- * @details Time complexity: O(n), where "n" is the number of files's lines
+ * @details Time complexity: O(n), where "n" is the number of file's lines
  */
 void Extractor::readClassesPerUc() {
     fstream file("../data/classes_per_uc.csv");
@@ -51,7 +52,7 @@ void Extractor::readClassesPerUc() {
 
 /**
  * @brief Read "students_classes.csv" file and updates Extractor's vector of Schedules with Students and fills Extractor's set of Students
- * @details Time complexity: O(n * (log m + log k)) where "n" is the number of files's lines, "m" is the number os students and k is the number of schedules
+ * @details Time complexity: O(n * (log m + log k)) where "n" is the number of file's lines, "m" is the number os students and k is the number of schedules
  */
 void Extractor::readStudentsClasses() {
     fstream file("../data/students_classes.csv");
@@ -73,26 +74,27 @@ void Extractor::readStudentsClasses() {
         getline(ss, classCode);
         Student student(id, name);
         Class classInfo(ucCode, classCode);
-        student.addClass(classInfo);
-
-        // Placing the info in the students structure
-        auto it = students.find(student);
-        if (it != students.end()){
-            student = *it;
-            students.erase(student);
-            student.addClass(classInfo);
-            students.insert(student);
-        }else students.insert(student);
 
         //Placing the info in the schedules structure
         unsigned index = searchSchedules(classInfo);
         schedules[index].addStudent(student);
+
+        student.addClass(classInfo);
+        // Placing the info in the students structure
+        auto placingInfo = students.insert(student);
+        auto it = placingInfo.first;
+        if (!placingInfo.second) {
+            student = *it;
+            it = students.erase(it);
+            student.addClass(classInfo);
+            students.insert(it, student);
+        }
     }
 }
 
 /**
  * @brief Read "classes.csv" file and updates Extractor's vector of Schedules with Lessons
- * @details  Time complexity:
+ * @details  Time complexity: O(n * log m), where "n" is the number of file's lines and m is the number of schedules
  */
 void Extractor::readClasses() {
     fstream file("../data/classes.csv");
@@ -166,7 +168,8 @@ void Extractor::readModifications() {
 
 /**
  * @brief Method that prints the Schedule of a given Class
- * @details  Time complexity: O(n + log k), where "n" is the number of files's lines and "k" is the number of schedules
+ * @details  Time complexity: O(n * log m + k), where "n" is the number of lessons of given class,
+ * "m" is the number of keys in the map and "k" is the number of values in said map
  * @param classCode by reference
  */
 void Extractor::getClassSchedule(const string& classCode) const {
@@ -203,8 +206,8 @@ void Extractor::getClassSchedule(const string& classCode) const {
 
 /**
  * @brief Method that prints the Schedule of a given Student
- * @details Time complexity: O(log m + k * (log p + f)), where "m" is the number os students, "k" is the number of student's classes, "p" is the number of maps's elements
- * and "f" is the number of lessons of a schedule
+ * @details Time complexity: O(log m + k * log s + l * log p + f), where "m" is the number of students, "k" is the number of the student's classes,
+ * "s" is the number of schedules, "l" is the number of the student's lessons, "p" is the number of map's keys and "f" is the number of values in said map
  * @param id by reference the student's id
  */
 void Extractor::getStudentSchedule(const string& id) const {
@@ -217,7 +220,7 @@ void Extractor::getStudentSchedule(const string& id) const {
     map<Lesson, vector<Class>> orderedSchedule;
 
     for (const Class& classInfo: studentIt->getClasses()) {
-        Schedule schedule = schedules[searchSchedules(classInfo)];
+        const Schedule& schedule = schedules[searchSchedules(classInfo)];
         for (const Lesson& lesson: schedule.getLessons()) {
             orderedSchedule[lesson].push_back(classInfo);
         }
@@ -247,8 +250,8 @@ void Extractor::getStudentSchedule(const string& id) const {
 
 /**
  * @brief Method that prints the Schedule of a given course unit
- * @details Time complexity: O(n * (log p * f)), where "n" is the number of schedules, "p" is the number of map's elements
- * and "f" is the number of lessons of a schedule
+ * @details TIme complexity: O(n * log m + f), where "n" is the number of lessons of given UC, "m" is the number of keys of map
+ * and "f" is the number of values of said map
  * @param UcCode by reference
  */
 void Extractor::getUcCodeSchedule(const string& UcCode) const {
@@ -286,8 +289,9 @@ void Extractor::getUcCodeSchedule(const string& UcCode) const {
 
 /**
  * @brief Method that prints Students of a given Class
- * @details Time complexity: O(n * m + log n), where "n" is the number of students and "m" is the number of classes per student
- * @param classCode by reference the students's class
+ * @details Time complexity: O(n + (s * log s + s)), where "n" is the sum of the classes of every student
+ * and "s" is the number of students that belong to the given class
+ * @param classCode by reference the students' class
  * @param mode by reference the way the information will be sorted and then printed
  */
 void Extractor::getClassStudents(const string& classCode, const int& mode) const {
@@ -301,18 +305,13 @@ void Extractor::getClassStudents(const string& classCode, const int& mode) const
         }
     }
     cout << "CLASS_CODE: " << classCode << endl;
-    sortAndPrintStudents(classStudents, mode);
+    sortAndPrintStudents(classStudents, mode); // O(n * log n + n)
 }
 
 /**
  * @brief Method that prints Students of a given course unit
-<<<<<<< HEAD
- * @details Time complexity: O(n * m + log n), where "n" is the number of schedules and "m" is the number of students per schedule
- * @param ucCode by reference the students's ucCode
-=======
- * @details
+ * @details Time complexity: O(k + k * log k + k), where "k" is the number of students enrolled in the Uc
  * @param ucCode by reference the student's ucCode
->>>>>>> develop
  * @param mode by reference the way the information will be sorted and then printed
  */
 void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
@@ -327,18 +326,14 @@ void Extractor::getUCStudents(const string& ucCode, const int& mode) const {
     }
 
     cout << "UC_CODE: " << ucCode << endl;
-    sortAndPrintStudents(ucStudents, mode);
+    sortAndPrintStudents(ucStudents, mode); // O(n * log n + n)
 }
 
 /**
  * @brief Method that prints Students of a given year
-<<<<<<< HEAD
- * @details Time complexity: O(n * m + log n), where "n" is the number of students and "m" is the number of classes per student
- * @param year by reference the students's year
-=======
- * @details
+ * @details Time complexity: O(n * m + k * log k + k) where "n" is the number of students, "m" is the number of classes per student
+ * and "k" is the number of students that are enrolled in classes of the given year
  * @param year by reference the student's year
->>>>>>> develop
  * @param mode by reference the way the information will be sorted and then printed
  */
 void Extractor::getYearStudents(const string& year, const int& mode) const {
@@ -353,7 +348,7 @@ void Extractor::getYearStudents(const string& year, const int& mode) const {
         }
     }
     cout << "YEAR: " << year << endl;
-    sortAndPrintStudents(yearStudents, mode);
+    sortAndPrintStudents(yearStudents, mode); // O(n * log n + n)
 }
 
 /**
@@ -371,7 +366,8 @@ void Extractor::StudentsWithNUc(const int& N) const {
 
 /**
  * @brief Method that prints the course units with the most Students
- * @details Time complexity: O(n * m + log m + m), where "n" is the number of students and "m" is the number of classes per student
+ * @details Time complexity: O(n * c * log m + m * log m + N), where "n" is the number of students and "c" is the number of classes per student,
+ * "m" is the number of keys in the map and "N" is the number of top UCs to be displayed
  * @param N by reference quantity of course units with the most students
  */
 void Extractor::TopNStudentsPerUC(const int& N) const {
@@ -390,7 +386,7 @@ void Extractor::TopNStudentsPerUC(const int& N) const {
         return a.second > b.second;
     };
 
-    sort(sortedUcs.begin(), sortedUcs.end(), compareUcs);
+    sort(sortedUcs.begin(), sortedUcs.end(), compareUcs); // O(n * log n)
 
     cout << "The " << N << " UC/s with the larger number of students is/are:" << endl;
     for (int i = 0; i < min(N, static_cast<int>(sortedUcs.size())); i++) {
@@ -399,13 +395,8 @@ void Extractor::TopNStudentsPerUC(const int& N) const {
 }
 
 /**
-<<<<<<< HEAD
- * @brief Function that emplaces new Requests in the queue
- * @details Time complexity: O(log n), where "n" is the number of students
-=======
  * @brief Function that places new Requests in the queue
- * @details
->>>>>>> develop
+ * @details Time complexity: O(1)
  * @param studentId by reference
  * @param ucCode by reference
  * @param classCode by reference
@@ -417,13 +408,8 @@ void Extractor::newRequest(const string& studentId, const string& ucCode, const 
 }
 
 /**
-<<<<<<< HEAD
- * @brief Function that emplaces new Requests of type "S" in the queue
- * @details Time complexity: O(log m), where "m" is the number of students
-=======
  * @brief Function that places new Requests of type "S" in the queue
- * @details
->>>>>>> develop
+ * @details Time complexity: O(1)
  * @param studentId by reference
  * @param oldUcCode by reference
  * @param oldClassCode by reference
@@ -485,7 +471,9 @@ void Extractor::processAllRequests() {
 
 /**
  * @brief Function that processes the Request of type A in the queue
- * @details Time complexity: O(log n) + O(m) + O(s * log g * h + log j * k * w) + O(log q) + O(z + 2log z) + O(2log a + 2a) + O(2log u )
+ * @details Time complexity: O(log s + c + c * log s + l * log m + k * d * 2 * log m + s + log p + log s), where "s" is the number of schedules,
+ * "c" is the number of student's classes, "l" is the number of lessons of the student, "m" is the number of lessons in the student's schedule,
+ * "k" is the number of lessons in the new class, "d" is the number of slots the new class fills and "p" is the number students
  * @see isSchedulePossible(const Student& student, const Class& newClass)
  * @see isBalanceMaintained(const Class& classInfo)
  * @param request by reference
@@ -499,7 +487,8 @@ void Extractor::processAdd(const Request& request, int print) {
     }
 
     // Checking if class exists
-    if (searchSchedules(request.getTargetClass()) == -1) { //O(log n)
+    unsigned targetScheduleIndex = searchSchedules(request.getTargetClass()); //O(log n)
+    if (targetScheduleIndex == -1) {
         cout << "Request Denied" << endl;
         cout << "Reason: The following class does not exist" << endl;
         cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
@@ -507,7 +496,7 @@ void Extractor::processAdd(const Request& request, int print) {
     }
 
     // Checking if Student is already enrolled in target UC
-    for (const Class& classInfo: request.getStudent().getClasses()) { //O(m)
+    for (const Class& classInfo: request.getStudent().getClasses()) { //O(n)
         if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
             cout << "Request Denied" << endl;
             cout << "Reason: Student is already enrolled in target UC" << endl;
@@ -516,37 +505,37 @@ void Extractor::processAdd(const Request& request, int print) {
     }
 
     // Checking if resulting schedule is possible
-    if (!isSchedulePossible(request.getStudent(), request.getTargetClass())) { //O(s * log g * h + log j * k * w)
+    if (!isSchedulePossible(request.getStudent(), targetScheduleIndex)) { //O(c * log s + l * log m + k * d * 2 * log m)
         cout << "Request Denied" << endl;
         cout << "Reason: Schedule is not compatible" << endl;
         return;
     }
 
     // Checking if target class has available space
-    unsigned index = searchSchedules(request.getTargetClass()); //O(log q)
-    if (schedules[index].getStudents().size() > 40) {
+    if (schedules[targetScheduleIndex].getStudents().size() > 40) {
         cout << "Request Denied" << endl;
         cout << "Reason: Class is at capacity" << endl;
         return;
     }
 
     // Checking if class balance is maintained
-    if (!isBalanceMaintained(request.getTargetClass())) { //O(z + 2log z)
+    if (!isBalanceMaintained(targetScheduleIndex)) { //O(n)
         cout << "Request Denied" << endl;
         cout << "Reason: Class balance is not maintained" << endl;
         return;
     }
 
     // Adding class to student
-    auto itr = students.find(request.getStudent()); //O(log a)
-    Student student = *itr;
-    students.erase(request.getStudent()); // O(a)
-    student.addClass(request.getTargetClass()); // O(a)
-    students.insert(student); // O(log a)
+    auto itr = students.find(request.getStudent()); //O(log n)
 
     // Adding student to schedule
-    index = searchSchedules(request.getTargetClass());// O(log u)
-    schedules[index].getStudents().insert(student);// O(log u)
+    schedules[targetScheduleIndex].getStudents().insert(Student(itr->getId(), itr->getName()));// O(log n)
+
+    Student student = *itr;
+    itr = students.erase(itr);
+    student.addClass(request.getTargetClass());
+    students.insert(itr, student);
+
     if (print) {
         cout << "Request Approved" << endl;
         addRecord(request);
@@ -555,26 +544,25 @@ void Extractor::processAdd(const Request& request, int print) {
 
 /**
  * @brief Function that processes the Request of type R in the queue
- * @details Time complexity: O(log n) + O(n) + O(l) + O(log n) + O(log l) + O(log n) + O(x),
- * where "n" is the number of students, "l" is the number of classes of a given student and "x" is the number of schedules of a created set
+ * @details Time complexity: O(log s + log k + log p + n), where "s" is the number of schedules, "k" is the number of students in the target schedule,
+ * "p" is the number of students and "n" is the number of the student's classes
  * @param request by reference
  */
-
 void Extractor::processRemove(const Request& request, int print) {
     // Removing student from schedule
-    unsigned index = searchSchedules(request.getTargetClass());// O(log l)
+    unsigned targetScheduleIndex = searchSchedules(request.getTargetClass());// O(log n)
 
-    if (index == -1) {
+    if (targetScheduleIndex == -1) {
         cout << "Request Denied" << endl;
         cout << "Reason: The following class does not exist" <<  endl;
         cout << "UC: " << request.getTargetClass().getUcCode() << " CLASS_CODE: " << request.getTargetClass().getClassCode() << endl;
         return;
     }
 
-    set<Student>& scheduleStudents = schedules[index].getStudents();
+    set<Student>& scheduleStudents = schedules[targetScheduleIndex].getStudents();
     auto scheduleItr = scheduleStudents.find(request.getStudent()); //O(log n)
     if (scheduleItr != scheduleStudents.end()) {
-        scheduleStudents.erase(scheduleItr); //O(x)
+        scheduleStudents.erase(scheduleItr);
         if (print) {
             cout << "Request Approved" << endl;
             addRecord(request);
@@ -589,9 +577,9 @@ void Extractor::processRemove(const Request& request, int print) {
     // Removing class from student
     auto itr = students.find(request.getStudent());//O(log n)
     Student student = *itr;
-    students.erase(request.getStudent());  // O(n)
-    student.removeClass(request.getTargetClass()); // O(l)
-    students.insert(student); // O(log n)
+    itr = students.erase(itr);
+    student.removeClass(request.getTargetClass()); //O(n)
+    students.insert(itr, student);
 }
 
 /**
@@ -681,7 +669,7 @@ void Extractor::processSwitch(const Request& request, int print) {
     students.insert(student);
 
     // Adding student to schedule
-    schedules[indexTargetClass].getStudents().insert(request.getStudent());
+    schedules[indexTargetClass].getStudents().insert(Student(request.getStudent().getId(), request.getStudent().getName()));
 
     if (print) {
         cout << "Request Approved" << endl;
@@ -730,7 +718,7 @@ bool Extractor::studentNumerical(const Student& a, const Student& b) {
 
 /**
  * @brief A function that prints the Students in a specific sorted manner
- * @details Time complexity: O(n + log n), where "n" is the number of students
+ * @details Time complexity: O(n * log n + n), where "n" is the number of students
  * @param students by reference
  * @param mode by reference
  */
@@ -783,23 +771,24 @@ string Extractor::formatedHours(const float& floatHour) {
 
 /**
  * @brief A function that checks if a given Request conflicts with a student's schedule
- * @details Time complexity: O(n * log m * p + log m * l * a), where "n" is the number of student's classes, "m" is the number of shedules per class
- *"p" is the number of lessons per schedule, "l" is the number of lessons of the new schedule and "a" is the number of durations of each lesson
+ * @details Time complexity: O(c * log s + l * log m + k * d * 2 * log m), where "c" is the number of student's classes,
+ * "s" is the number of schedules, "l" is the number of lessons of the student, "m" is the number of keys of the map,
+ * "k" is the number of lessons in the new class, "d" is the number of slots the new class fills
  * @param student by reference
  * @param newClass by reference
  * @return True if the Request doesn't conflicts with the Student's Schedule, false otherwise
  */
-bool Extractor::isSchedulePossible(const Student& student, const Class& newClass) {
+bool Extractor::isSchedulePossible(const Student& student, const unsigned& newClassScheduleIndex) {
     map<Lesson, vector<Class>> orderedSchedule;
 
     for (const Class& classInfo: student.getClasses()) {
-        Schedule schedule = schedules[searchSchedules(classInfo)];
+        const Schedule& schedule = schedules[searchSchedules(classInfo)];
         for (const Lesson& lesson: schedule.getLessons()) {
             orderedSchedule[lesson].push_back(classInfo);
         }
     }
 
-    Schedule newSchedule = schedules[searchSchedules(newClass)];
+    Schedule newSchedule = schedules[newClassScheduleIndex];
     for (const Lesson& lesson: newSchedule.getLessons()) {
         if (lesson.getType() == "T") continue;
         for (int i = 0; i < lesson.getDuration()/0.5; i++) {
@@ -825,13 +814,13 @@ bool Extractor::isSchedulePossible(const Student& student, const Class& newClass
 
     for (const Class& classInfo: student.getClasses()) {
         if (classInfo == auxClass) continue;
-        Schedule schedule = schedules[searchSchedules(classInfo)];
+        const Schedule& schedule = schedules[searchSchedules(classInfo)];
         for (const Lesson& lesson: schedule.getLessons()) {
             orderedSchedule[lesson].push_back(classInfo);
         }
     }
 
-    Schedule newSchedule = schedules[searchSchedules(newClass)];
+    const Schedule& newSchedule = schedules[searchSchedules(newClass)];
     for (const Lesson& lesson: newSchedule.getLessons()) {
         if (lesson.getType() == "T") continue;
         for (int i = 0; i < lesson.getDuration()/0.5; i++) {
@@ -845,15 +834,15 @@ bool Extractor::isSchedulePossible(const Student& student, const Class& newClass
 
 /**
  * @brief A function that checks if a given Request conflicts with the Class's balance
- * @details Time complexity: O(n + log n), where "n" is the number of schedules
+ * @details Time complexity: O(n)
  * @param classInfo by reference
  * @return True if the Request doesn't conflicts with the Class's balance, false otherwise
  */
-bool Extractor::isBalanceMaintained(const Class& classInfo) {
-    int targetSize = schedules[searchSchedules(classInfo)].getStudents().size();
+bool Extractor::isBalanceMaintained(const unsigned& classScheduleIndex) {
+    int targetSize = schedules[classScheduleIndex].getStudents().size();
     int maximumSize = 0, minimumSize = 41;
 
-    for (Schedule schedule: schedules) {
+    for (const Schedule& schedule: schedules) {
         int size = schedule.getStudents().size();
         if (size > maximumSize) maximumSize = size;
         if (size < minimumSize) minimumSize = size;
@@ -876,7 +865,7 @@ bool Extractor::isBalanceMaintained(const Class& classInfo, const Class& auxClas
     int auxSize = schedules[searchSchedules(auxClass)].getStudents().size();
     int maximumSize = 0, minimumSize = 41;
 
-    for (Schedule schedule: schedules) {
+    for (const Schedule& schedule: schedules) {
         int size = schedule.getStudents().size();
         if (schedule.getClassInfo() == auxClass) size--;
         if (size > maximumSize) maximumSize = size;

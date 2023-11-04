@@ -36,7 +36,7 @@ void Schedule::setLessons(const vector<Lesson>& lessons) {
 }
 
 /**
- * @brief Push back a lesson in the Schedules's vector of Lessons
+ * @brief Push back a lesson in the Schedules' vector of Lessons
  * @details Time complexity: O(1)
  * @param lesson the Lesson to add
  */

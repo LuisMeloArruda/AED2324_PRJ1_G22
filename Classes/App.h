@@ -35,7 +35,7 @@ public:
     static void printOrdeningModes();
 
 private:
-    /** @brief Extractor object which keeps all students, schedules, requests and their fuctions */
+    /** @brief Extractor object which keeps all students, schedules, requests and their functions */
     Extractor information;
 };
 
