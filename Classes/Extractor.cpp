@@ -12,16 +12,15 @@ Extractor::Extractor() {
 
 /**
  * @brief Runs read methods and fills Extractor's attributes
- * @details Time complexity: O(n
  * @see readClassesPerUc()
  * @see readStudentsClasses()
  * @see readClasses()
  */
 void Extractor::readFiles() {
-    readClassesPerUc();
-    readStudentsClasses();
-    readClasses();
-    readModifications();
+    readClassesPerUc(); //O(n)
+    readStudentsClasses(); //O(n * (log m + log k))
+    readClasses(); //O(n * log m)
+    readModifications(); //O(u * (log p + 2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x))
 }
 
 /**
@@ -128,6 +127,14 @@ void Extractor::readClasses() {
     }
 }
 
+/**
+ * @brief Read "records.csv" file and create and process requests to update the current data
+ * @details Time complexity: O(u * (log p + 2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x))
+ * where "u" is the number of modifications stored in the records file, "p" is the number of students, "s" is the number of schedules,
+ * "c" is the number of classes, "l" is the number of lessons of the student, "m" is the number of lessons in the student's schedule,
+ * "k" is the number of lessons in the new class, "d" is the number of slots the new lesson fills,
+ * "f" is the number of students in the target class, "n" is the number of the given student's classes, "x" is the target schedule's number of students
+ */
 void Extractor::readModifications() {
     fstream file("../data/records.csv");
     if (!file.is_open()) return;
@@ -158,7 +165,7 @@ void Extractor::readModifications() {
             request = Request(Student(studentCode, ""), Class(oldUcCode, oldClassCode), Class(targetUcCode, targetClassCode));
         }
 
-        auto studentIt = students.find(Student(request.getStudent().getId(), ""));
+        auto studentIt = students.find(Student(request.getStudent().getId(), "")); //O(log n)
 
         if (studentIt == students.end()) {
             cout << "Request Denied" << endl;
@@ -168,13 +175,13 @@ void Extractor::readModifications() {
 
         switch (type[0]) {
             case 'A':
-                processAdd(request, 0);
+                processAdd(request, 0); //O(log s + c + c * log s + l * log m + k * d * 2 * log m + s + log p + log x)
                 break;
             case 'R':
-                processRemove(request, 0);
+                processRemove(request, 0); //O(log s + log k + log p + n)
                 break;
             case 'S':
-                processSwitch(request, 0);
+                processSwitch(request, 0); //O(2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x)
                 break;
         }
     }
@@ -438,6 +445,11 @@ void Extractor::newRequest(const string& studentId, const string& oldUcCode, con
 
 /**
  * @brief Function that processes first Request in the queue
+ * @details Time complexity: O(log p + 2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x),
+ * where "p" is the number of students, "s" is the number of schedules, "c" is the number of classes, "l" is the number of lessons of the student,
+ * "m" is the number of lessons in the student's schedule, "k" is the number of lessons in the new class, "d" is the number of slots
+ * the new lesson fills, "f" is the number of students in the target class, "n" is the number of the
+ * given student's classes, "x" is the target schedule's number of students
  * @see processAdd(request)
  * @see processRemove(request)
  * @see processSwitch(request)
@@ -462,15 +474,15 @@ void Extractor::processRequest() {
     switch (request.getType()[0]) {
         case 'A':
             cout << "Processing Add Request from student " << request.getStudent().getName() << endl;
-            processAdd(request);
+            processAdd(request); //O(log s + c + c * log s + l * log m + k * d * 2 * log m + s + log p + log x)
             break;
         case 'R':
             cout << "Processing Remove Request from student " << request.getStudent().getName() << endl;
-            processRemove(request);
+            processRemove(request); //O(log s + log k + log p + n)
             break;
         case 'S':
             cout << "Processing Switch Request from student " << request.getStudent().getName() << endl;
-            processSwitch(request);
+            processSwitch(request); //O(2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x)
             break;
         default:
             cout << "Request Denied" << endl;
@@ -481,11 +493,16 @@ void Extractor::processRequest() {
 
 /**
  * @brief Function that processes all Requests in the queue
+ * @details Time complexity: O(u * (log p + 2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x)),
+ * where "u" is the number of request in the queue to process, "p" is the number of students, "s" is the number of schedules,
+ * "c" is the number of classes, "l" is the number of lessons of the student, "m" is the number of lessons in the student's schedule,
+ * "k" is the number of lessons in the new class, "d" is the number of slots the new lesson fills, "f" is the number of students in the target class,
+ * "n" is the number of the given student's classes, "x" is the target schedule's number of students
  * @see processRequest()
  */
 void Extractor::processAllRequests() {
     while (!requests.empty()) {
-        processRequest();
+        processRequest(); //O(log p + 2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x)
     }
 }
 
@@ -611,7 +628,6 @@ void Extractor::processRemove(const Request& request, int print) {
  * "m" is the number of lessons in the student's schedule, "k" is the number of lessons in the new class, "d" is the number of slots
  * the new lesson fills, "f" is the number of students in the target class, "p" is the number of students, "n" is the number of the
  * given student's classes, "x" is the target schedule's number of students
- * s -> schedules ; c -> student classes ; p -> students; n -> number of students classes
  * @see isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass)
  * @see isBalanceMaintained(const Class& classInfo, const Class& auxClass)
  * @param request by reference
