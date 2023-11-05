@@ -19,7 +19,7 @@ Extractor::Extractor() {
  */
 void Extractor::readFiles() {
     readClassesPerUc(); //O(n)
-    readStudentsClasses(); //O(n * (log m + log k))
+    readStudentsClasses(); //O(n * (log s + log m + log k))
     readClasses(); //O(n * log m)
     readModifications(); //O(u * (log p + 2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x))
 }
@@ -52,7 +52,8 @@ void Extractor::readClassesPerUc() {
 
 /**
  * @brief Read "students_classes.csv" file and updates Extractor's vector of Schedules with Students and fills Extractor's set of Students
- * @details Time complexity: O(n * (log m + log k)) where "n" is the number of file's lines, "m" is the number os students and k is the number of schedules
+ * @details Time complexity: O(n * (log s + log m + log k)), where "n" is the number of file's lines, "s" is the number of schedule,
+ * "m" is the number of students in the found schedule, "k" is the number of students
  */
 void Extractor::readStudentsClasses() {
     fstream file("../data/students_classes.csv");
@@ -76,8 +77,8 @@ void Extractor::readStudentsClasses() {
         Class classInfo(ucCode, classCode);
 
         //Placing the info in the schedules structure
-        unsigned index = searchSchedules(classInfo);
-        schedules[index].addStudent(student);
+        unsigned index = searchSchedules(classInfo); // O(log n)
+        schedules[index].addStudent(student); // O(log n)
 
         student.addClass(classInfo);
         // Placing the info in the students structure
