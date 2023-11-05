@@ -15,6 +15,7 @@ Extractor::Extractor() {
  * @see readClassesPerUc()
  * @see readStudentsClasses()
  * @see readClasses()
+ * @see readModifications()
  */
 void Extractor::readFiles() {
     readClassesPerUc(); //O(n)
