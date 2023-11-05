@@ -821,8 +821,10 @@ bool Extractor::isSchedulePossible(const Student& student, const unsigned& newCl
             if (lesson.getType() == "T") continue;
             for (const Lesson& newLesson: newSchedule.getLessons()) {
                 if (newLesson.getType() == "T") continue;
-                else if (newLesson.getStart() >= lesson.getStart()
-                         and newLesson.getStart() < (lesson.getStart() + lesson.getDuration())) return false;
+                if (lesson.getWeekDay() != newLesson.getWeekDay()) continue;
+                if (newLesson < lesson and (newLesson.getStart()+newLesson.getDuration()) > lesson.getStart()) return false;
+                else if (lesson < newLesson and (lesson.getStart()+lesson.getDuration()) > newLesson.getStart()) return false;
+                else if (lesson.getStart() == newLesson.getStart()) return false;
             }
         }
     }
@@ -847,8 +849,10 @@ bool Extractor::isSchedulePossible(const Student& student, const unsigned& newCl
             if (lesson.getType() == "T") continue;
             for (const Lesson& newLesson: newSchedule.getLessons()) {
                 if (newLesson.getType() == "T") continue;
-                else if (newLesson.getStart() >= lesson.getStart()
-                         and newLesson.getStart() < (lesson.getStart() + lesson.getDuration())) return false;
+                if (lesson.getWeekDay() != newLesson.getWeekDay()) continue;
+                if (newLesson < lesson and (newLesson.getStart()+newLesson.getDuration()) > lesson.getStart()) return false;
+                else if (lesson < newLesson and (lesson.getStart()+lesson.getDuration()) > newLesson.getStart()) return false;
+                else if (lesson.getStart() == newLesson.getStart()) return false;
             }
         }
     }
