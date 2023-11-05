@@ -131,9 +131,9 @@ void Extractor::readClasses() {
 
 /**
  * @brief Read "records.csv" file and create and process requests to update the current data
- * @see processAdd(request)
- * @see processRemove(request)
- * @see processSwitch(request)
+ * @see processAdd(const Request& request, int print=1)
+ * @see processRemove(const Request& request, int print=1)
+ * @see processSwitch(const Request& request, int print=1)
  */
 void Extractor::readModifications() {
     fstream file("../data/records.csv");
@@ -445,9 +445,9 @@ void Extractor::newRequest(const string& studentId, const string& oldUcCode, con
 
 /**
  * @brief Function that processes first Request in the queue
- * @see processAdd(request)
- * @see processRemove(request)
- * @see processSwitch(request)
+ * @see processAdd(const Request& request, int print=1)
+ * @see processRemove(const Request& request, int print=1)
+ * @see processSwitch(const Request& request, int print=1)
  */
 void Extractor::processRequest() {
     if (requests.empty()) {
@@ -506,8 +506,8 @@ void Extractor::processAllRequests() {
  * @details Time complexity: O(log s + c + c * log s * l * n + s + log p + log x), where "s" is the number of schedules,
  * "c" is the number of student's classes, "l" is the number of lessons of the student, "n" is the number of lessons of the new class,
  * "p" is the number students and "x" is the target schedule's number of students
- * @see isSchedulePossible(const Student& student, const Class& newClass)
- * @see isBalanceMaintained(const Class& classInfo)
+ * @see isSchedulePossible(const Student& student, const unsigned& newClassScheduleIndex) const
+ * @see isBalanceMaintained(const unsigned& classScheduleIndex) const
  * @param request by reference
  */
 void Extractor::processAdd(const Request& request, int print) {
@@ -621,8 +621,8 @@ void Extractor::processRemove(const Request& request, int print) {
  * where "s" is the number of schedules, "c" is the number of classes the student has, "l" is the number of lessons of the student,
  * "n" is the number of lessons of the new class, "f" is the number of students in the target class,
  * "p" is the number of students, "x" is the target schedule's number of students
- * @see isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass)
- * @see isBalanceMaintained(const Class& classInfo, const Class& auxClass)
+ * @see isSchedulePossible(const Student& student, const unsigned& newClassScheduleIndex, const Class& auxClass) const
+ * @see isBalanceMaintained(const unsigned& classScheduleIndex, const unsigned& auxClassScheduleIndex, const Class& auxClass) const
  * @param request by reference
  */
 void Extractor::processSwitch(const Request& request, int print) {
