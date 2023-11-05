@@ -49,6 +49,10 @@ void App::run() {
                 information.processRequest();
                 break;
             }
+            case 7: {
+                information.processAllRequests();
+                break;
+            }
         }
     }
 }
@@ -67,12 +71,13 @@ int App::menu() {
             "\n3. The number of students with at least N curriculum units"
             "\n4. Identify the curriculum units with the highest number of students"
             "\n5. New Request"
-            "\n6. Process Request"
+            "\n6. Process Last Request"
+            "\n7. Process All Requests"
     << "\nYour option: ";
     cin >> choice;
 
     // Check if option is valid
-    while(!isValidOption(choice, 6)) {
+    while(!isValidOption(choice, 7)) {
         cin >> choice;
     }
 
