@@ -1,7 +1,7 @@
 #include "Class.h"
 
 /**
- * @brief Standart Constructor of Class class, all the attributes are set to "Not Initialized"
+ * @brief Standard Constructor of class Class, all the attributes are set to "Not Initialized"
  * @details Time complexity: O(1)
  */
 Class::Class(){
@@ -10,7 +10,7 @@ Class::Class(){
 }
 
 /**
- * @brief Constructor of Class class, all the attributes are set to the given values
+ * @brief Constructor of class Class, all the attributes are set to the given values
  * @details Time complexity: O(1)
  * @param ucCode ID of course unit
  * @param classCode ID of class

@@ -1,7 +1,7 @@
 #include "Request.h"
 
 /**
- * @brief Constructor of Class Request, it sets Student, targetClass and type attributes to the given ones
+ * @brief Constructor of class Request, it sets Student, targetClass and type attributes to the given ones
  * @details Time complexity: O(1)
  * @param student by reference Student who made the Request
  * @param targetClass by reference Student's desired Class
@@ -14,7 +14,7 @@ Request::Request(const Student& student, const Class& targetClass, const string&
 }
 
 /**
- * @brief Constructor of Class Request if type equals to "S", it sets Student, targetClass and auxClass attributes to the given ones
+ * @brief Constructor of class Request if type equals to "S", it sets Student, targetClass and auxClass attributes to the given ones
  * @details Time complexity: O(1)
  * @param student by reference Student who made the Request
  * @param oldClass by reference Student's old Class
@@ -30,7 +30,7 @@ Request::Request(const Student& student, const Class& oldClass, const Class& tar
 /**
  * @brief Returns the attribute class Student of Request
  * @details Time complexity: O(1)
- * @return Class Student of Request
+ * @return class Student of Request
  */
 Student Request::getStudent() const {
     return student;

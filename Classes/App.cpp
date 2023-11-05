@@ -6,7 +6,7 @@
 using namespace std;
 
 /**
- * @brief Constructor of Class App, it sets the Extractor Object to the given information
+ * @brief Constructor of class App, it sets the Extractor Object to the given information
  * @param information
  */
 App::App(const Extractor &information) {

@@ -1,7 +1,7 @@
 #include "Lesson.h"
 
 /**
- * @brief Constructor of Class Lesson, it sets all the attributes to the given ones
+ * @brief Constructor of class Lesson, it sets all the attributes to the given ones
  * @details Time complexity: O(1)
  * @param weekDay by reference day the lesson happens
  * @param start by reference when the lesson starts
@@ -16,7 +16,7 @@ Lesson::Lesson(const string& weekDay, const float& start, const float& duration,
 }
 
 /**
- * @brief Constructor of Class Lesson, it sets all the attributes to the given ones, in this case
+ * @brief Constructor of class Lesson, it sets all the attributes to the given ones, in this case
  * the attributes weekDay and duration are in another class Lesson
  * @details Time complexity: O(1)
  * @param baseLesson by reference a class Lesson with the weekDay and duration of Lesson
