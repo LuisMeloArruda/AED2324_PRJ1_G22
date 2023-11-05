@@ -21,7 +21,7 @@ void Extractor::readFiles() {
     readClassesPerUc(); //O(n)
     readStudentsClasses(); //O(n * (log s + log m + log k))
     readClasses(); //O(n * log m)
-    readModifications(); //O(u * (log p + 2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x))
+    readModifications();
 }
 
 /**
@@ -131,11 +131,9 @@ void Extractor::readClasses() {
 
 /**
  * @brief Read "records.csv" file and create and process requests to update the current data
- * @details Time complexity: O(u * (log p + 2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x))
- * where "u" is the number of modifications stored in the records file, "p" is the number of students, "s" is the number of schedules,
- * "c" is the number of classes, "l" is the number of lessons of the student, "m" is the number of lessons in the student's schedule,
- * "k" is the number of lessons in the new class, "d" is the number of slots the new lesson fills,
- * "f" is the number of students in the target class, "n" is the number of the given student's classes, "x" is the target schedule's number of students
+ * @see processAdd(request)
+ * @see processRemove(request)
+ * @see processSwitch(request)
  */
 void Extractor::readModifications() {
     fstream file("../data/records.csv");
@@ -177,13 +175,13 @@ void Extractor::readModifications() {
 
         switch (type[0]) {
             case 'A':
-                processAdd(request, 0); //O(log s + c + c * log s + l * log m + k * d * 2 * log m + s + log p + log x)
+                processAdd(request, 0); //O(log s + c + c * log s * l * n + s + log p + log x)
                 break;
             case 'R':
                 processRemove(request, 0); //O(log s + log k + log p + n)
                 break;
             case 'S':
-                processSwitch(request, 0); //O(2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x)
+                processSwitch(request, 0); //O(2 * log s + c + c-1 * log s * l * n + s + log f + log p + c + log x)
                 break;
         }
     }
@@ -447,11 +445,6 @@ void Extractor::newRequest(const string& studentId, const string& oldUcCode, con
 
 /**
  * @brief Function that processes first Request in the queue
- * @details Time complexity: O(log p + 2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x),
- * where "p" is the number of students, "s" is the number of schedules, "c" is the number of classes, "l" is the number of lessons of the student,
- * "m" is the number of lessons in the student's schedule, "k" is the number of lessons in the new class, "d" is the number of slots
- * the new lesson fills, "f" is the number of students in the target class, "n" is the number of the
- * given student's classes, "x" is the target schedule's number of students
  * @see processAdd(request)
  * @see processRemove(request)
  * @see processSwitch(request)
@@ -476,7 +469,7 @@ void Extractor::processRequest() {
     switch (request.getType()[0]) {
         case 'A':
             cout << "Processing Add Request from student " << request.getStudent().getName() << endl;
-            processAdd(request); //O(log s + c + c * log s + l * log m + k * d * 2 * log m + s + log p + log x)
+            processAdd(request); //O(log s + c + c * log s * l * n + s + log p + log x)
             break;
         case 'R':
             cout << "Processing Remove Request from student " << request.getStudent().getName() << endl;
@@ -484,7 +477,7 @@ void Extractor::processRequest() {
             break;
         case 'S':
             cout << "Processing Switch Request from student " << request.getStudent().getName() << endl;
-            processSwitch(request); //O(2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x)
+            processSwitch(request); //O(2 * log s + c + c-1 * log s * l * n + s + log f + log p + c + log x)
             break;
         default:
             cout << "Request Denied" << endl;
@@ -504,16 +497,15 @@ void Extractor::processRequest() {
  */
 void Extractor::processAllRequests() {
     while (!requests.empty()) {
-        processRequest(); //O(log p + 2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x)
+        processRequest();
     }
 }
 
 /**
  * @brief Function that processes the Request of type A in the queue
- * @details Time complexity: O(log s + c + c * log s + l * log m + k * d * 2 * log m + s + log p + log x), where "s" is the number of schedules,
- * "c" is the number of student's classes, "l" is the number of lessons of the student, "m" is the number of lessons in the student's schedule,
- * "k" is the number of lessons in the new class, "d" is the number of slots the new class fills, "p" is the number students
- * and "x" is the target schedule's number of students
+ * @details Time complexity: O(log s + c + c * log s * l * n + s + log p + log x), where "s" is the number of schedules,
+ * "c" is the number of student's classes, "l" is the number of lessons of the student, "n" is the number of lessons of the new class,
+ * "p" is the number students and "x" is the target schedule's number of students
  * @see isSchedulePossible(const Student& student, const Class& newClass)
  * @see isBalanceMaintained(const Class& classInfo)
  * @param request by reference
@@ -545,7 +537,7 @@ void Extractor::processAdd(const Request& request, int print) {
     }
 
     // Checking if resulting schedule is possible
-    if (!isSchedulePossible(request.getStudent(), targetScheduleIndex)) { //O(c * log s + l * log m + k * d * 2 * log m)
+    if (!isSchedulePossible(request.getStudent(), targetScheduleIndex)) { //O(c * log s * l * p)
         cout << "Request Denied" << endl;
         cout << "Reason: Schedule is not compatible" << endl;
         return;
@@ -625,11 +617,10 @@ void Extractor::processRemove(const Request& request, int print) {
 
 /**
  * @brief Function that processes the Request of type S in the queue
- * @details Time complexity: O(2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x),
- * where "s" is the number of schedules, "c" is the number of classes, "l" is the number of lessons of the student,
- * "m" is the number of lessons in the student's schedule, "k" is the number of lessons in the new class, "d" is the number of slots
- * the new lesson fills, "f" is the number of students in the target class, "p" is the number of students, "n" is the number of the
- * given student's classes, "x" is the target schedule's number of students
+ * @details Time complexity: O(2 * log s + c + c-1 * log s * l * n + s + log f + log p + c + log x),
+ * where "s" is the number of schedules, "c" is the number of classes the student has, "l" is the number of lessons of the student,
+ * "n" is the number of lessons of the new class, "f" is the number of students in the target class,
+ * "p" is the number of students, "x" is the target schedule's number of students
  * @see isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass)
  * @see isBalanceMaintained(const Class& classInfo, const Class& auxClass)
  * @param request by reference
@@ -672,7 +663,7 @@ void Extractor::processSwitch(const Request& request, int print) {
         return;
     }
 
-    // Checking if resulting schedule is possible //O(c * log s + l * log m + k * d * 2 * log m)
+    // Checking if resulting schedule is possible O(c * log s * l * p)
     if (!isSchedulePossible(request.getStudent(), indexTargetClass, request.getAuxClass())) {
         cout << "Request Denied" << endl;
         cout << "Reason: Schedule is not compatible" << endl;
@@ -816,65 +807,51 @@ string Extractor::formatedHours(const float& floatHour) {
 
 /**
  * @brief A function that checks if a given Request conflicts with a student's schedule
- * @details Time complexity: O(c * log s + l * log m + k * d * 2 * log m), where "c" is the number of student's classes,
- * "s" is the number of schedules, "l" is the number of lessons of the student, "m" is the number of keys of the map,
- * "k" is the number of lessons in the new class, "d" is the number of slots the new lesson fills
+ * @details Time complexity: O(c * log s * l * p), where "c" is the number of student's classes,
+ * "s" is the number of schedules, "l" is the number of lessons of said schedule, "p" is the number of lessons in the new class
  * @param student by reference
  * @param newClass by reference
  * @return True if the Request doesn't conflicts with the Student's Schedule, false otherwise
  */
 bool Extractor::isSchedulePossible(const Student& student, const unsigned& newClassScheduleIndex) const {
-    map<Lesson, vector<Class>> orderedSchedule;
-
+    Schedule newSchedule = schedules[newClassScheduleIndex];
     for (const Class& classInfo: student.getClasses()) {
         const Schedule& schedule = schedules[searchSchedules(classInfo)];
         for (const Lesson& lesson: schedule.getLessons()) {
-            orderedSchedule[lesson].push_back(classInfo);
+            if (lesson.getType() == "T") continue;
+            for (const Lesson& newLesson: newSchedule.getLessons()) {
+                if (newLesson.getType() == "T") continue;
+                else if (newLesson.getStart() >= lesson.getStart()
+                         and newLesson.getStart() < (lesson.getStart() + lesson.getDuration())) return false;
+            }
         }
     }
-
-    Schedule newSchedule = schedules[newClassScheduleIndex];
-    for (const Lesson& lesson: newSchedule.getLessons()) {
-        if (lesson.getType() == "T") continue;
-        for (int i = 0; i < lesson.getDuration()/0.5; i++) {
-            if (orderedSchedule.find(Lesson(lesson, lesson.getStart()+(i*0.5), "PL")) != orderedSchedule.end()) return false;
-            if (orderedSchedule.find(Lesson(lesson, lesson.getStart()+(i*0.5), "TP")) != orderedSchedule.end()) return false;
-        }
-    }
-
     return true;
 }
 
 /**
  * @brief A function that checks if a given Request of type "S" conflicts with a Student's schedule
- * @details Time complexity: O(c * log s + l * log m + k * d * 2 * log m), where "c" is the number of student's classes not including the old classes' lesson,
- * "s" is the number of schedules, "l" is the number of lessons of the student, "m" is the number of keys of the map,
- * "k" is the number of lessons in the new class, "d" is the number of slots the new lesson fills
+ * @details Time complexity: O(c * log s * l * p), where "c" is the number of student's classes,
+ * "s" is the number of schedules, "l" is the number of lessons of said schedule, "p" is the number of lessons in the new class
  * @param student by reference
  * @param newClass by reference
  * @param auxClass by reference
  * @return True if the Request doesn't conflicts with the Student's Schedule, false otherwise
  */
 bool Extractor::isSchedulePossible(const Student& student, const unsigned& newClassScheduleIndex, const Class& auxClass) const {
-    map<Lesson, vector<Class>> orderedSchedule;
-
+    Schedule newSchedule = schedules[newClassScheduleIndex];
     for (const Class& classInfo: student.getClasses()) {
         if (classInfo == auxClass) continue;
         const Schedule& schedule = schedules[searchSchedules(classInfo)];
         for (const Lesson& lesson: schedule.getLessons()) {
-            orderedSchedule[lesson].push_back(classInfo);
+            if (lesson.getType() == "T") continue;
+            for (const Lesson& newLesson: newSchedule.getLessons()) {
+                if (newLesson.getType() == "T") continue;
+                else if (newLesson.getStart() >= lesson.getStart()
+                         and newLesson.getStart() < (lesson.getStart() + lesson.getDuration())) return false;
+            }
         }
     }
-
-    const Schedule& newSchedule = schedules[newClassScheduleIndex];
-    for (const Lesson& lesson: newSchedule.getLessons()) {
-        if (lesson.getType() == "T") continue;
-        for (int i = 0; i < lesson.getDuration()/0.5; i++) {
-            if (orderedSchedule.find(Lesson(lesson, lesson.getStart()+(i*0.5), "PL")) != orderedSchedule.end()) return false;
-            if (orderedSchedule.find(Lesson(lesson, lesson.getStart()+(i*0.5), "TP")) != orderedSchedule.end()) return false;
-        }
-    }
-
     return true;
 }
 
