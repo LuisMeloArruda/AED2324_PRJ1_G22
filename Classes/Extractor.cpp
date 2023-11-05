@@ -491,9 +491,10 @@ void Extractor::processAllRequests() {
 
 /**
  * @brief Function that processes the Request of type A in the queue
- * @details Time complexity: O(log s + c + c * log s + l * log m + k * d * 2 * log m + s + log p + log s), where "s" is the number of schedules,
+ * @details Time complexity: O(log s + c + c * log s + l * log m + k * d * 2 * log m + s + log p + log x), where "s" is the number of schedules,
  * "c" is the number of student's classes, "l" is the number of lessons of the student, "m" is the number of lessons in the student's schedule,
- * "k" is the number of lessons in the new class, "d" is the number of slots the new class fills and "p" is the number students
+ * "k" is the number of lessons in the new class, "d" is the number of slots the new class fills, "p" is the number students
+ * and "x" is the target schedule's number of students
  * @see isSchedulePossible(const Student& student, const Class& newClass)
  * @see isBalanceMaintained(const Class& classInfo)
  * @param request by reference
@@ -605,7 +606,12 @@ void Extractor::processRemove(const Request& request, int print) {
 
 /**
  * @brief Function that processes the Request of type S in the queue
- * @details Time complexity: O (2log n) + O(k) + O(n * log m * p + log m * l * a) + O(n + log n)
+ * @details Time complexity: O(2 * log s + c + (c - 1) * log s + l * log m + k * d * 2 * log m + s + log f + log p + n + log x),
+ * where "s" is the number of schedules, "c" is the number of classes, "l" is the number of lessons of the student,
+ * "m" is the number of lessons in the student's schedule, "k" is the number of lessons in the new class, "d" is the number of slots
+ * the new lesson fills, "f" is the number of students in the target class, "p" is the number of students, "n" is the number of the
+ * given student's classes, "x" is the target schedule's number of students
+ * s -> schedules ; c -> student classes ; p -> students; n -> number of students classes
  * @see isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass)
  * @see isBalanceMaintained(const Class& classInfo, const Class& auxClass)
  * @param request by reference
@@ -619,9 +625,9 @@ void Extractor::processSwitch(const Request& request, int print) {
     }
 
     // Checking if classes exist
-    unsigned indexTargetClass = searchSchedules(request.getTargetClass());
-    unsigned indexAuxClass = searchSchedules(request.getAuxClass());
-    if ( indexTargetClass == -1 or //O (2log n)
+    unsigned indexTargetClass = searchSchedules(request.getTargetClass()); //O(log n)
+    unsigned indexAuxClass = searchSchedules(request.getAuxClass()); //O(log n)
+    if ( indexTargetClass == -1 or
          indexAuxClass == -1) {
         cout << "Request Denied" << endl;
         cout << "Reason: The following class does not exist" << endl;
@@ -632,7 +638,7 @@ void Extractor::processSwitch(const Request& request, int print) {
     // Checking if Student is already enrolled in UC that is going to be added
     // And if Student is not enrolled in the UC to be removed
     bool found = false;
-    for (const Class& classInfo: request.getStudent().getClasses()) { //O(k)
+    for (const Class& classInfo: request.getStudent().getClasses()) { //O(n)
         if (classInfo.getUcCode() == request.getAuxClass().getUcCode()) {
             found = true;
         } else if (classInfo.getUcCode() == request.getTargetClass().getUcCode()) {
@@ -648,8 +654,8 @@ void Extractor::processSwitch(const Request& request, int print) {
         return;
     }
 
-    // Checking if resulting schedule is possible //O(n * log m * p + log m * l * a)
-    if (!isSchedulePossible(request.getStudent(), request.getTargetClass(), request.getAuxClass())) {
+    // Checking if resulting schedule is possible //O(c * log s + l * log m + k * d * 2 * log m)
+    if (!isSchedulePossible(request.getStudent(), indexTargetClass, request.getAuxClass())) {
         cout << "Request Denied" << endl;
         cout << "Reason: Schedule is not compatible" << endl;
         return;
@@ -662,8 +668,8 @@ void Extractor::processSwitch(const Request& request, int print) {
         return;
     }
 
-    // Checking if class balance is maintained //O(n + log n)
-    if (!isBalanceMaintained(request.getTargetClass(), request.getAuxClass())) {
+    // Checking if class balance is maintained //O(n)
+    if (!isBalanceMaintained(indexTargetClass, indexAuxClass, request.getAuxClass())) {
         cout << "Request Denied" << endl;
         cout << "Reason: Class balance is not maintained" << endl;
         return;
@@ -671,7 +677,7 @@ void Extractor::processSwitch(const Request& request, int print) {
 
     // Removing student from schedule
     set<Student>& scheduleStudents = schedules[indexAuxClass].getStudents();
-    auto scheduleItr = scheduleStudents.find(request.getStudent());
+    auto scheduleItr = scheduleStudents.find(request.getStudent()); // O(log n)
     if (scheduleItr != scheduleStudents.end()) {
         scheduleStudents.erase(scheduleItr);
     } else {
@@ -682,15 +688,15 @@ void Extractor::processSwitch(const Request& request, int print) {
     }
 
     // Removing and Adding respective classes to Student
-    auto itr = students.find(request.getStudent());
+    auto itr = students.find(request.getStudent()); // O(log n)
     Student student = *itr;
-    students.erase(request.getStudent());
-    student.removeClass(request.getAuxClass());
+    itr = students.erase(itr);
+    student.removeClass(request.getAuxClass()); // O(n)
     student.addClass(request.getTargetClass());
-    students.insert(student);
+    students.insert(itr, student);
 
     // Adding student to schedule
-    schedules[indexTargetClass].getStudents().insert(Student(request.getStudent().getId(), request.getStudent().getName()));
+    schedules[indexTargetClass].getStudents().insert(Student(request.getStudent().getId(), request.getStudent().getName())); // O(log n)
 
     if (print) {
         cout << "Request Approved" << endl;
@@ -794,12 +800,12 @@ string Extractor::formatedHours(const float& floatHour) {
  * @brief A function that checks if a given Request conflicts with a student's schedule
  * @details Time complexity: O(c * log s + l * log m + k * d * 2 * log m), where "c" is the number of student's classes,
  * "s" is the number of schedules, "l" is the number of lessons of the student, "m" is the number of keys of the map,
- * "k" is the number of lessons in the new class, "d" is the number of slots the new class fills
+ * "k" is the number of lessons in the new class, "d" is the number of slots the new lesson fills
  * @param student by reference
  * @param newClass by reference
  * @return True if the Request doesn't conflicts with the Student's Schedule, false otherwise
  */
-bool Extractor::isSchedulePossible(const Student& student, const unsigned& newClassScheduleIndex) {
+bool Extractor::isSchedulePossible(const Student& student, const unsigned& newClassScheduleIndex) const {
     map<Lesson, vector<Class>> orderedSchedule;
 
     for (const Class& classInfo: student.getClasses()) {
@@ -823,14 +829,15 @@ bool Extractor::isSchedulePossible(const Student& student, const unsigned& newCl
 
 /**
  * @brief A function that checks if a given Request of type "S" conflicts with a Student's schedule
- * @details Time complexity: O(n * log m * p + log m * l * a), where "n" is the number of student's classes, "m" is the number of shedules per class
- *"p" is the number of lessons per schedule, "l" is the number of lessons of the new schedule and "a" is the number of durations of each lesson
+ * @details Time complexity: O(c * log s + l * log m + k * d * 2 * log m), where "c" is the number of student's classes not including the old classes' lesson,
+ * "s" is the number of schedules, "l" is the number of lessons of the student, "m" is the number of keys of the map,
+ * "k" is the number of lessons in the new class, "d" is the number of slots the new lesson fills
  * @param student by reference
  * @param newClass by reference
  * @param auxClass by reference
  * @return True if the Request doesn't conflicts with the Student's Schedule, false otherwise
  */
-bool Extractor::isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass) {
+bool Extractor::isSchedulePossible(const Student& student, const unsigned& newClassScheduleIndex, const Class& auxClass) const {
     map<Lesson, vector<Class>> orderedSchedule;
 
     for (const Class& classInfo: student.getClasses()) {
@@ -841,7 +848,7 @@ bool Extractor::isSchedulePossible(const Student& student, const Class& newClass
         }
     }
 
-    const Schedule& newSchedule = schedules[searchSchedules(newClass)];
+    const Schedule& newSchedule = schedules[newClassScheduleIndex];
     for (const Lesson& lesson: newSchedule.getLessons()) {
         if (lesson.getType() == "T") continue;
         for (int i = 0; i < lesson.getDuration()/0.5; i++) {
@@ -859,7 +866,7 @@ bool Extractor::isSchedulePossible(const Student& student, const Class& newClass
  * @param classInfo by reference
  * @return True if the Request doesn't conflicts with the Class's balance, false otherwise
  */
-bool Extractor::isBalanceMaintained(const unsigned& classScheduleIndex) {
+bool Extractor::isBalanceMaintained(const unsigned& classScheduleIndex) const {
     int targetSize = schedules[classScheduleIndex].getStudents().size();
     int maximumSize = 0, minimumSize = 41;
 
@@ -876,14 +883,14 @@ bool Extractor::isBalanceMaintained(const unsigned& classScheduleIndex) {
 
 /**
  * @brief A function that checks if a given Request of type "S" conflicts with the Class's balance
- * @details Time complexity: O(n + 2log n), where "n" is the number of schedules
+ * @details Time complexity: O(n), where "n" is the number of schedules
  * @param classInfo by reference
  * @param auxClass by reference
  * @return True if the Request doesn't conflicts with the Class's balance, false otherwise
  */
-bool Extractor::isBalanceMaintained(const Class& classInfo, const Class& auxClass) {
-    int targetSize = schedules[searchSchedules(classInfo)].getStudents().size();
-    int auxSize = schedules[searchSchedules(auxClass)].getStudents().size();
+bool Extractor::isBalanceMaintained(const unsigned& classScheduleIndex, const unsigned& auxClassScheduleIndex, const Class& auxClass) const {
+    int targetSize = schedules[classScheduleIndex].getStudents().size();
+    int auxSize = schedules[auxClassScheduleIndex].getStudents().size();
     int maximumSize = 0, minimumSize = 41;
 
     for (const Schedule& schedule: schedules) {

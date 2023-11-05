@@ -57,10 +57,10 @@ class Extractor {
         static bool studentNumerical(const Student& a, const Student& b);
         static void sortAndPrintStudents(vector<Student>& classStudents, const int& mode) ;
         static string formatedHours(const float& floatHour) ;
-        bool isSchedulePossible(const Student& student, const unsigned& newClassScheduleIndex);
-        bool isSchedulePossible(const Student& student, const Class& newClass, const Class& auxClass);
-        bool isBalanceMaintained(const unsigned& classScheduleIndex);
-        bool isBalanceMaintained(const Class& classInfo, const Class& auxClass);
+        bool isSchedulePossible(const Student& student, const unsigned& newClassScheduleIndex) const ;
+        bool isSchedulePossible(const Student& student, const unsigned& newClassScheduleIndex, const Class& auxClass) const;
+        bool isBalanceMaintained(const unsigned& classScheduleIndex) const;
+        bool isBalanceMaintained(const unsigned& classScheduleIndex, const unsigned& auxClassScheduleIndex, const Class& auxClass) const;
         static void addRecord(const Request& request);
         void PermanentDataChange();
 };
